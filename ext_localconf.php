@@ -6,4 +6,4 @@ defined('TYPO3_MODE') or die();
     
     
     
-})('xxx');
+})('ctype_manager');

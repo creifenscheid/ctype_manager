@@ -4,7 +4,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2021 C. Reifenscheid
+ *  (c) 2022 C. Reifenscheid
  *
  *  All rights reserved
  *
@@ -26,22 +26,20 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'xxx',
-    'description' => 'xxx',
+    'title' => 'CType Manager',
+    'description' => 'CType configuration module',
     'category' => 'be',
     'author' => 'C. Reifenscheid',
-    'version' => '0.0.1',
+    'version' => '11.0.0',
     'state' => 'alpha',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-10.4.99'
-        ],
-        'suggests' => [
+            'typo3' => '11.5.0-11.5.99'
         ]
     ],
     'autoload' => [
         'psr-4' => [
-            'CReifenscheid\\xxx\\' => 'Classes'
+            'CReifenscheid\\CtypeManager\\' => 'Classes'
         ]
     ]
 ];

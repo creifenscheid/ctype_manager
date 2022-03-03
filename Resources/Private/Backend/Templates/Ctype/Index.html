@@ -1,0 +1,59 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Default"/>
+
+<f:section name="Content">
+    <div class="ctype_manager-be-module">
+        <div class="container">
+            <div class="row">
+                <h1><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab"/></h1>
+                <p><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.bodytext" /></p>
+
+                <f:if condition="{ctypes}">
+                    <f:then>
+                        <f:form id="ctype-form" action="submit" controller="Ctype" method="post" enctype="multipart/form-data">
+                            <f:form.hidden name="pageUid" value="{pageUid}"/>
+                            <div class="card-container">
+                                <f:for each="{ctypes}" key="group" as="groupConfiguration" iteration="iterator">
+                                    <f:render partial="Group" arguments="{_all}"/>
+                                </f:for>
+                            </div>
+                        </f:form>
+        
+                        <div>
+                            <f:form.button form="ctype-form" class="btn btn-primary"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.button.submit"/></f:form.button>
+                        </div>
+        
+                        <div class="mt-5">
+                            <f:form id="ctype-form" action="approval" controller="Cleanup" method="post" enctype="multipart/form-data">
+                                <f:form.hidden name="pageUid" value="{pageUid}"/>
+                                <div class="card-container">    
+                                    <div class="card card-size-fixed-small">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.headline" />
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card-body">
+                                            <p><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.bodytext" /></p>
+                                            <f:form.button class="btn btn-default mt-3"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.headline" /></f:form.button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </f:form>
+                        </div>
+                    </f:then>
+                    <f:else>
+                        <div class="alert alert-warning mt-3" role="alert">
+                            <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.nopage" />
+                        </div>
+                    </f:else>
+                </f:if>
+            </div>
+        </div>
+    </div>
+</f:section>
+
+</html>

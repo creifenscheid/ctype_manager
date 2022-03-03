@@ -1,0 +1,41 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Default"/>
+
+<f:section name="Content">
+    <div class="ctype_manager-be-module">
+        <div class="container">
+            <div class="row">
+                <h1><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.headline" /></h1>
+                <p><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.bodytext" /></p>
+
+                <f:form id="ctype-cleanup" action="cleanup" controller="Cleanup" method="post" enctype="multipart/form-data">
+                    <f:form.hidden name="pageUid" value="{pageUid}"/>
+
+                    <div class="card-container mt-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <label for="cleanup-mode" class="form-label"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.label" /></label>
+                                <f:form.select id="cleanup-mode" class="form-select mt-2" name="cleanup-mode">
+                                    <f:form.select.option value="page"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.page" /></f:form.select.option>
+                                    <f:form.select.option value="rootline"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.rootline" /></f:form.select.option>
+                                    <f:form.select.option value="rootpage"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.rootpage" /></f:form.select.option>
+                                    <f:form.select.option value="all"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.all" /></f:form.select.option>
+                                </f:form.select>
+                            </div>
+
+                            <div class="card-body">
+                                <f:form.button class="btn btn-primary"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.submit" /></f:form.button>
+                                <f:link.action action="index" controller="Ctype" class="btn btn-default"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.abort" /></f:link.action>
+                            </div>
+                        </div>
+                    </div>
+
+                </f:form>
+            </div>
+        </div>
+    </div>
+</f:section>
+
+</html>

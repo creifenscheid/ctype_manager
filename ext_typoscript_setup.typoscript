@@ -1,0 +1,15 @@
+module.tx_ctypemanager {
+    view {
+        templateRootPaths {
+            10 = EXT:ctype_manager/Resources/Private/Backend/Templates/
+        }
+        
+        layoutRootPaths {
+           10 = EXT:ctype_manager/Resources/Private/Backend/Layouts/
+        }
+
+        partialRootPaths {
+           10 = EXT:ctype_manager/Resources/Private/Backend/Partials/
+        }
+    }
+}

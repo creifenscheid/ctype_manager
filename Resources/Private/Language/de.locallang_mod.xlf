@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns="urn:oasis:names:tc:xliff:document:1.1">
+   <file source-language="en" target-language="de" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="theme">
+      <header/>
+      <body>
+         <!-- INDEX -->
+         <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+               <source>CType Manager</source>
+               <target>CType-Manager</target>
+         </trans-unit>
+         <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+               <source>CType Manager</source>
+               <target>CType-Manager</target>
+         </trans-unit>
+          <trans-unit id="index.bodytext" resname="index.bodytext">
+              <source>Choose all content types, which shall be avaiable on this pages and it's children.</source>
+              <target>Wählen Sie alle Inhaltstypen, die auf dieser Seite und ihren Unterseiten verfügbar sein sollen.</target>
+          </trans-unit>
+         <trans-unit id="index.nopage" resname="index.nopage">
+               <source>Please select a page from the page tree.</source>
+               <target>Bitte wählen Sie eine Seite aus dem Seitenbaum.</target>
+         </trans-unit>
+          <trans-unit id="index.button.submit" resname="index.button.submit">
+               <source>Save</source>
+               <target>Speichern</target>
+         </trans-unit>
+          <trans-unit id="index.message.header" resname="index.message.header">
+               <source>OK</source>
+               <target>OK</target>
+         </trans-unit>
+          <trans-unit id="index.message.bodytext" resname="index.message.bodytext">
+               <source>CType manager configuration has been saved.</source>
+               <target>Die Konfiguration des CType-Managers wurde gespeichert.</target>
+         </trans-unit>
+
+         <!-- CLEANUP -->
+         <trans-unit id="cleanup.headline" resname="cleanup.headline">
+               <source>Cleanup</source>
+               <target>Aufräumen</target>
+         </trans-unit>
+         <trans-unit id="cleanup.bodytext" resname="cleanup.bodytext">
+               <source>Remove the configurations made by the CType Manager.</source>
+               <target>Die vom CType-Manager vorgenommenen Konfigurationen entfernen.</target>
+         </trans-unit>
+
+          <!-- APPROVAL -->
+          <trans-unit id="cleanup.approval.headline" resname="cleanup.approval.headline">
+              <source>Are you sure?</source>
+              <target>Sind Sie sicher?</target>
+          </trans-unit>
+          <trans-unit id="cleanup.approval.bodytext" resname="cleanup.approval.bodytext">
+              <source>You are going to remove the configurations made by the CType Manager.</source>
+              <target>Sie werden die vom CType Manager vorgenommenen Konfigurationen entfernen.</target>
+          </trans-unit>
+          <trans-unit id="cleanup.approval.mode.label" resname="cleanup.approval.mode.label">
+              <source>Cleanup mode</source>
+              <target>Bereinigungs-Modus</target>
+          </trans-unit>
+          <trans-unit id="cleanup.approval.mode.page" resname="cleanup.approval.mode.page">
+              <source>current page</source>
+              <target>aktuelle Seite</target>
+          </trans-unit>
+          <trans-unit id="cleanup.approval.mode.rootline" resname="cleanup.approval.mode.rootline">
+              <source>rootline</source>
+              <target>rootline</target>
+          </trans-unit>
+          <trans-unit id="cleanup.approval.mode.rootpage" resname="cleanup.approval.mode.rootpage">
+              <source>root page</source>
+              <target>Root-Page</target>
+          </trans-unit>
+          <trans-unit id="cleanup.approval.mode.all" resname="cleanup.approval.mode.all">
+              <source>all (this affects ALL pages and might take some time!)</source>
+              <target>alles (dies betrifft ALLE Seiten und kann einige Zeit dauern!)</target>
+          </trans-unit>
+          <trans-unit id="cleanup.approval.submit" resname="cleanup.approval.submit">
+              <source>Yes, clean up.</source>
+              <target>Ja, bitte bereinigen.</target>
+          </trans-unit>
+          <trans-unit id="cleanup.approval.abort" resname="cleanup.approval.abort">
+              <source>No, abort!</source>
+              <target>Nein, abbrechen!</target>
+          </trans-unit>
+          <trans-unit id="cleanup.message.header" resname="cleanup.message.header">
+               <source>OK</source>
+               <target>OK</target>
+         </trans-unit>
+          <trans-unit id="cleanup.message.bodytext" resname="cleanup.message.bodytext">
+               <source>CType manager configuration has been removed.</source>
+               <target>Die Konfiguration des CType-Managers wurde entfernt.</target>
+         </trans-unit>
+      </body>
+   </file>
+</xliff>
