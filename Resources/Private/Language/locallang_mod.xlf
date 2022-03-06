@@ -11,7 +11,7 @@
                <source>CType Manager</source>
          </trans-unit>
          <trans-unit id="index.bodytext" resname="index.bodytext">
-               <source>Choose all content types, which shall be avaiable on this pages and it's children.</source>
+               <source>Choose all content types, which shall be available on this page and it's children.</source>
          </trans-unit>
          <trans-unit id="index.nopage" resname="index.nopage">
                <source>Please select a page from the page tree.</source>
@@ -45,16 +45,16 @@
               <source>Cleanup mode</source>
           </trans-unit>
           <trans-unit id="cleanup.approval.mode.page" resname="cleanup.approval.mode.page">
-              <source>current page</source>
+              <source>Current page</source>
           </trans-unit>
           <trans-unit id="cleanup.approval.mode.rootline" resname="cleanup.approval.mode.rootline">
-              <source>rootline</source>
+              <source>Root line</source>
           </trans-unit>
           <trans-unit id="cleanup.approval.mode.rootpage" resname="cleanup.approval.mode.rootpage">
-              <source>root page</source>
+              <source>Root page</source>
           </trans-unit>
           <trans-unit id="cleanup.approval.mode.all" resname="cleanup.approval.mode.all">
-              <source>all (this affects ALL pages and might take some time!)</source>
+              <source>All (this affects ALL pages and might take some time!)</source>
           </trans-unit>
           <trans-unit id="cleanup.approval.submit" resname="cleanup.approval.submit">
               <source>Yes, clean up.</source>
