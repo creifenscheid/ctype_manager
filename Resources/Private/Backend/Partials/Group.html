@@ -1,18 +1,19 @@
+<f:if condition="{groupConfiguration.label}">
+    <f:then>
+        <f:variable name="groupLabel" value="{groupConfiguration.label}" />
+    </f:then>
+    <f:else>
+        <f:variable name="groupLabel" value="{f:format.case(value:group,mode:'cspital')}" />
+    </f:else>
+</f:if>
+
 <div class="card card-size-fixed-small">
     <div class="card-header">
-        <div class="card-title">
-            <f:if condition="{groupConfiguration.label}">
-                <f:then>
-                    {groupConfiguration.label}
-                </f:then>
-                <f:else>
-                    <f:format.case value="{group}" mode="capital"/>
-                </f:else>
-            </f:if>
-        </div>
+        <div class="card-title">{groupLabel}</div>
     </div>
 
     <div class="card-body">
+        <button type="button" role="switch" class="btn btn--switch" aria-pressed="false"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.switch.group" arguments="{0:groupLabel}"/></button>
         <f:for each="{groupConfiguration.ctypes}" key="identifier" as="ctypeConfiguration">
 
             <div class="form-check form-switch d-flex flex-row justify-content-start align-items-start flex-wrap">
