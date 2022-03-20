@@ -23,4 +23,12 @@ defined('TYPO3_MODE') or die();
         ]
     );
     
+    // SKIN
+    $GLOBALS['TBE_STYLES']['skins'][$extKey] = [
+        'name' => 'CType manager',
+        'stylesheetDirectories' => [
+            'css' => 'EXT:' . $extKey . '/Resources/Public/Css/'
+        ]
+    ];
+    
 })('ctype_manager');
