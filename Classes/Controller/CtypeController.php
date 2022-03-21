@@ -4,10 +4,13 @@ namespace CReifenscheid\CtypeManager\Controller;
 
 use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use function array_key_exists;
+use function count;
 use function in_array;
 
 /***************************************************************
@@ -94,6 +97,8 @@ class CtypeController extends ActionController
 
             // sort CTypes by group
             $ctypes = [];
+            $ctypeStates = [];
+            $groupStates = [];
             foreach ($this->tcaCtypes as $ctype) {
                 [$label, $identifier, , $group] = $ctype;
 
@@ -111,14 +116,26 @@ class CtypeController extends ActionController
 
                 // exclude divider items
                 if ($identifier !== '--div--') {
+                    $ctypeState = $this->getActivationState($identifier);
                     $ctypes[$group]['ctypes'][$identifier] = [
                         'label' => str_starts_with($label, 'LLL:') ? LocalizationUtility::translate($label) : $label,
-                        'active' => $this->getActivationState($identifier)
+                        'active' => $ctypeState
                     ];
+
+                    // store ctype state to determine group state
+                    $ctypeStates[$group][] = $ctypeState;
                 }
             }
 
+            // set state of group
+            foreach ($ctypeStates as $groupKey => $states) {
+                $groupState = $this->getMainState($states);
+                $groupStates[] = $groupState;
+                $ctypes[$groupKey]['state'] = $groupState;
+            }
+
             $this->view->assignMultiple([
+                'groupsState' => $this->getMainState($groupStates),
                 'ctypes' => $ctypes,
                 'pageUid' => $currentPageId
             ]);
@@ -181,6 +198,22 @@ class CtypeController extends ActionController
     }
 
     /**
+     * Function to determine the state of a group
+     *
+     * @param array $ctypeStates
+     *
+     * @return bool
+     */
+    private function getMainState(array $states) : bool
+    {
+        // remove duplicate states
+        $states = array_unique($states);
+
+        // if there are more then 1 state left (true and false) the state is false, otherwise the state of the group equals the leftover state (true or false)
+        return count($states) > 1 ? false : end($states);
+    }
+
+    /**
      * Submit action
      *
      * @return void
@@ -220,7 +253,7 @@ class CtypeController extends ActionController
         }
 
         $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.message';
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), \TYPO3\CMS\Core\Messaging\FlashMessage::OK, true);
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
 
         // redirect to index
         $this->redirect('index', 'Ctype');
@@ -250,7 +283,7 @@ class CtypeController extends ActionController
         }
 
         // compare the arrays - note: the larger one has to be the first to get an correct result
-        if (\count($alreadyEnabledCtypes) > \count($formEnabledCtypes)) {
+        if (count($alreadyEnabledCtypes) > count($formEnabledCtypes)) {
             $result = array_diff($alreadyEnabledCtypes, $formEnabledCtypes);
         } else {
             $result = array_diff($formEnabledCtypes, $alreadyEnabledCtypes);

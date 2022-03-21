@@ -25,11 +25,14 @@
           <trans-unit id="index.message.bodytext" resname="index.message.bodytext">
                <source>CType manager configuration has been saved.</source>
          </trans-unit>
+         <trans-unit id="index.switch.label" resname="index.switch.label">
+               <source>Enable all</source>
+         </trans-unit>
          <trans-unit id="index.switch.all" resname="index.switch.all">
                <source>Enable all content element types</source>
          </trans-unit>
          <trans-unit id="index.switch.group" resname="index.toggle.group">
-               <source>Enable all content element types in group %s</source>
+               <source>Enable all content element types in group "%s"</source>
          </trans-unit>
 
          <!-- CLEANUP -->
