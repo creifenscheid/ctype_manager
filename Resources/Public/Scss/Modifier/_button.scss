@@ -1,0 +1,16 @@
+.btn {
+    &--danger {
+        background-color: $color-danger;
+        color: $color-white;
+
+        .icon {
+            margin-right: 10px;
+        }
+
+        &:hover, &:focus {
+            background-color: white;
+            border-color: $color-danger;
+            color: $color-danger;
+        }
+    }
+}

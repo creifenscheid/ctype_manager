@@ -32,16 +32,16 @@
                             <f:form id="ctype-form" action="approval" controller="Cleanup" method="post" enctype="multipart/form-data">
                                 <f:form.hidden name="pageUid" value="{pageUid}"/>
                                 <div class="card-container">
-                                    <div class="card card-size-fixed-small">
+                                    <div class="card card--danger card-size-fixed-small">
                                         <div class="card-header">
-                                            <div class="card-title">
+                                            <div class="card-title card-title--danger">
                                                 <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.headline" />
                                             </div>
                                         </div>
                                     
                                         <div class="card-body">
                                             <p><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.bodytext" /></p>
-                                            <f:form.button class="btn btn-default mt-3"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.headline" /></f:form.button>
+                                            <f:form.button class="btn btn--danger mt-3"><core:icon identifier="actions-exclamation-triangle-alt" size="small" /><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.headline" /></f:form.button>
                                         </div>
                                     </div>
                                 </div>

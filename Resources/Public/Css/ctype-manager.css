@@ -1,0 +1,7 @@
+.btn--danger { background-color: #B30C1C; color: #FFFFFF; }
+.btn--danger .icon { margin-right: 10px; }
+.btn--danger:hover, .btn--danger:focus { background-color: white; border-color: #B30C1C; color: #B30C1C; }
+
+.card--danger { border-color: #B30C1C; }
+
+.card-title--danger { color: #B30C1C; }

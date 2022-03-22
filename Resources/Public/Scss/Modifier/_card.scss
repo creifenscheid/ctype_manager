@@ -1,0 +1,11 @@
+.card {
+    &--danger {
+        border-color: $color-danger;
+    }
+}
+
+.card-title {
+    &--danger {
+        color: $color-danger;
+    }
+}

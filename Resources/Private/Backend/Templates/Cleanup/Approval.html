@@ -14,7 +14,7 @@
                     <f:form.hidden name="pageUid" value="{pageUid}"/>
 
                     <div class="card-container mt-3">
-                        <div class="card">
+                        <div class="card card--danger">
                             <div class="card-header">
                                 <label for="cleanup-mode" class="form-label"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.label" /></label>
                                 <f:form.select id="cleanup-mode" class="form-select mt-2" name="cleanup-mode">
@@ -26,7 +26,7 @@
                             </div>
 
                             <div class="card-body">
-                                <f:form.button class="btn btn-primary"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.submit" /></f:form.button>
+                                <f:form.button class="btn btn--danger"><core:icon identifier="actions-exclamation-triangle-alt" size="small" /><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.submit" /></f:form.button>
                                 <f:link.action action="index" controller="Ctype" class="btn btn-default"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.abort" /></f:link.action>
                             </div>
                         </div>
