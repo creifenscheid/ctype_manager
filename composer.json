@@ -15,7 +15,7 @@
     "replace": {
         "typo3-ter/ctype-manager": "self.version"
     },
-	"minimum-stability" : "alpha",
+	"minimum-stability" : "beta",
 	"authors" : [{
 			"name" : "C. Reifenscheid",
 			"email" : "dev@christian-reifenscheid.de"
