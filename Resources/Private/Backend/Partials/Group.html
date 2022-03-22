@@ -22,10 +22,10 @@
 
                 <f:if condition="{ctypeConfiguration.active}">
                     <f:then>
-                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-ctype js-group-{group}" value="{identifier}" additionalAttributes="{checked:'checked'}" />
+                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-ctype js-group-{group}" value="{identifier}" additionalAttributes="{checked:'checked', onclick:'TYPO3.CtypeManager.update()'}" />
                     </f:then>
                     <f:else>
-                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-ctype js-group-{group}" value="{identifier}" />
+                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-ctype js-group-{group}" value="{identifier}" additionalAttributes="{onclick:'TYPO3.CtypeManager.update()'}" />
                     </f:else>
                 </f:if>
 

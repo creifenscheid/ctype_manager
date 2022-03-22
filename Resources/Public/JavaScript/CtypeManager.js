@@ -11,18 +11,41 @@ define([
         let targetId = elementObject.data('target')
 
         // toggle button state
-        elementObject.attr('aria-pressed', currentState ? 'false' : 'true')
-        elementObject.toggleClass('active')
+        CtypeManager.setButtonState(elementObject, currentState)
 
         // toggle targets
         $('.' + targetId).each(function(){
-            $(this).prop('checked', !currentState);
+            $(this).prop('checked', !currentState)
+        });
+
+        CtypeManager.update()
+    };
+    
+    CtypeManager.update = function () {
+        $('.js-btn-switch').each(function(){
+            let state = true
+            let targetId = $(this).data('target')
+
+            $('.' + targetId).each(function(){
+                if ($(this).prop('checked') === false) {
+                    state = false
+                    return false
+                }
+            });
+
+            CtypeManager.setButtonState($(this), state)
         });
     };
-    
-    CtypeManager.updateSwitch = function () {
-    
-    };
+
+    CtypeManager.setButtonState = function (button, state) {
+        if (state) {
+            button.attr('aria-pressed', 'true')
+            button.addClass('active')
+        } else {
+            button.attr('aria-pressed', 'false')
+            button.removeClass('active')
+        }
+    }
 
     // expose to global
     TYPO3.CtypeManager = CtypeManager;
