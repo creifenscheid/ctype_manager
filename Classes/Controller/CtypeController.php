@@ -229,7 +229,7 @@ class CtypeController extends ActionController
         $pageUid = (int)$arguments['pageUid'];
 
         // get enabled ctypes
-        $enabledCtypes = $arguments['ctypes'];
+        $enabledCtypes = empty($arguments['ctypes']) ? [] : $arguments['ctypes'];
 
         // resolve page tsconfig for the current page
         $this->resolvePageTSConfig($pageUid);
