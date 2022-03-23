@@ -1,16 +1,59 @@
 .btn {
     &--danger {
         background-color: $color-danger;
-        color: $color-white;
+        color: $color-light;
 
         .icon {
             margin-right: 10px;
         }
 
         &:hover, &:focus {
-            background-color: white;
+            background-color: $color-light;
             border-color: $color-danger;
             color: $color-danger;
+        }
+    }
+
+    &--switch {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        background: none;
+        border: none;
+        margin: 0;
+        padding: 0;
+        border-radius: 0;
+
+        color: $color-dark;
+
+        .visual {
+            display: inline-block;
+            width: 2.5em;
+            height: 16px;
+
+            background-color: $color-light;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23454f54'/%3e%3c/svg%3e");
+            background-position: left center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            transition: background-position .15s ease-in-out;
+
+            border: 1px solid $color-dark;
+            border-radius: 2.5em;
+        }
+
+        &.on {
+            .visual {
+                background-color: $color-dark;
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='#{$color-light}'/%3e%3c/svg%3e");
+                background-position: right center;
+            }
+        }
+
+        &-bold {
+            font-weight: bold;
         }
     }
 }

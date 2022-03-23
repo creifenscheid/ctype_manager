@@ -40,10 +40,10 @@ define([
     CtypeManager.setButtonState = function (button, state) {
         if (state) {
             button.attr('aria-pressed', 'true')
-            button.addClass('active')
+            button.addClass('on')
         } else {
             button.attr('aria-pressed', 'false')
-            button.removeClass('active')
+            button.removeClass('on')
         }
     }
 
