@@ -32,6 +32,18 @@
         <source>CType manager configuration has been saved.</source>
         <target state="final">Die Konfiguration des CType-Managers wurde gespeichert.</target>
       </trans-unit>
+      <trans-unit id="index.switch.label" resname="index.switch.label">
+        <source>Enable all</source>
+        <target state="needs-translation">Enable all</target>
+      </trans-unit>
+      <trans-unit id="index.switch.all" resname="index.switch.all">
+        <source>Enable all content element types</source>
+        <target state="needs-translation">Enable all content element types</target>
+      </trans-unit>
+      <trans-unit id="index.switch.group" resname="index.toggle.group">
+        <source>Enable all content element types in group "%s"</source>
+        <target state="needs-translation">Enable all content element types in group "%s"</target>
+      </trans-unit>
       <!-- CLEANUP -->
       <trans-unit id="cleanup.headline" resname="cleanup.headline" approved="yes">
         <source>Cleanup</source>
