@@ -1,7 +1,7 @@
 {
 	"name" : "creifenscheid/ctype-manager",
 	"type" : "typo3-cms-extension",
-	"description" : "CType configuration module",
+	"description" : "Backend module for CType configuration on page level",
 	"license" : "GPL-2.0-or-later",
 	"homepage" : "https://github.com/creifenscheid/ctype_manager",
 	"require" : {

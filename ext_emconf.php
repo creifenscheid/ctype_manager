@@ -27,7 +27,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'CType Manager',
-    'description' => 'CType configuration module',
+    'description' => 'Backend module for CType configuration on page level',
     'category' => 'be',
     'author' => 'C. Reifenscheid',
     'version' => '11.1.0',
