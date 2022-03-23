@@ -16,7 +16,7 @@
                             <f:form.hidden name="pageUid" value="{pageUid}"/>
                             <f:variable name="toggleAriaLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.switch.all" /></f:variable>
                             <f:variable name="toggleLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.switch.label" /></f:variable>
-                            <f:render partial="Switch" arguments="{state:groupsState,label:toggleLabel,ariaLabel:toggleAriaLabel,target:'js-ctype',bold:'true'}"/>
+                            <f:render partial="Switch" arguments="{state:groupsState,label:toggleLabel,ariaLabel:toggleAriaLabel,target:'js-ctype'}"/>
                             <div class="card-container">
                                 <f:for each="{ctypes}" key="group" as="groupConfiguration" iteration="iterator">
                                     <f:render partial="Group" arguments="{_all}"/>
