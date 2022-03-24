@@ -12,6 +12,10 @@
         <source>CType Manager</source>
         <target state="final">CType-Manager</target>
       </trans-unit>
+      <trans-unit id="index.header" resname="index.header">
+        <source>Page "%s" | CType Manager</source>
+        <target state="needs-translation">Page "%s" | CType Manager</target>
+      </trans-unit>
       <trans-unit id="index.bodytext" resname="index.bodytext" approved="yes">
         <source>Choose all content types, which shall be available on this page and it's children.</source>
         <target state="final">Wählen Sie alle Inhaltstypen, die auf dieser Seite und ihren Unterseiten verfügbar sein sollen.</target>
