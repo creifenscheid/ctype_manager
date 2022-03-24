@@ -8,7 +8,6 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use function array_key_exists;
 use function count;
@@ -152,6 +151,52 @@ class CtypeController extends ActionController
     }
 
     /**
+     * Submit action
+     *
+     * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function submitAction() : void
+    {
+        // get request arguments
+        $arguments = $this->request->getArguments();
+
+        // get the page uid to store page tsconfig in
+        $pageUid = (int)$arguments['pageUid'];
+
+        // get enabled ctypes
+        $enabledCtypes = empty($arguments['ctypes']) ? [] : $arguments['ctypes'];
+
+        // resolve page tsconfig for the current page
+        $this->resolvePageTSConfig($pageUid);
+
+        // only write pageTSConfig if the submitted configuration differs from to existing one
+        if ($this->configurationDiffers($enabledCtypes)) {
+            // define ctype configuration
+            $ctypeTSConfig[] = '### START ' . self::CONFIG_ID;
+            $ctypeTSConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove';
+            // unset existing removeItems configuration
+            $ctypeTSConfig[] = 'TCEFORM.tt_content.CType.removeItems >';
+
+            // build keep ctype configuration
+            $ctypeConfiguration = 'TCEFORM.tt_content.CType.keepItems';
+            $ctypeTSConfig[] = empty($enabledCtypes) ? $ctypeConfiguration . ' = none' : $ctypeConfiguration . ' = ' . implode(',', $enabledCtypes);
+            $ctypeTSConfig[] = '### END ' . self::CONFIG_ID;
+
+            /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
+            $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+            $configurationService->writeConfiguration($pageUid, $ctypeTSConfig);
+        }
+
+        $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.message';
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
+
+        // redirect to index
+        $this->redirect('index', 'Ctype');
+    }
+
+    /**
      * Resolves pageTSConfig to get kept and removed ctypes
      *
      * @param int $currentPageId
@@ -220,52 +265,6 @@ class CtypeController extends ActionController
 
         // if there are more then 1 state left (true and false) the state is false, otherwise the state of the group equals the leftover state (true or false)
         return count($states) > 1 ? false : end($states);
-    }
-
-    /**
-     * Submit action
-     *
-     * @return void
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    public function submitAction() : void
-    {
-        // get request arguments
-        $arguments = $this->request->getArguments();
-
-        // get the page uid to store page tsconfig in
-        $pageUid = (int)$arguments['pageUid'];
-
-        // get enabled ctypes
-        $enabledCtypes = empty($arguments['ctypes']) ? [] : $arguments['ctypes'];
-
-        // resolve page tsconfig for the current page
-        $this->resolvePageTSConfig($pageUid);
-
-        // only write pageTSConfig if the submitted configuration differs from to existing one
-        if ($this->configurationDiffers($enabledCtypes)) {
-            // define ctype configuration
-            $ctypeTSConfig[] = '### START ' . self::CONFIG_ID;
-            $ctypeTSConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove';
-            // unset existing removeItems configuration
-            $ctypeTSConfig[] = 'TCEFORM.tt_content.CType.removeItems >';
-
-            // build keep ctype configuration
-            $ctypeConfiguration = 'TCEFORM.tt_content.CType.keepItems';
-            $ctypeTSConfig[] = empty($enabledCtypes) ? $ctypeConfiguration . ' >' : $ctypeConfiguration . ' = ' . implode(',', $enabledCtypes);
-            $ctypeTSConfig[] = '### END ' . self::CONFIG_ID;
-
-            /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
-            $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-            $configurationService->writeConfiguration($pageUid, $ctypeTSConfig);
-        }
-
-        $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.message';
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
-
-        // redirect to index
-        $this->redirect('index', 'Ctype');
     }
 
     /**

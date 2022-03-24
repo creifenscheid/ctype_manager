@@ -48,7 +48,7 @@ class ConfigurationService implements SingletonInterface
     /**
      * Page repository
      *
-     * @var 
+     * @var
      */
     private $pageRepository;
 
@@ -57,7 +57,7 @@ class ConfigurationService implements SingletonInterface
      */
     public function __construct()
     {
-        $this->pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class);
+        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
     }
 
     /**
@@ -126,16 +126,14 @@ class ConfigurationService implements SingletonInterface
         /**
          * UPDATE PAGE
          */
-        if (!empty($pageTSConfig)) {
-            $tableToQuery = 'pages';
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
-            $queryBuilder
-                ->update($tableToQuery)
-                ->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageUid, PDO::PARAM_INT))
-                )
-                ->set('TSconfig', implode(PHP_EOL, $pageTSConfig))
-                ->executeStatement();
-        }
+        $tableToQuery = 'pages';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
+        $queryBuilder
+            ->update($tableToQuery)
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageUid, PDO::PARAM_INT))
+            )
+            ->set('TSconfig', !empty($pageTSConfig) ? implode(PHP_EOL, $pageTSConfig) : '')
+            ->executeStatement();
     }
 }
