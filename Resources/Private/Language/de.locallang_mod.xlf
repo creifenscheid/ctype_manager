@@ -12,9 +12,9 @@
         <source>CType Manager</source>
         <target state="final">CType-Manager</target>
       </trans-unit>
-      <trans-unit id="index.header" resname="index.header">
+      <trans-unit id="index.header" resname="index.header" approved="yes">
         <source>Page "%s" | CType Manager</source>
-        <target state="needs-translation">Page "%s" | CType Manager</target>
+        <target state="final">Seite "%s" | CType-Manager</target>
       </trans-unit>
       <trans-unit id="index.bodytext" resname="index.bodytext" approved="yes">
         <source>Choose all content types, which shall be available on this page and it's children.</source>
@@ -36,17 +36,17 @@
         <source>CType manager configuration has been saved.</source>
         <target state="final">Die Konfiguration des CType-Managers wurde gespeichert.</target>
       </trans-unit>
-      <trans-unit id="index.switch.label" resname="index.switch.label">
+      <trans-unit id="index.switch.label" resname="index.switch.label" approved="yes">
         <source>Enable all</source>
-        <target state="needs-translation">Enable all</target>
+        <target state="final">Alle aktivieren</target>
       </trans-unit>
-      <trans-unit id="index.switch.all" resname="index.switch.all">
+      <trans-unit id="index.switch.all" resname="index.switch.all" approved="yes">
         <source>Enable all content element types</source>
-        <target state="needs-translation">Enable all content element types</target>
+        <target state="final">Alle Inhaltselementtypen aktivieren</target>
       </trans-unit>
-      <trans-unit id="index.switch.group" resname="index.toggle.group">
+      <trans-unit id="index.switch.group" resname="index.toggle.group" approved="yes">
         <source>Enable all content element types in group "%s"</source>
-        <target state="needs-translation">Enable all content element types in group "%s"</target>
+        <target state="final">Alle Inhaltselementtypen in Gruppe "%s" aktivieren</target>
       </trans-unit>
       <!-- CLEANUP -->
       <trans-unit id="cleanup.headline" resname="cleanup.headline" approved="yes">
