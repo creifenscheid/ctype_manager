@@ -97,9 +97,8 @@ class CtypeController extends ActionController
     {
         // get the current page from request
         $currentPageId = $this->request->getQueryParams()['id'];
-        $page = $this->getPage($currentPageId);
 
-        if ($currentPageId > 0) {
+        if ($currentPageId && $currentPageId > 0) {
             // resolve page tsconfig for the current page
             $this->resolvePageTSConfig($currentPageId);
 
@@ -145,7 +144,7 @@ class CtypeController extends ActionController
             $this->view->assignMultiple([
                 'groupsState' => $this->getMainState($groupStates),
                 'ctypes' => $ctypes,
-                'page' => $page
+                'page' => $this->getPage($currentPageId)
             ]);
         }
     }
