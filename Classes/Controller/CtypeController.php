@@ -4,6 +4,7 @@ namespace CReifenscheid\CtypeManager\Controller;
 
 use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -51,6 +52,13 @@ class CtypeController extends ActionController
     private const CONFIG_ID = 'ctype-manager';
 
     /**
+     * Page repository
+     *
+     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
+     */
+    private $pageRepository;
+
+    /**
      * Array of ctypes configured in pageTSConfig
      *
      * @var array
@@ -90,6 +98,7 @@ class CtypeController extends ActionController
     {
         // get the current page from request
         $currentPageId = $this->request->getQueryParams()['id'];
+        $page = $this->getPage($currentPageId);
 
         if ($currentPageId > 0) {
             // resolve page tsconfig for the current page
@@ -137,7 +146,7 @@ class CtypeController extends ActionController
             $this->view->assignMultiple([
                 'groupsState' => $this->getMainState($groupStates),
                 'ctypes' => $ctypes,
-                'pageUid' => $currentPageId
+                'page' => $page
             ]);
         }
     }
@@ -290,5 +299,21 @@ class CtypeController extends ActionController
         }
 
         return !empty($result);
+    }
+
+    /**
+     * Returns page information
+     *
+     * @param int $pageUid
+     *
+     * @return array
+     */
+    private function getPage(int $pageUid) : array
+    {
+        if ($this->pageRepository === null) {
+            $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        }
+
+        return $this->pageRepository->getPage($pageUid);
     }
 }

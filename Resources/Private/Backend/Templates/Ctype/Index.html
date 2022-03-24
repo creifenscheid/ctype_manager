@@ -7,13 +7,13 @@
     <div class="ctype_manager-be-module">
         <div class="container">
             <div class="row">
-                <h1><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab"/></h1>
+                <h1><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.header" arguments="{0:page.title}"/></h1>
                 <p><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.bodytext" /></p>
 
                 <f:if condition="{ctypes}">
                     <f:then>
                         <f:form id="ctype-form" action="submit" controller="Ctype" method="post" enctype="multipart/form-data">
-                            <f:form.hidden name="pageUid" value="{pageUid}"/>
+                            <f:form.hidden name="pageUid" value="{page.uid}"/>
                             <f:variable name="toggleAriaLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.switch.all" /></f:variable>
                             <f:variable name="toggleLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.switch.label" /></f:variable>
                             <f:render partial="Switch" arguments="{state:groupsState,label:toggleLabel,ariaLabel:toggleAriaLabel,target:'js-ctype'}"/>
@@ -30,7 +30,7 @@
         
                         <div class="mt-5">
                             <f:form id="ctype-form" action="approval" controller="Cleanup" method="post" enctype="multipart/form-data">
-                                <f:form.hidden name="pageUid" value="{pageUid}"/>
+                                <f:form.hidden name="pageUid" value="{page.uid}"/>
                                 <div class="card-container">
                                     <div class="card card--danger card-size-fixed-small">
                                         <div class="card-header">

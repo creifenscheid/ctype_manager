@@ -4,5 +4,6 @@ v11.0.0 +
 
 v11.1.0 +
 
-  * [FEATURE] - 'toggle all' buttons
-  * [FEATURE] - highlighting of cleanup related elements
+  * [FEATURE]   - 'toggle all' buttons
+  * [FEATURE]   - highlighting of cleanup related elements
+  * [BUGFIX]    - clean up on page with previously empty pageTSConfig field
