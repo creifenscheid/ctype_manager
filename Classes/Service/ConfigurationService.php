@@ -139,7 +139,7 @@ class ConfigurationService implements SingletonInterface
         
         // add page to data handler data
         $this->dataHandlerData['pages'][$pageUid] = [
-            'TSconfig' => empty($pageTSConfig) ? '' : implode(PHP_EOL, $pageTSConfig))
+            'TSconfig' => empty($pageTSConfig) ? '' : implode(PHP_EOL, $pageTSConfig)
         ];
     }
     
@@ -152,6 +152,7 @@ class ConfigurationService implements SingletonInterface
     {
         if (!empty($this->dataHandlerData)) {
             $this->dataHandler->start($this->dataHandlerData, []);
+            $this->dataHandler->process_datamap();
         }
     }
 }
