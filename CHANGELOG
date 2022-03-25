@@ -1,8 +1,11 @@
+v11.2.0 +
+  * [FEATURE]   - performance improvement by using the datahandler
+  
 v11.1.0 +
   * [FEATURE]   - 'toggle all' buttons
   * [FEATURE]   - highlighting of cleanup related elements
   * [BUGFIX]    - clean up on page with previously empty pageTSConfig field fails
   * [BUGFIX]    - missing page uid error prevention
-  
+
 v11.0.0 +
   * initial release
