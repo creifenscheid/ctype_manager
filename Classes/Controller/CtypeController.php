@@ -186,6 +186,9 @@ class CtypeController extends ActionController
             /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
             $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
             $configurationService->writeConfiguration($pageUid, $ctypeTSConfig);
+            
+            // persist changes
+            $configurationService->persist();
         }
 
         $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.message';

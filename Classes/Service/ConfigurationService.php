@@ -2,11 +2,10 @@
 
 namespace CReifenscheid\CtypeManager\Service;
 
-use PDO;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 
 /***************************************************************
  *
@@ -48,9 +47,23 @@ class ConfigurationService implements SingletonInterface
     /**
      * Page repository
      *
-     * @var
+     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
      */
     private $pageRepository;
+    
+    /**
+     * Data handler
+     *
+     * @var \TYPO3\CMS\Core\DataHandling\DataHandler
+     */
+    private $dataHandler;
+    
+    /**
+     * Array for data handler data
+     *
+     * @var array
+     */
+    private $dataHandlerData = [];
 
     /**
      * Constructor
@@ -58,6 +71,7 @@ class ConfigurationService implements SingletonInterface
     public function __construct()
     {
         $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
     }
 
     /**
@@ -122,18 +136,22 @@ class ConfigurationService implements SingletonInterface
 
         // merge existing tsconfig with ctype configuration
         $pageTSConfig = array_merge($tsConfig, $ctypeConfig);
-
-        /**
-         * UPDATE PAGE
-         */
-        $tableToQuery = 'pages';
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
-        $queryBuilder
-            ->update($tableToQuery)
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageUid, PDO::PARAM_INT))
-            )
-            ->set('TSconfig', !empty($pageTSConfig) ? implode(PHP_EOL, $pageTSConfig) : '')
-            ->executeStatement();
+        
+        // add page to data handler data
+        $this->dataHandlerData['pages'][$pageUid] = [
+            'TSconfig' => empty($pageTSConfig) ? '' : implode(PHP_EOL, $pageTSConfig))
+        ];
+    }
+    
+    /**
+     * Function to run data handler with stored data
+     *
+     * @return void
+     */
+    public function persist() : void
+    {
+        if (!empty($this->dataHandlerData)) {
+            $this->dataHandler->start($this->dataHandlerData, []);
+        }
     }
 }

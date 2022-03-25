@@ -108,7 +108,7 @@ class CleanupController extends ActionController
                 break;
 
             case 'rootpage':
-                // init page resository
+                // init page repository
                 $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
                 $rootPage = end($rootline);
                 $this->cleanupPageRecursively($rootPage['uid']);
@@ -129,10 +129,13 @@ class CleanupController extends ActionController
                 }
                 break;
         }
+        
+        // persist changes
+        $this->configurationService->persist();
 
         $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message';
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
-
+        
         // redirect to index
         $this->redirect('index', 'Ctype');
     }
