@@ -13,6 +13,7 @@ defined('TYPO3_MODE') or die();
         [
             \CReifenscheid\CtypeManager\Controller\CtypeController::class => 'index,submit',
             \CReifenscheid\CtypeManager\Controller\CleanupController::class => 'approval,cleanup',
+        \CReifenscheid\CtypeManager\Controller\OverviewController::class => 'index'
         ],
         [
             'access' => 'admin',
