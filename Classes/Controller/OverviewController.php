@@ -2,6 +2,8 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -35,12 +37,31 @@ namespace CReifenscheid\CtypeManager\Controller;
 class OverviewController extends ActionController
 {
     /**
+     * Page repository
+     *
+     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
+     */
+    private $pageRepository;
+    
+    /**
+     * Constructor
+     *
+     * @params \TYPO3\CMS\Core\Domain\Repository\PageRepository $pageRepository
+     */
+    public function __construct(PageRepository $pageRepository) 
+    {
+        $this->pageRepository = $pageRepository;
+    }
+    
+    /**
      * Index action
      *
      * @return void
      */
     public function indexAction() : void
     {
+        // querybuilder pages all like ctype manager
         
+        $this->view->assign('pages', $pages);
     }
 }

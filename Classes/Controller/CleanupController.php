@@ -108,8 +108,6 @@ class CleanupController extends ActionController
                 break;
 
             case 'rootpage':
-                // init page repository
-                $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
                 $rootPage = end($rootline);
                 $this->cleanupPageRecursively($rootPage['uid']);
 
@@ -147,6 +145,11 @@ class CleanupController extends ActionController
      */
     private function cleanupPageRecursively(int $pageUid)
     {
+        // init page repository
+        if ($this->pageRepository === null) {
+            $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        }
+    
         // cleanup current page
         $this->configurationService->removeConfiguration($pageUid);
 
