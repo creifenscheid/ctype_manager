@@ -79,16 +79,6 @@ class CtypeController extends ActionController
     private array $tcaCtypes;
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        // get all in TCA configured ctypes
-        $this->tcaCtypeGroups = $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'];
-        $this->tcaCtypes = $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];
-    }
-
-    /**
      * Index action
      *
      * @return void
@@ -106,7 +96,7 @@ class CtypeController extends ActionController
             $ctypes = [];
             $ctypeStates = [];
             $groupStates = [];
-            foreach ($this->tcaCtypes as $ctype) {
+            foreach ($this->getTcaCtypes() as $ctype) {
                 [$label, $identifier, , $group] = $ctype;
 
                 // init group storage
@@ -117,7 +107,7 @@ class CtypeController extends ActionController
                 // set group label
                 if (!array_key_exists('label', $ctypes[$group])) {
                     // get the group label from TCA group
-                    $groupLabel = $this->tcaCtypeGroups[$group];
+                    $groupLabel = $this->getTcaCtypeGroups()[$group];
                     $ctypes[$group]['label'] = str_starts_with($groupLabel, 'LLL:') ? LocalizationUtility::translate($groupLabel) : $groupLabel;
                 }
 
@@ -281,7 +271,7 @@ class CtypeController extends ActionController
         // store already enabled ctypes
         $alreadyEnabledCtypes = [];
 
-        foreach ($this->tcaCtypes as $ctype) {
+        foreach ($this->getTcaCtypes() as $ctype) {
             $identifier = $ctype[1];
 
             // exclude divider items
@@ -316,5 +306,33 @@ class CtypeController extends ActionController
         }
 
         return $this->pageRepository->getPage($pageUid);
+    }
+
+    /**
+     * Returns all configured ctypes
+     *
+     * @return array
+     */
+    private function getTcaCtypes() : array
+    {
+        if (empty($this->tcaCtypes)) {
+            $this->tcaCtypes = $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];
+        }
+
+        return $this->tcaCtypes;
+    }
+
+    /**
+     * Returns all configured ctype groups
+     *
+     * @return array
+     */
+    private function getTcaCtypeGroups() : array
+    {
+        if (empty($this->tcaCtypeGroups)) {
+            $this->tcaCtypeGroups = $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'];
+        }
+
+        return $this->tcaCtypeGroups;
     }
 }
