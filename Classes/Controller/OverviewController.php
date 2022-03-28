@@ -2,7 +2,9 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /***************************************************************
  *
@@ -37,31 +39,39 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 class OverviewController extends ActionController
 {
     /**
-     * Page repository
-     *
-     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
+     * Configuration identifier
      */
-    private $pageRepository;
-    
-    /**
-     * Constructor
-     *
-     * @params \TYPO3\CMS\Core\Domain\Repository\PageRepository $pageRepository
-     */
-    public function __construct(PageRepository $pageRepository) 
-    {
-        $this->pageRepository = $pageRepository;
-    }
-    
+    private const CONFIG_ID = 'ctype-manager';
+
     /**
      * Index action
      *
      * @return void
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function indexAction() : void
     {
-        // querybuilder pages all like ctype manager
-        
+        $pages = $this->getRelevantPages();
         $this->view->assign('pages', $pages);
+    }
+
+    /**
+     * Returns array with all pages with ctype manager configuration
+     *
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    private function getRelevantPages() : array
+    {
+        $table = 'pages';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+
+        return $queryBuilder
+            ->select('uid', 'title', 'is_siteroot')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->like('TSconfig', '\'%### START ' . self::CONFIG_ID . '%\'')
+            )
+            ->execute()->fetchAll();
     }
 }
