@@ -85,6 +85,12 @@
           <trans-unit id="overview.navigation" resname="overview.navigation">
               <source>Overview</source>
           </trans-unit>
+          <trans-unit id="overview.headline" resname="overview.headline">
+              <source>Overview | CType manager</source>
+          </trans-unit>
+          <trans-unit id="overview.bodytext" resname="overview.bodytext">
+              <source>The following pages have been configured with the ctype manager.</source>
+          </trans-unit>
       </body>
    </file>
 </xliff>
