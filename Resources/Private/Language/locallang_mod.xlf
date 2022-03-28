@@ -80,6 +80,11 @@
           <trans-unit id="cleanup.message.bodytext" resname="cleanup.message.bodytext">
                <source>CType manager configuration has been removed.</source>
          </trans-unit>
+
+          <!-- OVERVIEW -->
+          <trans-unit id="overview.navigation" resname="overview.navigation">
+              <source>Overview</source>
+          </trans-unit>
       </body>
    </file>
 </xliff>
