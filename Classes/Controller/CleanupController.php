@@ -7,7 +7,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -91,8 +90,7 @@ class CleanupController extends ActionController
 
         // initialize rootline utility
         if ($cleanupMode === 'rootpage' || $cleanupMode === 'rootline') {
-            $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid);
-            $rootline = $rootlineUtility->get();
+            $rootline = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getRootline($pageUid);
         }
 
         switch ($cleanupMode) {
@@ -127,13 +125,13 @@ class CleanupController extends ActionController
                 }
                 break;
         }
-        
+
         // persist changes
         $this->configurationService->persist();
 
         $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message';
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
-        
+
         // redirect to index
         $this->redirect('index', 'Ctype');
     }
@@ -149,7 +147,7 @@ class CleanupController extends ActionController
         if ($this->pageRepository === null) {
             $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         }
-    
+
         // cleanup current page
         $this->configurationService->removeConfiguration($pageUid);
 
