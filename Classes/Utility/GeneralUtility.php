@@ -42,4 +42,24 @@ class GeneralUtility
 
         return $rootlineUtility->get();
     }
+    
+    /**
+     * Returns all configured ctypes
+     *
+     * @return array
+     */
+    public static function getTcaCtypes() : array
+    {
+        return $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];
+    }
+
+    /**
+     * Returns all configured ctype groups
+     *
+     * @return array
+     */
+    public static function getTcaCtypeGroups() : array
+    {
+        return $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'];
+    }
 }
