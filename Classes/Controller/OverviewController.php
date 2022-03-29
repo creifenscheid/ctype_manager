@@ -51,8 +51,28 @@ class OverviewController extends ActionController
      */
     public function indexAction() : void
     {
-        $pages = $this->getRelevantPages();
-        $this->view->assign('pages', $pages);
+        $trees = [];
+        $relevantPages = $this->getRelevantPages();
+
+        foreach ($relevantPages as $page) {
+            $rootline = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getRootline($page['uid']);
+
+            $_subtree = [];
+            foreach ($rootline as $rootlinePage) {
+                if (!empty($_subtree)) {
+                    $rootlinePage['children'] = $_subtree;
+                    $_subtree = [];
+                }
+                $_subtree[$rootlinePage['uid']] = $rootlinePage;
+            }
+            $trees[] = $_subtree;
+        }
+
+        /**
+         * $trees must be merged together to get one array representing all pages like a tree
+         */
+
+        $this->view->assign('pages', $trees);
     }
 
     /**
