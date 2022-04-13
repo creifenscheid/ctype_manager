@@ -8,7 +8,51 @@
         <div class="container">
             <div class="row">
                 <h1><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.headline" /></h1>
-                <p><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.bodytext" /></p>
+
+                <f:if condition="{pages}">
+                    <f:then>
+                        <p><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.bodytext" /></p>
+
+                        <table id="ctype-manager-list" class="table table-striped table-hover mt-3">
+                            <thead>
+                            <tr>
+                                <th><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.table.head.page" /></th>
+                                <th><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.table.head.ctypes" /></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <f:for each="{pages}" as="page">
+                                    <tr>
+                                        <td>
+                                            <f:if condition="{page.is_siteroot}">
+                                                <f:then>
+                                                    <core:icon identifier="apps-pagetree-folder-root" size="small" />
+                                                </f:then>
+                                                <f:else>
+                                                    <core:icon identifier="apps-pagetree-page-default" size="small" />
+                                                </f:else>
+                                            </f:if>
+
+                                            {page.title} [{page.uid}]
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <f:for each="{page.allowedCTypes}" as="ctype">
+                                                    <li>{ctype}</li>
+                                                </f:for>
+                                            </ul>
+                                        </td>
+                                        <td>Toolbar</td>
+                                    </tr>
+                                </f:for>
+                            </tbody>
+                        </table>
+                    </f:then>
+                    <f:else>
+                        <p><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.bodytext.noPages" /></p>
+                    </f:else>
+                </f:if>
             </div>
         </div>
     </div>

@@ -91,6 +91,15 @@
           <trans-unit id="overview.bodytext" resname="overview.bodytext">
               <source>The following pages have been configured with the ctype manager.</source>
           </trans-unit>
+          <trans-unit id="overview.bodytext.noPages" resname="overview.bodytext.noPages">
+              <source>There are currently no pages configured with the ctype manager.</source>
+          </trans-unit>
+          <trans-unit id="overview.table.head.page" resname="overview.table.head.page">
+              <source>Page</source>
+          </trans-unit>
+          <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
+              <source>Allowed CTypes</source>
+          </trans-unit>
       </body>
    </file>
 </xliff>

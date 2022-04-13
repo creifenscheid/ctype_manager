@@ -3,8 +3,10 @@
 namespace CReifenscheid\CtypeManager\Controller;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
  *
@@ -58,15 +60,15 @@ class OverviewController extends ActionController
             $allowedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptCTypes($configuration);
             $labelledCTypes = [];
             foreach ($allowedCTypes as $allowedCType) {
-                $labelledCTypes[] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getCTypeLabel($allowedCType);
+                $page['allowedCTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getCTypeLabel($allowedCType);
             }
-
-            $page['allowedCTypes'] = implode(', ', $labelledCTypes);
 
             $pages[$key] = $page;
         }
 
-        $this->view->assign('pages', $pages);
+        if (!empty($pages)) {
+            $this->view->assign('pages', $pages);
+        }
     }
 
     /**
