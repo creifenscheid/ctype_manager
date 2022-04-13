@@ -2,7 +2,10 @@
 
 namespace CReifenscheid\CtypeManager\Utility;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use function array_key_exists;
 
 /***************************************************************
  *
@@ -42,7 +45,7 @@ class GeneralUtility
 
         return $rootlineUtility->get();
     }
-    
+
     /**
      * Returns all configured ctypes
      *
@@ -61,5 +64,112 @@ class GeneralUtility
     public static function getTcaCtypeGroups() : array
     {
         return $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'];
+    }
+
+    /**
+     * Resolves pageTSConfig to get kept and removed ctypes
+     *
+     * @param int $pageId
+     *
+     * @return array
+     */
+    public static function resolvePageTSConfig(int $pageId) : array
+    {
+        $result = [];
+
+        $pageTSconfig = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId));
+
+        // check for TCEFORM -> tt_content -> CType
+        if (array_key_exists('TCEFORM', $pageTSconfig) && array_key_exists('tt_content', $pageTSconfig['TCEFORM']) && array_key_exists('CType', $pageTSconfig['TCEFORM']['tt_content'])) {
+
+            // extract ctype configuration to prevent array key mess
+            $ctypeConfiguration = $pageTSconfig['TCEFORM']['tt_content']['CType'];
+
+            // check for items to keep
+            if (array_key_exists('keepItems', $ctypeConfiguration) && !empty($ctypeConfiguration['keepItems'])) {
+                $result['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['keepItems']);
+            }
+
+            // check for items to remove
+            if (array_key_exists('removeItems', $ctypeConfiguration) && !empty($ctypeConfiguration['removeItems'])) {
+                $result['remove'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['removeItems']);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the ctypes configured to keep
+     *
+     * @param array $configuration
+     *
+     * @return array|null
+     */
+    public static function getKeptCTypes(array $configuration) : ?array
+    {
+        return self::getCTypes($configuration, 'keep');
+    }
+
+    /**
+     * Returns the ctypes configured to be removed
+     *
+     * @param array $configuration
+     *
+     * @return array|null
+     */
+    public static function getRemovedCTypes(array $configuration) : ?array
+    {
+        return self::getCTypes($configuration, 'remove');
+    }
+
+    /**
+     * Returns the ctypes configured
+     *
+     * @param array  $configuration
+     * @param string $key
+     *
+     * @return array|null
+     */
+    private static function getCTypes(array $configuration, string $key) : ?array
+    {
+        // check for items to keep
+        if (array_key_exists($key, $configuration) && !empty($configuration[$key])) {
+            return $configuration[$key];
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the located label, if it's locatable
+     *
+     * @param string $stringToLocate
+     *
+     * @return string
+     */
+    public static function locate(string $stringToLocate) : string
+    {
+        return str_starts_with($stringToLocate, 'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
+    }
+
+    /**
+     * Returns the located label of the given CType
+     *
+     * @param string $requestedIdentifier
+     *
+     * @return string|null
+     */
+    public static function getCTypeLabel(string $requestedIdentifier) : ?string
+    {
+        foreach (self::getTcaCtypes() as $ctype) {
+            [$label, $identifier, , $group] = $ctype;
+
+            if ($identifier === $requestedIdentifier) {
+                return self::locate($label);
+            }
+        }
+
+        return null;
     }
 }

@@ -94,14 +94,14 @@ class CtypeController extends ActionController
                 if (!array_key_exists('label', $ctypes[$group])) {
                     // get the group label from TCA group
                     $groupLabel = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getTcaCtypeGroups()[$group];
-                    $ctypes[$group]['label'] = str_starts_with($groupLabel, 'LLL:') ? LocalizationUtility::translate($groupLabel) : $groupLabel;
+                    $ctypes[$group]['label'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::locate($groupLabel);
                 }
 
                 // exclude divider items
                 if ($identifier !== '--div--') {
                     $ctypeState = $this->getActivationState($identifier);
                     $ctypes[$group]['ctypes'][$identifier] = [
-                        'label' => str_starts_with($label, 'LLL:') ? LocalizationUtility::translate($label) : $label,
+                        'label' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::locate($label),
                         'active' => $ctypeState
                     ];
 
@@ -183,23 +183,17 @@ class CtypeController extends ActionController
      */
     private function resolvePageTSConfig(int $currentPageId) : void
     {
-        $pageTSconfig = GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($currentPageId));
+        // get ctype configuration for the current page
+        $ctypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig($currentPageId);
 
-        // check for TCEFORM -> tt_content -> CType
-        if (array_key_exists('TCEFORM', $pageTSconfig) && array_key_exists('tt_content', $pageTSconfig['TCEFORM']) && array_key_exists('CType', $pageTSconfig['TCEFORM']['tt_content'])) {
+        $keptCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptCTypes($ctypeConfiguration);
+        if ($keptCTypes) {
+            $this->ctypeConfiguration['keep'] = $keptCTypes;
+        }
 
-            // extract ctype configuration to prevent array key mess
-            $ctypeConfiguration = $pageTSconfig['TCEFORM']['tt_content']['CType'];
-
-            // check for items to keep
-            if (array_key_exists('keepItems', $ctypeConfiguration) && !empty($ctypeConfiguration['keepItems'])) {
-                $this->ctypeConfiguration['keep'] = GeneralUtility::trimExplode(',', $ctypeConfiguration['keepItems']);
-            }
-
-            // check for items to remove
-            if (array_key_exists('removeItems', $ctypeConfiguration) && !empty($ctypeConfiguration['removeItems'])) {
-                $this->ctypeConfiguration['remove'] = GeneralUtility::trimExplode(',', $ctypeConfiguration['removeItems']);
-            }
+        $removedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getRemovedCTypes($ctypeConfiguration);
+        if ($removedCTypes) {
+            $this->ctypeConfiguration['remove'] = $removedCTypes;
         }
     }
 

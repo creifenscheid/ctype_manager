@@ -52,6 +52,20 @@ class OverviewController extends ActionController
     public function indexAction() : void
     {
         $pages = $this->getPages();
+
+        foreach ($pages as $key => $page) {
+            $configuration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid']);
+            $allowedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptCTypes($configuration);
+            $labelledCTypes = [];
+            foreach ($allowedCTypes as $allowedCType) {
+                $labelledCTypes[] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getCTypeLabel($allowedCType);
+            }
+
+            $page['allowedCTypes'] = implode(', ', $labelledCTypes);
+
+            $pages[$key] = $page;
+        }
+
         $this->view->assign('pages', $pages);
     }
 
