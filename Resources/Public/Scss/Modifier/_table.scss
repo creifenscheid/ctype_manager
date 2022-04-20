@@ -1,0 +1,27 @@
+.table {
+    &-valign {
+        &-top {
+            & > thead > tr > td,
+            & > tbody > tr > td,
+            & > tfoot > tr  > td {
+                vertical-align: top;
+            }
+        }
+
+        &-middle {
+            & > thead > tr > td,
+            & > tbody > tr > td,
+            & > tfoot > tr  > td {
+                vertical-align: middle;
+            }
+        }
+
+        &-bottom {
+            & > thead > tr > td,
+            & > tbody > tr > td,
+            & > tfoot > tr  > td {
+                vertical-align: bottom;
+            }
+        }
+    }
+}
