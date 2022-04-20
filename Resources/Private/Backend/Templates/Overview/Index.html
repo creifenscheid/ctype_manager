@@ -13,26 +13,27 @@
                     <f:then>
                         <p><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.bodytext" /></p>
 
-                        <table id="ctype-manager-list" class="table table-striped table-hover mt-3">
+                        <table id="ctype-manager-list" class="table table-striped table-hover table-valign-top mt-3">
                             <thead>
                             <tr>
                                 <th><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.table.head.page" /></th>
-                                <th><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.table.head.ctypes" /></th>
-                                <th></th>
+                                <th colspan="2"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.table.head.ctypes" /></th>
                             </tr>
                             </thead>
                             <tbody>
                                 <f:for each="{pages}" as="page">
                                     <tr>
                                         <td>
-                                            <f:if condition="{page.is_siteroot}">
-                                                <f:then>
-                                                    <core:icon identifier="apps-pagetree-folder-root" size="small" />
-                                                </f:then>
-                                                <f:else>
-                                                    <core:icon identifier="apps-pagetree-page-default" size="small" />
-                                                </f:else>
-                                            </f:if>
+                                            <span aria-hidden="true">
+                                                <f:if condition="{page.is_siteroot}">
+                                                    <f:then>
+                                                        <core:icon identifier="apps-pagetree-folder-root" size="small" />
+                                                    </f:then>
+                                                    <f:else>
+                                                        <core:icon identifier="apps-pagetree-page-default" size="small" />
+                                                    </f:else>
+                                                </f:if>
+                                            </span>
 
                                             {page.title} [{page.uid}]
                                         </td>
@@ -43,7 +44,19 @@
                                                 </f:for>
                                             </ul>
                                         </td>
-                                        <td>Toolbar</td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <f:variable name="ariaLabelEdit" value="{f:translate(key:'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.toolbar.edit.label', arguments:{0:page.title})}" />
+                                                <f:link.action action="index" controller="Ctype" extensionName="CtypeManager" class="btn btn-default" additionalAttributes="{aria-label:ariaLabelEdit}" arguments="{pageUid: page.uid}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
+                                                    <core:icon identifier="actions-open" size="small" />
+                                                </f:link.action>
+
+                                                <f:variable name="ariaLabelDelete" value="{f:translate(key:'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.toolbar.delete.label', arguments:{0:page.title})}" />
+                                                <f:link.action action="approval" controller="Cleanup" extensionName="CtypeManager" class="btn btn-default" additionalAttributes="{aria-label:ariaLabelDelete}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}" arguments="{pageUid: page.uid, srcController: 'Overview'}">
+                                                    <core:icon identifier="actions-delete" size="small" />
+                                                </f:link.action>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </f:for>
                             </tbody>
