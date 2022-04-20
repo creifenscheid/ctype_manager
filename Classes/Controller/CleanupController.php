@@ -63,13 +63,26 @@ class CleanupController extends ActionController
      */
     public function approvalAction() : void
     {
-        // get request arguments
-        $arguments = $this->request->getArguments();
+        $assignments = [];
 
-        // get the page uid to store page tsconfig in
-        $pageUid = (int)$arguments['pageUid'];
+        if ($this->request->hasArgument('pageUid')) {
+            $pageUid = (int)$this->request->getArgument('pageUid');
+            $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($pageUid);
+        } else {
+            $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message.error.pageuid';
+            $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::ERROR);
 
-        $this->view->assign('pageUid', $pageUid);
+            // redirect to index
+            $this->redirect('index', 'Ctype');
+        }
+
+        if ($this->request->hasArgument('srcController')) {
+            $assignments['srcController'] = $this->request->getArgument('srcController');
+        } else {
+            $assignments['srcController'] = 'Ctype';
+        }
+
+        $this->view->assignMultiple($assignments);
     }
 
     /**
@@ -133,7 +146,7 @@ class CleanupController extends ActionController
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
 
         // redirect to index
-        $this->redirect('index', 'Ctype');
+        $this->redirect('index', 'Ctype', 'CtypeManager', ['pageUid' => $pageUid]);
     }
 
     /**

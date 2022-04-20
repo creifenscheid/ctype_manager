@@ -3,7 +3,6 @@
 namespace CReifenscheid\CtypeManager\Controller;
 
 use CReifenscheid\CtypeManager\Service\ConfigurationService;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -72,7 +71,11 @@ class CtypeController extends ActionController
     public function indexAction() : void
     {
         // get the current page from request
-        $currentPageId = $this->request->getQueryParams()['id'];
+        if ($this->request->hasArgument('pageUid')) {
+            $currentPageId = (int)$this->request->getArgument('pageUid');
+        } else {
+            $currentPageId = $this->request->getQueryParams()['id'];
+        }
 
         if ($currentPageId && $currentPageId > 0) {
             // resolve page tsconfig for the current page
@@ -120,7 +123,7 @@ class CtypeController extends ActionController
             $this->view->assignMultiple([
                 'groupsState' => $this->getMainState($groupStates),
                 'ctypes' => $ctypes,
-                'page' => $this->getPage($currentPageId)
+                'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($currentPageId)
             ]);
         }
     }
@@ -171,7 +174,7 @@ class CtypeController extends ActionController
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
 
         // redirect to index
-        $this->redirect('index', 'Ctype');
+        $this->redirect('index', 'Ctype', 'CtypeManager', ['pageUid' => $pageUid]);
     }
 
     /**
@@ -270,21 +273,5 @@ class CtypeController extends ActionController
         }
 
         return !empty($result);
-    }
-
-    /**
-     * Returns page information
-     *
-     * @param int $pageUid
-     *
-     * @return array
-     */
-    private function getPage(int $pageUid) : array
-    {
-        if ($this->pageRepository === null) {
-            $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        }
-
-        return $this->pageRepository->getPage($pageUid);
     }
 }
