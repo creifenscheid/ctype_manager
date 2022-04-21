@@ -1,6 +1,10 @@
+v11.3.0 +
+  * [TASK]      - separation of cleanup possibilities into separate module section
+  * [FEATURE]   - overview section to take a look at all configured pages
+
 v11.2.0 +
   * [FEATURE]   - performance improvement by using the datahandler
-  
+
 v11.1.0 +
   * [FEATURE]   - 'toggle all' buttons
   * [FEATURE]   - highlighting of cleanup related elements
