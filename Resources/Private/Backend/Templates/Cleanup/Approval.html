@@ -12,17 +12,24 @@
 
                 <f:form id="ctype-cleanup" action="cleanup" controller="Cleanup" method="post" enctype="multipart/form-data">
                     <f:form.hidden name="pageUid" value="{page.uid}"/>
+                    <f:form.hidden name="cleanupMode" value="{cleanupMode}"/>
 
                     <div class="card-container mt-3">
                         <div class="card card--danger">
                             <div class="card-header">
-                                <label for="cleanup-mode" class="form-label"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.label" /></label>
-                                <f:form.select id="cleanup-mode" class="form-select mt-2" name="cleanup-mode">
-                                    <f:form.select.option value="page"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.page" arguments="{0:page.title, 1:page.uid}"/></f:form.select.option>
-                                    <f:form.select.option value="rootline"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.rootline" /></f:form.select.option>
-                                    <f:form.select.option value="rootpage"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.rootpage" /></f:form.select.option>
-                                    <f:form.select.option value="all"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.mode.all" /></f:form.select.option>
-                                </f:form.select>
+                                <div>
+                                    <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.mode.label" />
+                                </div>
+                                <div class="selected-value mt-2">
+                                    <f:switch expression="{cleanupMode}">
+                                        <f:case value="page">
+                                            <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.mode.page" arguments="{0:page.title, 1:page.uid}"/>
+                                        </f:case>
+                                        <f:defaultCase>
+                                            <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.mode.{cleanupMode}" />
+                                        </f:defaultCase>
+                                    </f:switch>
+                                </div>
                             </div>
 
                             <div class="card-body">

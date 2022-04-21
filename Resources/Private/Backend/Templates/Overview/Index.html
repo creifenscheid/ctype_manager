@@ -52,7 +52,7 @@
                                                 </f:link.action>
 
                                                 <f:variable name="ariaLabelDelete" value="{f:translate(key:'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.toolbar.delete.label', arguments:{0:page.title})}" />
-                                                <f:link.action action="approval" controller="Cleanup" extensionName="CtypeManager" class="btn btn-default" additionalAttributes="{aria-label:ariaLabelDelete}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}" arguments="{pageUid: page.uid, srcController: 'Overview'}">
+                                                <f:link.action action="approval" controller="Cleanup" extensionName="CtypeManager" class="btn btn-default" additionalAttributes="{aria-label:ariaLabelDelete}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}" arguments="{pageUid: page.uid, srcController: 'Overview', 'cleanupMode': 'page'}">
                                                     <core:icon identifier="actions-delete" size="small" />
                                                 </f:link.action>
                                             </div>

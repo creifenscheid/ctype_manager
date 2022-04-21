@@ -39,12 +39,45 @@
          </trans-unit>
 
          <!-- CLEANUP -->
-         <trans-unit id="cleanup.headline" resname="cleanup.headline">
+          <trans-unit id="cleanup.navigation" resname="cleanup.navigation">
+              <source>Cleanup</source>
+          </trans-unit>
+         <trans-unit id="cleanup.header" resname="cleanup.headline">
                <source>Cleanup</source>
          </trans-unit>
          <trans-unit id="cleanup.bodytext" resname="cleanup.bodytext">
                <source>Remove the configurations made by the CType Manager.</source>
          </trans-unit>
+          <trans-unit id="cleanup.mode.label" resname="cleanup.mode.label">
+              <source>Cleanup mode</source>
+          </trans-unit>
+          <trans-unit id="cleanup.mode.page" resname="cleanup.mode.page">
+              <source>Current page: %s [%s]</source>
+          </trans-unit>
+          <trans-unit id="cleanup.mode.rootline" resname="cleanup.mode.rootline">
+              <source>Root line</source>
+          </trans-unit>
+          <trans-unit id="cleanup.mode.rootpage" resname="cleanup.mode.rootpage">
+              <source>Root page</source>
+          </trans-unit>
+          <trans-unit id="cleanup.mode.all" resname="cleanup.mode.all">
+              <source>All (this affects ALL pages and might take some time!)</source>
+          </trans-unit>
+          <trans-unit id="cleanup.submit" resname="cleanup.approval.submit">
+              <source>Clean up</source>
+          </trans-unit>
+          <trans-unit id="cleanup.message.error.pageuid.header" resname="cleanup.message.error.pageuid.header">
+              <source>Oops</source>
+          </trans-unit>
+          <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext">
+              <source>A page uid was missing, please select a page in the page tree and try again.</source>
+          </trans-unit>
+          <trans-unit id="cleanup.message.error.cleanupMode.header" resname="cleanup.message.error.cleanupMode.header">
+              <source>Oops</source>
+          </trans-unit>
+          <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext">
+              <source>A cleanup mode was missing, please select a mode to clean up.</source>
+          </trans-unit>
           
           <!-- APPROVAL -->
           <trans-unit id="cleanup.approval.headline" resname="cleanup.approval.headline">
@@ -52,21 +85,6 @@
           </trans-unit>
           <trans-unit id="cleanup.approval.bodytext" resname="cleanup.approval.bodytext">
               <source>You are going to remove the configurations made by the CType Manager.</source>
-          </trans-unit>
-          <trans-unit id="cleanup.approval.mode.label" resname="cleanup.approval.mode.label">
-              <source>Cleanup mode</source>
-          </trans-unit>
-          <trans-unit id="cleanup.approval.mode.page" resname="cleanup.approval.mode.page">
-              <source>Current page: %s [%s]</source>
-          </trans-unit>
-          <trans-unit id="cleanup.approval.mode.rootline" resname="cleanup.approval.mode.rootline">
-              <source>Root line</source>
-          </trans-unit>
-          <trans-unit id="cleanup.approval.mode.rootpage" resname="cleanup.approval.mode.rootpage">
-              <source>Root page</source>
-          </trans-unit>
-          <trans-unit id="cleanup.approval.mode.all" resname="cleanup.approval.mode.all">
-              <source>All (this affects ALL pages and might take some time!)</source>
           </trans-unit>
           <trans-unit id="cleanup.approval.submit" resname="cleanup.approval.submit">
               <source>Yes, clean up.</source>
@@ -79,12 +97,6 @@
          </trans-unit>
           <trans-unit id="cleanup.message.bodytext" resname="cleanup.message.bodytext">
                <source>CType manager configuration has been removed.</source>
-         </trans-unit>
-          <trans-unit id="cleanup.message.error.pageuid.header" resname="cleanup.message.error.pageuid.header">
-               <source>Oops</source>
-         </trans-unit>
-          <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext">
-               <source>A page uid was missing, please select a page in the page tree and try again.</source>
          </trans-unit>
 
           <!-- OVERVIEW -->
