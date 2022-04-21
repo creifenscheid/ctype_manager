@@ -57,29 +57,48 @@ class CleanupController extends ActionController
     private $configurationService;
 
     /**
+     * Index action
+     *
+     * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     */
+    public function indexAction() : void
+    {
+        // get the current page from request
+        if ($this->request->hasArgument('pageUid')) {
+            $pageUid = (int)$this->request->getArgument('pageUid');
+        } else {
+            $pageUid = $this->request->getQueryParams()['id'];
+        }
+
+        $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($pageUid));
+    }
+
+    /**
      * Double opt-in for cleanup
      *
      * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function approvalAction() : void
     {
+        if (!$this->checkRequestArguments()) {
+            return;
+        }
+
         $assignments = [];
 
-        if ($this->request->hasArgument('pageUid')) {
-            $pageUid = (int)$this->request->getArgument('pageUid');
-            $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($pageUid);
-        } else {
-            $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message.error.pageuid';
-            $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::ERROR);
-
-            // redirect to index
-            $this->redirect('index', 'Ctype');
-        }
+        // get request arguments
+        $arguments = $this->request->getArguments();
+        $assignments['cleanupMode'] = $arguments['cleanupMode'];
+        $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage((int)$arguments['pageUid']);
 
         if ($this->request->hasArgument('srcController')) {
             $assignments['srcController'] = $this->request->getArgument('srcController');
         } else {
-            $assignments['srcController'] = 'Ctype';
+            $assignments['srcController'] = 'Cleanup';
         }
 
         $this->view->assignMultiple($assignments);
@@ -91,15 +110,21 @@ class CleanupController extends ActionController
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \Doctrine\DBAL\DBALException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function cleanupAction() : void
     {
+        if (!$this->checkRequestArguments()) {
+            return;
+        }
+
         $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
         // get request arguments
         $arguments = $this->request->getArguments();
-        $cleanupMode = $arguments['cleanup-mode'];
+        $cleanupMode = $arguments['cleanupMode'];
         $pageUid = (int)$arguments['pageUid'];
+
 
         // initialize rootline utility
         if ($cleanupMode === 'rootpage' || $cleanupMode === 'rootline') {
@@ -146,7 +171,7 @@ class CleanupController extends ActionController
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
 
         // redirect to index
-        $this->redirect('index', 'Ctype', 'CtypeManager', ['pageUid' => $pageUid]);
+        $this->redirect('index', 'Cleanup', 'CtypeManager', ['pageUid' => $pageUid]);
     }
 
     /**
@@ -171,5 +196,43 @@ class CleanupController extends ActionController
                 $this->cleanupPageRecursively($child['uid']);
             }
         }
+    }
+
+    /**
+     * Function to add a flash message based on the given message prefix
+     *
+     * @param string $messagePrefix
+     *
+     * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     */
+    private function addMessage(string $messagePrefix) : void
+    {
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::ERROR);
+
+        // redirect to index
+        $this->redirect('index', 'Cleanup');
+    }
+
+    /**
+     * Function to check the request for the needed arguments
+     *
+     * @return bool
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     */
+    private function checkRequestArguments() : bool
+    {
+        if (!$this->request->hasArgument('pageUid')) {
+            $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message.error.pageuid';
+            $this->addMessage($messagePrefix);
+        }
+
+        if (!$this->request->hasArgument('cleanupMode')) {
+            $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message.error.cleanupMode';
+            $this->addMessage($messagePrefix);
+        }
+
+        return true;
     }
 }

@@ -72,14 +72,14 @@ class CtypeController extends ActionController
     {
         // get the current page from request
         if ($this->request->hasArgument('pageUid')) {
-            $currentPageId = (int)$this->request->getArgument('pageUid');
+            $pageUid = (int)$this->request->getArgument('pageUid');
         } else {
-            $currentPageId = $this->request->getQueryParams()['id'];
+            $pageUid = $this->request->getQueryParams()['id'];
         }
 
-        if ($currentPageId && $currentPageId > 0) {
+        if ($pageUid && $pageUid > 0) {
             // resolve page tsconfig for the current page
-            $this->resolvePageTSConfig($currentPageId);
+            $this->resolvePageTSConfig($pageUid);
 
             // sort CTypes by group
             $ctypes = [];
@@ -123,7 +123,7 @@ class CtypeController extends ActionController
             $this->view->assignMultiple([
                 'groupsState' => $this->getMainState($groupStates),
                 'ctypes' => $ctypes,
-                'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($currentPageId)
+                'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($pageUid)
             ]);
         }
     }
