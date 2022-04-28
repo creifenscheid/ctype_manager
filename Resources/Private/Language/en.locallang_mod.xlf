@@ -51,11 +51,11 @@
       <!-- CLEANUP -->
       <trans-unit id="cleanup.navigation" resname="cleanup.navigation">
         <source>Cleanup</source>
-        <target state="needs-translation">Cleanup</target>
+        <target state="translated">Cleanup</target>
       </trans-unit>
       <trans-unit id="cleanup.header" resname="cleanup.headline">
         <source>Cleanup</source>
-        <target state="needs-translation">Cleanup</target>
+        <target state="translated">Cleanup</target>
       </trans-unit>
       <trans-unit id="cleanup.bodytext" resname="cleanup.bodytext" approved="yes">
         <source>Remove the configurations made by the CType Manager.</source>
@@ -63,43 +63,43 @@
       </trans-unit>
       <trans-unit id="cleanup.mode.label" resname="cleanup.mode.label">
         <source>Cleanup mode</source>
-        <target state="needs-translation">Cleanup mode</target>
+        <target state="translated">Cleanup mode</target>
       </trans-unit>
       <trans-unit id="cleanup.mode.page" resname="cleanup.mode.page">
         <source>Current page: %s [%s]</source>
-        <target state="needs-translation">Current page: %s [%s]</target>
+        <target state="translated">Current page: %s [%s]</target>
       </trans-unit>
       <trans-unit id="cleanup.mode.rootline" resname="cleanup.mode.rootline">
         <source>Root line</source>
-        <target state="needs-translation">Root line</target>
+        <target state="translated">Root line</target>
       </trans-unit>
       <trans-unit id="cleanup.mode.rootpage" resname="cleanup.mode.rootpage">
         <source>Root page</source>
-        <target state="needs-translation">Root page</target>
+        <target state="translated">Root page</target>
       </trans-unit>
       <trans-unit id="cleanup.mode.all" resname="cleanup.mode.all">
         <source>All (this affects ALL pages and might take some time!)</source>
-        <target state="needs-translation">All (this affects ALL pages and might take some time!)</target>
+        <target state="translated">All (this affects ALL pages and might take some time!)</target>
       </trans-unit>
       <trans-unit id="cleanup.submit" resname="cleanup.approval.submit">
         <source>Clean up</source>
-        <target state="needs-translation">Clean up</target>
+        <target state="translated">Clean up</target>
       </trans-unit>
       <trans-unit id="cleanup.message.error.pageuid.header" resname="cleanup.message.error.pageuid.header">
         <source>Oops</source>
-        <target state="needs-translation">Oops</target>
+        <target state="translated">Oops</target>
       </trans-unit>
       <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext">
         <source>A page uid was missing, please select a page in the page tree and try again.</source>
-        <target state="needs-translation">A page uid was missing, please select a page in the page tree and try again.</target>
+        <target state="translated">A page uid was missing, please select a page in the page tree and try again.</target>
       </trans-unit>
       <trans-unit id="cleanup.message.error.cleanupMode.header" resname="cleanup.message.error.cleanupMode.header">
         <source>Oops</source>
-        <target state="needs-translation">Oops</target>
+        <target state="translated">Oops</target>
       </trans-unit>
       <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext">
         <source>A cleanup mode was missing, please select a mode to clean up.</source>
-        <target state="needs-translation">A cleanup mode was missing, please select a mode to clean up.</target>
+        <target state="translated">A cleanup mode was missing, please select a mode to clean up.</target>
       </trans-unit>
       <!-- APPROVAL -->
       <trans-unit id="cleanup.approval.headline" resname="cleanup.approval.headline" approved="yes">
@@ -129,27 +129,27 @@
       <!-- OVERVIEW -->
       <trans-unit id="overview.navigation" resname="overview.navigation">
         <source>Overview</source>
-        <target state="needs-translation">Overview</target>
+        <target state="translated">Overview</target>
       </trans-unit>
       <trans-unit id="overview.headline" resname="overview.headline">
         <source>Overview | CType manager</source>
-        <target state="needs-translation">Overview | CType manager</target>
+        <target state="translated">Overview | CType manager</target>
       </trans-unit>
       <trans-unit id="overview.bodytext" resname="overview.bodytext">
         <source>The following pages have been configured with the CType manager.</source>
-        <target state="needs-translation">The following pages have been configured with the CType manager.</target>
+        <target state="translated">The following pages have been configured with the CType manager.</target>
       </trans-unit>
       <trans-unit id="overview.bodytext.noPages" resname="overview.bodytext.noPages">
         <source>There are currently no pages configured with the ctype manager.</source>
-        <target state="needs-translation">There are currently no pages configured with the ctype manager.</target>
+        <target state="translated">There are currently no pages configured with the ctype manager.</target>
       </trans-unit>
       <trans-unit id="overview.table.head.page" resname="overview.table.head.page">
         <source>Page</source>
-        <target state="needs-translation">Page</target>
+        <target state="translated">Page</target>
       </trans-unit>
       <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
         <source>Allowed CTypes</source>
-        <target state="needs-translation">Allowed CTypes</target>
+        <target state="translated">Allowed CTypes</target>
       </trans-unit>
       <trans-unit id="overview.toolbar.edit.label" resname="overview.toolbar.edit.label">
         <source>Edit CType configuration of page "%s".</source>
