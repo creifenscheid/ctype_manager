@@ -153,11 +153,11 @@
       </trans-unit>
       <trans-unit id="overview.toolbar.edit.label" resname="overview.toolbar.edit.label">
         <source>Edit CType configuration of page "%s".</source>
-        <target state="needs-translation">Edit CType configuration of page "%s".</target>
+        <target state="translated">Edit CType configuration of page "%s".</target>
       </trans-unit>
       <trans-unit id="overview.toolbar.delete.label" resname="overview.toolbar.delete.label">
         <source>Delete CType configuration of page "%s".</source>
-        <target state="needs-translation">Delete CType configuration of page "%s".</target>
+        <target state="translated">Delete CType configuration of page "%s".</target>
       </trans-unit>
     </body>
   </file>
