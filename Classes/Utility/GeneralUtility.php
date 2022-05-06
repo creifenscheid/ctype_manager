@@ -5,6 +5,7 @@ namespace CReifenscheid\CtypeManager\Utility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use function array_key_exists;
 
@@ -64,6 +65,7 @@ class GeneralUtility
     public static function getPage(int $pageUid) : array
     {
         $pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRepository::class);
+
         return $pageRepository->getPage($pageUid);
     }
 
@@ -101,21 +103,12 @@ class GeneralUtility
         $pageTSconfig = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId));
 
         // check for TCEFORM -> tt_content -> CType
-        if (array_key_exists('TCEFORM', $pageTSconfig) && array_key_exists('tt_content', $pageTSconfig['TCEFORM']) && array_key_exists('CType', $pageTSconfig['TCEFORM']['tt_content'])) {
+        self::getCTypeConfiguration($result, $pageTSconfig);
 
-            // extract ctype configuration to prevent array key mess
-            $ctypeConfiguration = $pageTSconfig['TCEFORM']['tt_content']['CType'];
+        // check for mod -> wizards -> newContentElement -> wizardItems
+        self::getListTypeConfiguration($result, $pageTSconfig);
 
-            // check for items to keep
-            if (array_key_exists('keepItems', $ctypeConfiguration) && !empty($ctypeConfiguration['keepItems'])) {
-                $result['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['keepItems']);
-            }
-
-            // check for items to remove
-            if (array_key_exists('removeItems', $ctypeConfiguration) && !empty($ctypeConfiguration['removeItems'])) {
-                $result['remove'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['removeItems']);
-            }
-        }
+        DebuggerUtility::var_dump($result, __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
 
         return $result;
     }
@@ -192,5 +185,121 @@ class GeneralUtility
         }
 
         return null;
+    }
+
+    /**
+     * Get CType configuration from TCEFORM tsconfig
+     *
+     * @param array $result
+     * @param array $pageTSconfig
+     *
+     * @return void
+     */
+    private static function getCTypeConfiguration(array &$result, array $pageTSconfig) : void
+    {
+        if (array_key_exists('TCEFORM', $pageTSconfig) && array_key_exists('tt_content', $pageTSconfig['TCEFORM']) && array_key_exists('CType', $pageTSconfig['TCEFORM']['tt_content'])) {
+
+            // extract ctype configuration to prevent array key mess
+            $ctypeConfiguration = $pageTSconfig['TCEFORM']['tt_content']['CType'];
+
+            // check for items to keep
+            if (array_key_exists('keepItems', $ctypeConfiguration) && !empty($ctypeConfiguration['keepItems'])) {
+                $result['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['keepItems']);
+            }
+
+            // check for items to remove
+            if (array_key_exists('removeItems', $ctypeConfiguration) && !empty($ctypeConfiguration['removeItems'])) {
+                $result['remove'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['removeItems']);
+            }
+        }
+    }
+
+    /**
+     * Get list_type configuration from mod wizards
+     *
+     * @param array $result
+     * @param array $pageTSconfig
+     *
+     * @return void
+     */
+    private static function getListTypeConfiguration(array &$result, array $pageTSconfig) : void
+    {
+        if (self::checkArrayKey($pageTSconfig, 'mod.wizards.newContentElement.wizardItems')) {
+
+            $listTypes = [];
+
+            // extract wizard groups
+            $wizardGroups = $pageTSconfig['mod']['wizards']['newContentElement']['wizardItems'];
+
+            foreach ($wizardGroups as $groupName => $groupConfiguration) {
+
+                // if "show" is existing and not *
+                if (array_key_exists('show', $groupConfiguration) && !empty($groupConfiguration['show']) && $groupConfiguration['show'] !== '*') {
+
+                    // loop through every configured plugin to show
+                    foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $groupConfiguration['show']) as $identifier) {
+
+                        $elementConfiguration = $groupConfiguration['elements'][$identifier];
+
+                        // if "list_type" definition exists within "tt_content_defValues"
+                        if (array_key_exists('tt_content_defValues', $elementConfiguration) && array_key_exists('list_type', $elementConfiguration['tt_content_defValues']) && !empty($elementConfiguration['tt_content_defValues']['list_type'])) {
+
+                            // build list type information
+                            $listType = [
+                                'identifier' => $identifier
+                            ];
+
+                            if (array_key_exists('title', $elementConfiguration) && !empty($elementConfiguration['title'])) {
+                                $listType['label'] = self::locate($elementConfiguration['title']);
+                            }
+
+                            $listTypes[$elementConfiguration['tt_content_defValues']['list_type']] = $listType;
+                        }
+                    }
+                } else {
+                    if (array_key_exists('show', $groupConfiguration) && $groupConfiguration['show'] === '*') {
+                        // 2. if show == '*' -> loop through every element -> tt_content_defValues -> is existing list_type
+                        if (array_key_exists('elements', $groupConfiguration) && !empty($groupConfiguration['elements'])) {
+                            foreach ($groupConfiguration['elements'] as $pluginIdentifier => $pluginConfiguration) {
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!empty($listTypes)) {
+                $result['listTypes'] = $listTypes;
+            }
+
+//            DebuggerUtility::var_dump($wizardGroups, __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
+        }
+    }
+
+    /**
+     * Checks an array if a key is existing and not empty
+     *
+     * @param array  $array
+     * @param string $keyChain - dot separated list of keys to check, last is checked for value, e.g. tt_content.columns.sys_language_uid.label
+     *
+     * @return bool
+     */
+    public static function checkArrayKey(array $array, string $keyChain) : bool
+    {
+        $keys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $keyChain);
+
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($keys, __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
+
+        if (!empty($keys) && array_key_exists($keys[0], $array)) {
+            $keyValue = $array[$keys[0]];
+
+            if (is_array($keyValue)) {
+                self::checkArrayKey($keyValue, implode((string)'.', array_shift($keys)));
+            } else {
+                return !empty($keyValue);
+            }
+        }
+
+        return false;
     }
 }

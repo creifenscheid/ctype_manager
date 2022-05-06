@@ -275,3 +275,13 @@ class CtypeController extends ActionController
         return !empty($result);
     }
 }
+
+/**
+ * NOTES
+ * TSCONFIG:
+ * # remove from select field
+ * TCEFORM.tt_content.list_type.removeItems >
+ * TCEFORM.tt_content.list_type.keepItems = fnncalendar_calendar
+ * # remove from custom content element wizard
+ * mod.wizards.newContentElement.wizardItems.fnncalendar.show := removeFromList(EventTeaser,EventList,EventDatesList)
+ */
