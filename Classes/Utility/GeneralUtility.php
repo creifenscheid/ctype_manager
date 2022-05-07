@@ -90,7 +90,7 @@ class GeneralUtility
     }
 
     /**
-     * Resolves pageTSConfig to get kept and removed ctypes
+     * Resolves pageTSConfig to get kept and removed ctypes and available list_types
      *
      * @param int $pageId
      *
@@ -197,11 +197,8 @@ class GeneralUtility
      */
     private static function getCTypeConfiguration(array &$result, array $pageTSconfig) : void
     {
-        if (array_key_exists('TCEFORM', $pageTSconfig) && array_key_exists('tt_content', $pageTSconfig['TCEFORM']) && array_key_exists('CType', $pageTSconfig['TCEFORM']['tt_content'])) {
-
-            // extract ctype configuration to prevent array key mess
-            $ctypeConfiguration = $pageTSconfig['TCEFORM']['tt_content']['CType'];
-
+        $ctypeConfiguration = self::getArrayKeyValue($pageTSconfig, 'TCEFORM.tt_content.CType');
+        if ($ctypeConfiguration !== false) {
             // check for items to keep
             if (array_key_exists('keepItems', $ctypeConfiguration) && !empty($ctypeConfiguration['keepItems'])) {
                 $result['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['keepItems']);
@@ -215,7 +212,7 @@ class GeneralUtility
     }
 
     /**
-     * Get list_type configuration from mod wizards
+     * Get list_type configuration from mod wizard configuration
      *
      * @param array $result
      * @param array $pageTSconfig
@@ -240,7 +237,8 @@ class GeneralUtility
                         $elementConfiguration = $groupConfiguration['elements'][$identifier];
 
                         // if "list_type" definition exists within "tt_content_defValues"
-                        if (array_key_exists('tt_content_defValues', $elementConfiguration) && array_key_exists('list_type', $elementConfiguration['tt_content_defValues']) && !empty($elementConfiguration['tt_content_defValues']['list_type'])) {
+                        $configuredListType = self::getArrayKeyValue($elementConfiguration, 'tt_content_defValues.list_type');
+                        if (!empty($configuredListType)) {
 
                             // build list type information
                             $listType = [
@@ -251,7 +249,7 @@ class GeneralUtility
                                 $listType['label'] = self::locate($elementConfiguration['title']);
                             }
 
-                            $listTypes[$elementConfiguration['tt_content_defValues']['list_type']] = $listType;
+                            $listTypes[$configuredListType] = $listType;
                         }
                     }
                 } else {
