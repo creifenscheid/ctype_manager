@@ -224,12 +224,10 @@ class GeneralUtility
      */
     private static function getListTypeConfiguration(array &$result, array $pageTSconfig) : void
     {
-        if (self::checkArrayKey($pageTSconfig, 'mod.wizards.newContentElement.wizardItems')) {
+        $wizardGroups = self::getArrayKeyValue($pageTSconfig, 'mod.wizards.newContentElement.wizardItems');
+        if ($wizardGroups !== false) {
 
             $listTypes = [];
-
-            // extract wizard groups
-            $wizardGroups = $pageTSconfig['mod']['wizards']['newContentElement']['wizardItems'];
 
             foreach ($wizardGroups as $groupName => $groupConfiguration) {
 
@@ -277,29 +275,34 @@ class GeneralUtility
     }
 
     /**
-     * Checks an array if a key is existing and not empty
+     * Returns the value of a key within an array
      *
      * @param array  $array
      * @param string $keyChain - dot separated list of keys to check, last is checked for value, e.g. tt_content.columns.sys_language_uid.label
      *
-     * @return bool
+     * @return mixed
      */
-    public static function checkArrayKey(array $array, string $keyChain) : bool
-    {
-        $keys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $keyChain);
+    public static function getArrayKeyValue(array $array, string $keyChain)
+	{
+		$keys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $keyChain);
 
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($keys, __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
-
-        if (!empty($keys) && array_key_exists($keys[0], $array)) {
-            $keyValue = $array[$keys[0]];
-
-            if (is_array($keyValue)) {
-                self::checkArrayKey($keyValue, implode((string)'.', array_shift($keys)));
-            } else {
-                return !empty($keyValue);
-            }
-        }
-
-        return false;
-    }
+        if (!empty($keys) && array_key_exists($keys[0], $array)
+      ) {
+      	    $keyValue = $array[$keys[0]];
+         
+			if (is_array($keyValue)) {
+         	array_shift($keys);
+         	    $_keyChain = implode('.', $keys);
+         	    if (empty($keys)) {
+         		    return $keyValue;
+         	    }
+         	
+				return self::getArrayKeyValue($keyValue, $_keyChain);
+         } else {
+         	    return $keyValue;
+         	}
+		}
+		
+		return false;
+	}
 }
