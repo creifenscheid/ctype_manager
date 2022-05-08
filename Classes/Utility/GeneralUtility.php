@@ -290,12 +290,11 @@ class GeneralUtility
          
 			if (is_array($keyValue)) {
          	array_shift($keys);
-         	    $_keyChain = implode('.', $keys);
          	    if (empty($keys)) {
          		    return $keyValue;
          	    }
          	
-				return self::getArrayKeyValue($keyValue, $_keyChain);
+				return self::getArrayKeyValue($keyValue, implode('.', $keys));
          } else {
          	    return $keyValue;
          	}
