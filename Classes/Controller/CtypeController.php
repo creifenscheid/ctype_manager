@@ -64,9 +64,17 @@ class CtypeController extends ActionController
     private array $ctypeConfiguration = [];
 
     /**
+     * Array of list_types configured in pageTSConfig
+     *
+     * @var array
+     */
+    private array $listTypeConfiguration = [];
+
+    /**
      * Index action
      *
      * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function indexAction() : void
     {
@@ -119,6 +127,10 @@ class CtypeController extends ActionController
                 $groupStates[] = $groupState;
                 $ctypes[$groupKey]['state'] = $groupState;
             }
+
+            // get all available list_types
+            // generate active state by comparing to $this->listTypeConfiguration
+            // hand over to template
 
             $this->view->assignMultiple([
                 'groupsState' => $this->getMainState($groupStates),
@@ -188,6 +200,13 @@ class CtypeController extends ActionController
     {
         // get content element configuration for the current page
         $ceConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig($currentPageId);
+
+        // extract list_type configuration
+        $listTypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getArrayKeyValue($ceConfiguration, 'listTypes');
+
+        if (!empty($listTypeConfiguration)) {
+            $this->listTypeConfiguration = $listTypeConfiguration;
+        }
 
         $keptCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptCTypes($ceConfiguration);
         if ($keptCTypes) {

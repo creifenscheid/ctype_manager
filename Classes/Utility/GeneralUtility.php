@@ -107,8 +107,6 @@ class GeneralUtility
         // check for mod -> wizards -> newContentElement -> wizardItems
         self::getListTypeConfiguration($result, $pageTSconfig);
 
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($result, __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
-
         return $result;
     }
 
@@ -147,7 +145,7 @@ class GeneralUtility
     private static function getCTypes(array $configuration, string $key) : ?array
     {
         // check for items to keep
-        $ctypeConfiguration = self::getArrayKeyValue($configuration, 'CTypes.' .  $key);
+        $ctypeConfiguration = self::getArrayKeyValue($configuration, 'CTypes.' . $key);
         if ($ctypeConfiguration !== false) {
             return $ctypeConfiguration;
         }
@@ -298,7 +296,7 @@ class GeneralUtility
      *
      * @return string[]|null
      */
-    private static function resolveListTypeConfiguration (string$identifier, array $configuration) : ?array
+    private static function resolveListTypeConfiguration(string $identifier, array $configuration) : ?array
     {
         $configuredListType = self::getArrayKeyValue($configuration, 'tt_content_defValues.list_type');
         if (!empty($configuredListType)) {
