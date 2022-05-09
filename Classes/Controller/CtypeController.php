@@ -186,15 +186,15 @@ class CtypeController extends ActionController
      */
     private function resolvePageTSConfig(int $currentPageId) : void
     {
-        // get ctype configuration for the current page
-        $ctypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig($currentPageId);
+        // get content element configuration for the current page
+        $ceConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig($currentPageId);
 
-        $keptCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptCTypes($ctypeConfiguration);
+        $keptCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptCTypes($ceConfiguration);
         if ($keptCTypes) {
             $this->ctypeConfiguration['keep'] = $keptCTypes;
         }
 
-        $removedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getRemovedCTypes($ctypeConfiguration);
+        $removedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getRemovedCTypes($ceConfiguration);
         if ($removedCTypes) {
             $this->ctypeConfiguration['remove'] = $removedCTypes;
         }

@@ -5,7 +5,6 @@ namespace CReifenscheid\CtypeManager\Utility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use function array_key_exists;
 
@@ -108,7 +107,7 @@ class GeneralUtility
         // check for mod -> wizards -> newContentElement -> wizardItems
         self::getListTypeConfiguration($result, $pageTSconfig);
 
-        DebuggerUtility::var_dump($result, __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($result, __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
 
         return $result;
     }
@@ -148,8 +147,9 @@ class GeneralUtility
     private static function getCTypes(array $configuration, string $key) : ?array
     {
         // check for items to keep
-        if (array_key_exists($key, $configuration) && !empty($configuration[$key])) {
-            return $configuration[$key];
+        $ctypeConfiguration = self::getArrayKeyValue($configuration, 'CTypes.' .  $key);
+        if ($ctypeConfiguration !== false) {
+            return $ctypeConfiguration;
         }
 
         return null;
@@ -201,12 +201,12 @@ class GeneralUtility
         if ($ctypeConfiguration !== false) {
             // check for items to keep
             if (array_key_exists('keepItems', $ctypeConfiguration) && !empty($ctypeConfiguration['keepItems'])) {
-                $result['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['keepItems']);
+                $result['CTypes']['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['keepItems']);
             }
 
             // check for items to remove
             if (array_key_exists('removeItems', $ctypeConfiguration) && !empty($ctypeConfiguration['removeItems'])) {
-                $result['remove'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['removeItems']);
+                $result['CTypes']['remove'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['removeItems']);
             }
         }
     }
@@ -232,32 +232,22 @@ class GeneralUtility
                 if (array_key_exists('show', $groupConfiguration) && !empty($groupConfiguration['show']) && $groupConfiguration['show'] !== '*') {
 
                     // loop through every configured plugin to show
-                    foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $groupConfiguration['show']) as $identifier) {
-
-                        $elementConfiguration = $groupConfiguration['elements'][$identifier];
-
-                        // if "list_type" definition exists within "tt_content_defValues"
-                        $configuredListType = self::getArrayKeyValue($elementConfiguration, 'tt_content_defValues.list_type');
-                        if (!empty($configuredListType)) {
-
-                            // build list type information
-                            $listType = [
-                                'identifier' => $identifier
-                            ];
-
-                            if (array_key_exists('title', $elementConfiguration) && !empty($elementConfiguration['title'])) {
-                                $listType['label'] = self::locate($elementConfiguration['title']);
-                            }
-
-                            $listTypes[$configuredListType] = $listType;
+                    foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $groupConfiguration['show']) as $elementIdentifier) {
+                        $elementConfiguration = $groupConfiguration['elements'][$elementIdentifier];
+                        $listType = self::resolveListTypeConfiguration($elementIdentifier, $elementConfiguration);
+                        if ($listType !== null) {
+                            $listTypes[$listType['list_type']] = $listType;
                         }
                     }
                 } else {
                     if (array_key_exists('show', $groupConfiguration) && $groupConfiguration['show'] === '*') {
                         // 2. if show == '*' -> loop through every element -> tt_content_defValues -> is existing list_type
                         if (array_key_exists('elements', $groupConfiguration) && !empty($groupConfiguration['elements'])) {
-                            foreach ($groupConfiguration['elements'] as $pluginIdentifier => $pluginConfiguration) {
-
+                            foreach ($groupConfiguration['elements'] as $elementIdentifier => $elementConfiguration) {
+                                $listType = self::resolveListTypeConfiguration($elementIdentifier, $elementConfiguration);
+                                if ($listType !== null) {
+                                    $listTypes[$listType['list_type']] = $listType;
+                                }
                             }
                         }
                     }
@@ -267,8 +257,6 @@ class GeneralUtility
             if (!empty($listTypes)) {
                 $result['listTypes'] = $listTypes;
             }
-
-//            DebuggerUtility::var_dump($wizardGroups, __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
         }
     }
 
@@ -281,25 +269,53 @@ class GeneralUtility
      * @return mixed
      */
     public static function getArrayKeyValue(array $array, string $keyChain)
-	{
-		$keys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $keyChain);
+    {
+        $keys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $keyChain);
 
-        if (!empty($keys) && array_key_exists($keys[0], $array)
-      ) {
-      	    $keyValue = $array[$keys[0]];
-         
-			if (is_array($keyValue)) {
-         	array_shift($keys);
-         	    if (empty($keys)) {
-         		    return $keyValue;
-         	    }
-         	
-				return self::getArrayKeyValue($keyValue, implode('.', $keys));
-         } else {
-         	    return $keyValue;
-         	}
-		}
-		
-		return false;
-	}
+        if (!empty($keys) && array_key_exists($keys[0], $array)) {
+            $keyValue = $array[$keys[0]];
+
+            if (is_array($keyValue)) {
+                array_shift($keys);
+                if (empty($keys)) {
+                    return $keyValue;
+                }
+
+                return self::getArrayKeyValue($keyValue, implode('.', $keys));
+            }
+
+            return $keyValue;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns an array with the corresponding list_type configuration
+     *
+     * @param string $identifier
+     * @param array  $configuration
+     *
+     * @return string[]|null
+     */
+    private static function resolveListTypeConfiguration (string$identifier, array $configuration) : ?array
+    {
+        $configuredListType = self::getArrayKeyValue($configuration, 'tt_content_defValues.list_type');
+        if (!empty($configuredListType)) {
+
+            // build list type information
+            $listType = [
+                'identifier' => $identifier,
+                'list_type' => $configuredListType
+            ];
+
+            if (array_key_exists('title', $configuration) && !empty($configuration['title'])) {
+                $listType['label'] = self::locate($configuration['title']);
+            }
+
+            return $listType;
+        }
+
+        return null;
+    }
 }
