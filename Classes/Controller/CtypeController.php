@@ -3,7 +3,7 @@
 namespace CReifenscheid\CtypeManager\Controller;
 
 use CReifenscheid\CtypeManager\Service\ConfigurationService;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -50,13 +50,6 @@ class CtypeController extends ActionController
     private const CONFIG_ID = 'ctype-manager';
 
     /**
-     * Page repository
-     *
-     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
-     */
-    private $pageRepository;
-
-    /**
      * Array of ctypes configured in pageTSConfig
      *
      * @var array
@@ -93,7 +86,7 @@ class CtypeController extends ActionController
             $ctypes = [];
             $ctypeStates = [];
             $groupStates = [];
-            foreach (\CReifenscheid\CtypeManager\Utility\GeneralUtility::getTcaCtypes() as $ctype) {
+            foreach (CTypeUtility::getTcaCtypes() as $ctype) {
                 [$label, $identifier, , $group] = $ctype;
 
                 // init group storage
@@ -104,7 +97,7 @@ class CtypeController extends ActionController
                 // set group label
                 if (!array_key_exists('label', $ctypes[$group])) {
                     // get the group label from TCA group
-                    $groupLabel = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getTcaCtypeGroups()[$group];
+                    $groupLabel = CTypeUtility::getTcaCtypeGroups()[$group];
                     $ctypes[$group]['label'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::locate($groupLabel);
                 }
 
@@ -177,7 +170,7 @@ class CtypeController extends ActionController
             /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
             $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
             $configurationService->writeConfiguration($pageUid, $ctypeTSConfig);
-            
+
             // persist changes
             $configurationService->persist();
         }
@@ -199,7 +192,7 @@ class CtypeController extends ActionController
     private function resolvePageTSConfig(int $currentPageId) : void
     {
         // get content element configuration for the current page
-        $ceConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig($currentPageId);
+        $ceConfiguration = CTypeUtility::resolvePageTSConfig($currentPageId);
 
         // extract list_type configuration
         $listTypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getArrayKeyValue($ceConfiguration, 'listTypes');
@@ -208,12 +201,12 @@ class CtypeController extends ActionController
             $this->listTypeConfiguration = $listTypeConfiguration;
         }
 
-        $keptCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptCTypes($ceConfiguration);
+        $keptCTypes = CTypeUtility::getKeptCTypes($ceConfiguration);
         if ($keptCTypes) {
             $this->ctypeConfiguration['keep'] = $keptCTypes;
         }
 
-        $removedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getRemovedCTypes($ceConfiguration);
+        $removedCTypes = CTypeUtility::getRemovedCTypes($ceConfiguration);
         if ($removedCTypes) {
             $this->ctypeConfiguration['remove'] = $removedCTypes;
         }
@@ -273,7 +266,7 @@ class CtypeController extends ActionController
         // store already enabled ctypes
         $alreadyEnabledCtypes = [];
 
-        foreach (\CReifenscheid\CtypeManager\Utility\GeneralUtility::getTcaCtypes() as $ctype) {
+        foreach (CTypeUtility::getTcaCtypes() as $ctype) {
             $identifier = $ctype[1];
 
             // exclude divider items
@@ -284,7 +277,7 @@ class CtypeController extends ActionController
             }
         }
 
-        // compare the arrays - note: the larger one has to be the first to get an correct result
+        // compare the arrays - note: the larger one has to be the first to get a correct result
         if (count($alreadyEnabledCtypes) > count($formEnabledCtypes)) {
             $result = array_diff($alreadyEnabledCtypes, $formEnabledCtypes);
         } else {

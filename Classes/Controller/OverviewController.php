@@ -56,11 +56,11 @@ class OverviewController extends ActionController
         $pages = $this->getPages();
 
         foreach ($pages as $key => $page) {
-            $configuration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid']);
-            $allowedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptCTypes($configuration);
+            $configuration = \CReifenscheid\CtypeManager\Utility\CTypeUtility::resolvePageTSConfig((int)$page['uid']);
+            $allowedCTypes = \CReifenscheid\CtypeManager\Utility\CTypeUtility::getKeptCTypes($configuration);
             $labelledCTypes = [];
             foreach ($allowedCTypes as $allowedCType) {
-                $page['allowedCTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getCTypeLabel($allowedCType);
+                $page['allowedCTypes'][] = \CReifenscheid\CtypeManager\Utility\CTypeUtility::getCTypeLabel($allowedCType);
             }
 
             $pages[$key] = $page;
@@ -76,6 +76,7 @@ class OverviewController extends ActionController
      *
      * @return array
      * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
     private function getPages() : array
     {
@@ -88,6 +89,6 @@ class OverviewController extends ActionController
             ->where(
                 $queryBuilder->expr()->like('TSconfig', '\'%### START ' . self::CONFIG_ID . '%\'')
             )
-            ->execute()->fetchAll();
+            ->execute()->fetchAllAssociative();
     }
 }

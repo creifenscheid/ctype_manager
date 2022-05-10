@@ -179,7 +179,7 @@ class CleanupController extends ActionController
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function cleanupPageRecursively(int $pageUid)
+    private function cleanupPageRecursively(int $pageUid) : void
     {
         // init page repository
         if ($this->pageRepository === null) {
