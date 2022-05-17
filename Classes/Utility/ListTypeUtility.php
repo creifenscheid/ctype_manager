@@ -38,6 +38,17 @@ use function array_key_exists;
 class ListTypeUtility
 {
     /**
+     * Returns all configured list_types
+     *
+     * @return array
+     */
+    public static function getItems() : array
+    {
+        // get all configured plugins from tsconfig of page 0
+        return self::resolvePageTSConfig(0);
+    }
+
+    /**
      * Resolves pageTSConfig to get kept and removed ctypes and available list_types
      *
      * @param int $pageId
@@ -66,6 +77,7 @@ class ListTypeUtility
                         $elementConfiguration = $groupConfiguration['elements'][$elementIdentifier];
                         $listType = self::resolveListTypeConfiguration($elementIdentifier, $elementConfiguration);
                         if ($listType !== null) {
+                            $listType['group'] = $groupName;
                             $listTypes[$listType['list_type']] = $listType;
                         }
                     }
@@ -76,6 +88,7 @@ class ListTypeUtility
                             foreach ($groupConfiguration['elements'] as $elementIdentifier => $elementConfiguration) {
                                 $listType = self::resolveListTypeConfiguration($elementIdentifier, $elementConfiguration);
                                 if ($listType !== null) {
+                                    $listType['group'] = $groupName;
                                     $listTypes[$listType['list_type']] = $listType;
                                 }
                             }
@@ -85,7 +98,7 @@ class ListTypeUtility
             }
 
             if (!empty($listTypes)) {
-                $result['listTypes'] = $listTypes;
+                $result = $listTypes;
             }
         }
 
@@ -108,7 +121,8 @@ class ListTypeUtility
             // build list type information
             $listType = [
                 'identifier' => $identifier,
-                'list_type' => $configuredListType
+                'list_type' => $configuredListType,
+                'group' => $configuredListType
             ];
 
             if (array_key_exists('title', $configuration) && !empty($configuration['title'])) {

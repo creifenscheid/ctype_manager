@@ -42,7 +42,7 @@ class CTypeUtility
      *
      * @return array
      */
-    public static function getTcaCtypes() : array
+    public static function getItems() : array
     {
         return $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];
     }
@@ -52,7 +52,7 @@ class CTypeUtility
      *
      * @return array
      */
-    public static function getTcaCtypeGroups() : array
+    public static function getGroups() : array
     {
         return $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'];
     }
@@ -75,12 +75,12 @@ class CTypeUtility
         if ($ctypeConfiguration !== false) {
             // check for items to keep
             if (array_key_exists('keepItems', $ctypeConfiguration) && !empty($ctypeConfiguration['keepItems'])) {
-                $result['CTypes']['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['keepItems']);
+                $result['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['keepItems']);
             }
 
             // check for items to remove
             if (array_key_exists('removeItems', $ctypeConfiguration) && !empty($ctypeConfiguration['removeItems'])) {
-                $result['CTypes']['remove'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['removeItems']);
+                $result['remove'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['removeItems']);
             }
         }
 
@@ -122,7 +122,7 @@ class CTypeUtility
     private static function getCTypes(array $configuration, string $key) : ?array
     {
         // check for items to keep
-        $ctypeConfiguration = GeneralUtility::getArrayKeyValue($configuration, 'CTypes.' . $key);
+        $ctypeConfiguration = GeneralUtility::getArrayKeyValue($configuration, $key);
         if ($ctypeConfiguration !== false) {
             return $ctypeConfiguration;
         }
@@ -139,7 +139,7 @@ class CTypeUtility
      */
     public static function getCTypeLabel(string $requestedIdentifier) : ?string
     {
-        foreach (self::getTcaCtypes() as $ctype) {
+        foreach (self::getItems() as $ctype) {
             [$label, $identifier, , $group] = $ctype;
 
             if ($identifier === $requestedIdentifier) {
@@ -148,5 +148,32 @@ class CTypeUtility
         }
 
         return null;
+    }
+
+    /**
+     * Function to get the current activation state of the given ctype
+     *
+     * @param array  $configuration
+     * @param string $identifier
+     *
+     * @return bool
+     */
+    public static function getActivationState(array $configuration, string $identifier) : bool
+    {
+        // define default state
+        $return = true;
+
+        // if the current ctype is listed in removeItems - it's not active
+        if (array_key_exists('remove', $configuration) && in_array($identifier, $configuration['remove'], true)) {
+            $return = false;
+        }
+
+        // if the current ctype is not listed in keepItems - it's not active
+        if (array_key_exists('keep', $configuration) && !in_array($identifier, $configuration['keep'], true)) {
+            $return = false;
+        }
+
+        // if no keepItems configuration exists or the current ctype is listed in the configuration - it's active
+        return $return;
     }
 }
