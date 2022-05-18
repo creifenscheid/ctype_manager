@@ -285,19 +285,33 @@ class CtypeController extends ActionController
 }
 
 /**
+ * SeppTodo:
+ *
+ * [ ] registrierte Plugins nur aus dem TCA nehmen (ListTypeUtility)
+ * [ ] auf Basis von "keep" und "remove" aktuellen Status ermitteln - vgl. CType
+ * [ ] deaktivieren eines Plugins
+ *     [ ] removeItems/keepItems setup
+ *     [ ] mod.wizard auf ein element prüfen, dessen list_type der des deaktivierten ist
+ *        [ ] nein: ok
+ *        [ ] ja:
+*             [ ] von .show entfernen
+ *            [ ] element leeren Bsp. plugins.elements.news >
+ * [ ] aktivieren eines Plugins
+ *     [ ] aktualisieren der removeItems/keepItems-Konfiguration
+ *     [ ] aktualisieren der .show-Konfiguration, ggf. komplettes entfernen der Zeile, wenn kein weiterer ListType vorhanden ist
+ *     [ ] entfernen der Element-Leerung
+ *
  * NOTES
  * TSCONFIG:
+* # remove from select field
+* TCEFORM.tt_content.list_type.removeItems >
+* TCEFORM.tt_content.list_type.keepItems = fnncalendar_calendar
  *
-# remove from select field
-TCEFORM.tt_content.list_type.removeItems >
-TCEFORM.tt_content.list_type.keepItems = fnncalendar_calendar
- *
-# remove from custom content element wizard
-mod.wizards.newContentElement.wizardItems.fnncalendar.show := removeFromList(EventTeaser,EventList,EventDatesList)
-mod.wizards.newContentElement.wizardItems.fnncalendar.EventTeaser >
-mod.wizards.newContentElement.wizardItems.fnncalendar.EventList >
-mod.wizards.newContentElement.wizardItems.fnncalendar.EventDatesList >
-mod.wizards.newContentElement.wizardItems.plugins.show := removeFromList(news)
-mod.wizards.newContentElement.wizardItems.plugins.elements.news >
- *
+* # remove from custom content element wizard
+* mod.wizards.newContentElement.wizardItems.fnncalendar.show := removeFromList(EventTeaser,EventList,EventDatesList)
+* mod.wizards.newContentElement.wizardItems.fnncalendar.EventTeaser >
+* mod.wizards.newContentElement.wizardItems.fnncalendar.EventList >
+* mod.wizards.newContentElement.wizardItems.fnncalendar.EventDatesList >
+* mod.wizards.newContentElement.wizardItems.plugins.show := removeFromList(news)
+* mod.wizards.newContentElement.wizardItems.plugins.elements.news >
  */
