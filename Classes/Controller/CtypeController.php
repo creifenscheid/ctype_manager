@@ -4,14 +4,14 @@ namespace CReifenscheid\CtypeManager\Controller;
 
 use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
+use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use function array_key_exists;
 use function count;
-use function in_array;
 
 /***************************************************************
  *
@@ -83,7 +83,7 @@ class CtypeController extends ActionController
 
             // store all variables for the view
             $assignments = [
-                'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($pageUid)
+                'page' => GeneralUtility::getPage($pageUid)
             ];
 
             // resolve page tsconfig for the current page
@@ -106,14 +106,14 @@ class CtypeController extends ActionController
                 if (!array_key_exists('label', $ctypes[$group])) {
                     // get the group label from TCA group
                     $groupLabel = CTypeUtility::getGroups()[$group];
-                    $ctypes[$group]['label'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::locate($groupLabel);
+                    $ctypes[$group]['label'] = GeneralUtility::locate($groupLabel);
                 }
 
                 // exclude divider items
                 if ($identifier !== '--div--') {
-                    $ctypeState = CTypeUtility::getActivationState($this->ctypeConfiguration, $identifier);
+                    $ctypeState = GeneralUtility::getActivationState($this->ctypeConfiguration, $identifier);
                     $ctypes[$group]['ctypes'][$identifier] = [
-                        'label' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::locate($label),
+                        'label' => GeneralUtility::locate($label),
                         'active' => $ctypeState
                     ];
 
@@ -133,18 +133,10 @@ class CtypeController extends ActionController
 
             // LIST TYPES
             $listTypes = [];
-            foreach (ListTypeUtility::getItems() as $item) {
-                ['identifier' => $identifier, 'list_type' => $listType, 'label' => $label, 'group' => $group] = $item;
+            foreach (ListTypeUtility::getItems() as $listType) {
+                [$label, $identifier] = $listType;
 
-                if (!empty($listType)) {
-                    $listTypes[$listType] = [
-                        'label' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::locate($label),
-                        'identifier' => $identifier,
-                        'listType' => $listType,
-                        'group' => $group,
-                        'state' => array_key_exists($listType, $this->listTypeConfiguration)
-                    ];
-                }
+                // SeppToDo: go on
             }
 
             if (!empty($listTypes)) {
@@ -190,7 +182,7 @@ class CtypeController extends ActionController
             $ctypeTSConfig[] = '### END ' . self::CONFIG_ID;
 
             /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
-            $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+            $configurationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
             $configurationService->writeConfiguration($pageUid, $ctypeTSConfig);
 
             // persist changes
@@ -213,24 +205,32 @@ class CtypeController extends ActionController
      */
     private function resolvePageTSConfig(int $currentPageId) : void
     {
+        // CTYPE
         // get content element configuration for the current page
-        $ctypeConfiguration = CTypeUtility::resolvePageTSConfig($currentPageId);
+        $ctypeConfiguration = GeneralUtility::resolvePageTSConfig($currentPageId, 'CType');
 
-        // extract list_type configuration
-        $listTypeConfiguration = ListTypeUtility::resolvePageTSConfig($currentPageId);
-
-        if (!empty($listTypeConfiguration)) {
-            $this->listTypeConfiguration = $listTypeConfiguration;
-        }
-
-        $keptCTypes = CTypeUtility::getKeptCTypes($ctypeConfiguration);
+        $keptCTypes = GeneralUtility::getKeptItems($ctypeConfiguration);
         if ($keptCTypes) {
             $this->ctypeConfiguration['keep'] = $keptCTypes;
         }
 
-        $removedCTypes = CTypeUtility::getRemovedCTypes($ctypeConfiguration);
+        $removedCTypes = GeneralUtility::getRemovedItems($ctypeConfiguration);
         if ($removedCTypes) {
             $this->ctypeConfiguration['remove'] = $removedCTypes;
+        }
+
+        // LIST_TYPE
+        // extract list_type configuration
+        $listTypeConfiguration = GeneralUtility::resolvePageTSConfig($currentPageId, 'list_type');
+
+        $keptListTypes = GeneralUtility::getKeptItems($listTypeConfiguration);
+        if ($keptListTypes) {
+            $this->listTypeConfiguration['keep'] = $keptListTypes;
+        }
+
+        $removedListTypes = GeneralUtility::getRemovedItems($listTypeConfiguration);
+        if ($removedListTypes) {
+            $this->listTypeConfiguration['remove'] = $removedListTypes;
         }
     }
 
@@ -267,7 +267,7 @@ class CtypeController extends ActionController
 
             // exclude divider items
             if ($identifier !== '--div--') {
-                if (CTypeUtility::getActivationState($this->ctypeConfiguration, $identifier)) {
+                if (GeneralUtility::getActivationState($this->ctypeConfiguration, $identifier)) {
                     $alreadyEnabledCtypes[] = $identifier;
                 }
             }
@@ -287,14 +287,14 @@ class CtypeController extends ActionController
 /**
  * SeppTodo:
  *
- * [ ] registrierte Plugins nur aus dem TCA nehmen (ListTypeUtility)
+ * [X] registrierte Plugins nur aus dem TCA nehmen (ListTypeUtility)
  * [ ] auf Basis von "keep" und "remove" aktuellen Status ermitteln - vgl. CType
  * [ ] deaktivieren eines Plugins
  *     [ ] removeItems/keepItems setup
  *     [ ] mod.wizard auf ein element prüfen, dessen list_type der des deaktivierten ist
  *        [ ] nein: ok
  *        [ ] ja:
-*             [ ] von .show entfernen
+ *             [ ] von .show entfernen
  *            [ ] element leeren Bsp. plugins.elements.news >
  * [ ] aktivieren eines Plugins
  *     [ ] aktualisieren der removeItems/keepItems-Konfiguration
@@ -303,15 +303,15 @@ class CtypeController extends ActionController
  *
  * NOTES
  * TSCONFIG:
-* # remove from select field
-* TCEFORM.tt_content.list_type.removeItems >
-* TCEFORM.tt_content.list_type.keepItems = fnncalendar_calendar
+ * # remove from select field
+ * TCEFORM.tt_content.list_type.removeItems >
+ * TCEFORM.tt_content.list_type.keepItems = fnncalendar_calendar
  *
-* # remove from custom content element wizard
-* mod.wizards.newContentElement.wizardItems.fnncalendar.show := removeFromList(EventTeaser,EventList,EventDatesList)
-* mod.wizards.newContentElement.wizardItems.fnncalendar.EventTeaser >
-* mod.wizards.newContentElement.wizardItems.fnncalendar.EventList >
-* mod.wizards.newContentElement.wizardItems.fnncalendar.EventDatesList >
-* mod.wizards.newContentElement.wizardItems.plugins.show := removeFromList(news)
-* mod.wizards.newContentElement.wizardItems.plugins.elements.news >
+ * # remove from custom content element wizard
+ * mod.wizards.newContentElement.wizardItems.fnncalendar.show := removeFromList(EventTeaser,EventList,EventDatesList)
+ * mod.wizards.newContentElement.wizardItems.fnncalendar.EventTeaser >
+ * mod.wizards.newContentElement.wizardItems.fnncalendar.EventList >
+ * mod.wizards.newContentElement.wizardItems.fnncalendar.EventDatesList >
+ * mod.wizards.newContentElement.wizardItems.plugins.show := removeFromList(news)
+ * mod.wizards.newContentElement.wizardItems.plugins.elements.news >
  */

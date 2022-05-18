@@ -2,7 +2,6 @@
 
 namespace CReifenscheid\CtypeManager\Utility;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use function array_key_exists;
 
 /***************************************************************
@@ -58,79 +57,6 @@ class CTypeUtility
     }
 
     /**
-     * Resolves pageTSConfig to get kept and removed ctypes and available list_types
-     *
-     * @param int $pageId
-     *
-     * @return array
-     */
-    public static function resolvePageTSConfig(int $pageId) : array
-    {
-        $result = [];
-
-        $pageTSconfig = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId));
-
-        // check for TCEFORM -> tt_content -> CType
-        $ctypeConfiguration = GeneralUtility::getArrayKeyValue($pageTSconfig, 'TCEFORM.tt_content.CType');
-        if ($ctypeConfiguration !== false) {
-            // check for items to keep
-            if (array_key_exists('keepItems', $ctypeConfiguration) && !empty($ctypeConfiguration['keepItems'])) {
-                $result['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['keepItems']);
-            }
-
-            // check for items to remove
-            if (array_key_exists('removeItems', $ctypeConfiguration) && !empty($ctypeConfiguration['removeItems'])) {
-                $result['remove'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ctypeConfiguration['removeItems']);
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns the ctypes configured to keep
-     *
-     * @param array $configuration
-     *
-     * @return array|null
-     */
-    public static function getKeptCTypes(array $configuration) : ?array
-    {
-        return self::getCTypes($configuration, 'keep');
-    }
-
-    /**
-     * Returns the ctypes configured to be removed
-     *
-     * @param array $configuration
-     *
-     * @return array|null
-     */
-    public static function getRemovedCTypes(array $configuration) : ?array
-    {
-        return self::getCTypes($configuration, 'remove');
-    }
-
-    /**
-     * Returns the ctypes configured
-     *
-     * @param array  $configuration
-     * @param string $key
-     *
-     * @return array|null
-     */
-    private static function getCTypes(array $configuration, string $key) : ?array
-    {
-        // check for items to keep
-        $ctypeConfiguration = GeneralUtility::getArrayKeyValue($configuration, $key);
-        if ($ctypeConfiguration !== false) {
-            return $ctypeConfiguration;
-        }
-
-        return null;
-    }
-
-    /**
      * Returns the located label of the given CType
      *
      * @param string $requestedIdentifier
@@ -148,32 +74,5 @@ class CTypeUtility
         }
 
         return null;
-    }
-
-    /**
-     * Function to get the current activation state of the given ctype
-     *
-     * @param array  $configuration
-     * @param string $identifier
-     *
-     * @return bool
-     */
-    public static function getActivationState(array $configuration, string $identifier) : bool
-    {
-        // define default state
-        $return = true;
-
-        // if the current ctype is listed in removeItems - it's not active
-        if (array_key_exists('remove', $configuration) && in_array($identifier, $configuration['remove'], true)) {
-            $return = false;
-        }
-
-        // if the current ctype is not listed in keepItems - it's not active
-        if (array_key_exists('keep', $configuration) && !in_array($identifier, $configuration['keep'], true)) {
-            $return = false;
-        }
-
-        // if no keepItems configuration exists or the current ctype is listed in the configuration - it's active
-        return $return;
     }
 }

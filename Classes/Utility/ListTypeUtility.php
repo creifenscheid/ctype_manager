@@ -44,8 +44,7 @@ class ListTypeUtility
      */
     public static function getItems() : array
     {
-        // get all configured plugins from tsconfig of page 0
-        return self::resolvePageTSConfig(0);
+        return $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'];
     }
 
     /**
@@ -55,7 +54,7 @@ class ListTypeUtility
      *
      * @return array
      */
-    public static function resolvePageTSConfig(int $pageId) : array
+    public static function DEPCR_resolvePageTSConfig(int $pageId) : array
     {
         $result = [];
 

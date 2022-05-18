@@ -2,6 +2,7 @@
 
 namespace CReifenscheid\CtypeManager\Utility;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -107,5 +108,106 @@ class GeneralUtility
         }
 
         return false;
+    }
+
+    /**
+     * Resolves pageTSConfig to get kept and removed items of the given field
+     *
+     * @param int    $pageId
+     * @param string $field
+     *
+     * @return array
+     */
+    public static function resolvePageTSConfig(int $pageId, string $field) : array
+    {
+        $result = [];
+
+        $pageTSconfig = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId));
+
+        // check for TCEFORM -> tt_content -> CType
+        $configuration = self::getArrayKeyValue($pageTSconfig, 'TCEFORM.tt_content.' . $field);
+        if ($configuration !== false) {
+            // check for items to keep
+            if (array_key_exists('keepItems', $configuration) && !empty($configuration['keepItems'])) {
+                $result['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $configuration['keepItems']);
+            }
+
+            // check for items to remove
+            if (array_key_exists('removeItems', $configuration) && !empty($configuration['removeItems'])) {
+                $result['remove'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $configuration['removeItems']);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Function to get the current activation state of the given identifier
+     *
+     * @param array  $configuration
+     * @param string $identifier
+     *
+     * @return bool
+     */
+    public static function getActivationState(array $configuration, string $identifier) : bool
+    {
+        // define default state
+        $return = true;
+
+        // if the current identifier is listed in removeItems - it's not active
+        if (array_key_exists('remove', $configuration) && in_array($identifier, $configuration['remove'], true)) {
+            $return = false;
+        }
+
+        // if the current identifier is not listed in keepItems - it's not active
+        if (array_key_exists('keep', $configuration) && !in_array($identifier, $configuration['keep'], true)) {
+            $return = false;
+        }
+
+        // if no keepItems configuration exists or the current identifier is listed in the configuration - it's active
+        return $return;
+    }
+
+    /**
+     * Returns the items configured to keep
+     *
+     * @param array $configuration
+     *
+     * @return array|null
+     */
+    public static function getKeptItems(array $configuration) : ?array
+    {
+        return self::getItems($configuration, 'keep');
+    }
+
+    /**
+     * Returns the items configured to be removed
+     *
+     * @param array $configuration
+     *
+     * @return array|null
+     */
+    public static function getRemovedItems(array $configuration) : ?array
+    {
+        return self::getItems($configuration, 'remove');
+    }
+
+    /**
+     * Returns the items configured
+     *
+     * @param array  $configuration
+     * @param string $key
+     *
+     * @return array|null
+     */
+    private static function getItems(array $configuration, string $key) : ?array
+    {
+        // check for items to keep
+        $ctypeConfiguration = self::getArrayKeyValue($configuration, $key);
+        if ($ctypeConfiguration !== false) {
+            return $ctypeConfiguration;
+        }
+
+        return null;
     }
 }

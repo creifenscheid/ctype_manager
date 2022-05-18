@@ -56,7 +56,7 @@ class OverviewController extends ActionController
         $pages = $this->getPages();
 
         foreach ($pages as $key => $page) {
-            $configuration = \CReifenscheid\CtypeManager\Utility\CTypeUtility::resolvePageTSConfig((int)$page['uid']);
+            $configuration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid']);
             $allowedCTypes = \CReifenscheid\CtypeManager\Utility\CTypeUtility::getKeptCTypes($configuration);
             $labelledCTypes = [];
             foreach ($allowedCTypes as $allowedCType) {
