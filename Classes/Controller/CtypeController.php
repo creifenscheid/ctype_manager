@@ -136,7 +136,13 @@ class CtypeController extends ActionController
             foreach (ListTypeUtility::getItems() as $listType) {
                 [$label, $identifier] = $listType;
 
-                // SeppToDo: go on
+                if (!empty($identifier)) {
+                    $listTypeState = GeneralUtility::getActivationState($this->listTypeConfiguration, $identifier);
+                    $listTypes[$identifier] = [
+                        'label' => GeneralUtility::locate($label),
+                        'active' => $listTypeState
+                    ];
+                }
             }
 
             if (!empty($listTypes)) {
@@ -288,7 +294,8 @@ class CtypeController extends ActionController
  * SeppTodo:
  *
  * [X] registrierte Plugins nur aus dem TCA nehmen (ListTypeUtility)
- * [ ] auf Basis von "keep" und "remove" aktuellen Status ermitteln - vgl. CType
+ * [x] auf Basis von "keep" und "remove" aktuellen Status ermitteln - vgl. CType
+ * [ ] Template-Erweiterung
  * [ ] deaktivieren eines Plugins
  *     [ ] removeItems/keepItems setup
  *     [ ] mod.wizard auf ein element prüfen, dessen list_type der des deaktivierten ist
