@@ -37,6 +37,9 @@
          <trans-unit id="index.switch.group" resname="index.toggle.group">
                <source>Enable all content element types in group "%s"</source>
          </trans-unit>
+         <trans-unit id="index.listTypes.headline" resname="index.listTypes.headline">
+               <source>Available plugins</source>
+         </trans-unit>
 
          <!-- CLEANUP -->
           <trans-unit id="cleanup.navigation" resname="cleanup.navigation">

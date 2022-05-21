@@ -33,11 +33,10 @@
                 </label>
             </div>
 
-            <f:if condition="{identifier} == list && {listTypes}">
-                <div class="list-type-container mx-2">
+            <f:if condition="{identifier} == 'list' && {listTypes}">
+                <div class="list-type-container mx-2 border__left">
 
-                    <div>@SeppTodo : HEADLINE</div>
-                    <div>@SeppTodo : Styling fine tuning - visual divider?</div>
+                    <h2><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.listTypes.headline" /></h2>
                     <div>@SeppTodo : JavaScript hide/show based on ctype</div>
 
                     <f:for each="{listTypes}" key="listTypeIdentifier" as="listTypeConfiguration">
