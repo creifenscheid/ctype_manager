@@ -9,7 +9,7 @@
 
 <div class="card card-size-fixed-small">
     <div class="card-header">
-        <div class="card-title">{groupLabel}</div>
+        <h2 class="card-title">{groupLabel}</h2>
     </div>
 
     <div class="card-body">
@@ -34,10 +34,9 @@
             </div>
 
             <f:if condition="{identifier} == 'list' && {listTypes}">
-                <div class="list-type-container mx-2 border__left">
+                <div class="list-types{f:if(condition:ctypeConfiguration.active, then:'', else:' d-none')}">
 
-                    <h2><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.listTypes.headline" /></h2>
-                    <div>@SeppTodo : JavaScript hide/show based on ctype</div>
+                    <h3 class="list-types__header"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.listTypes.headline" /></h3>
 
                     <f:for each="{listTypes}" key="listTypeIdentifier" as="listTypeConfiguration">
                         <div class="form-check form-switch d-flex flex-row justify-content-start align-items-start flex-wrap">
