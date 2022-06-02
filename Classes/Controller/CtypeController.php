@@ -86,7 +86,12 @@ class CtypeController extends ActionController
             $ctypeStates = [];
             $groupStates = [];
             foreach (\CReifenscheid\CtypeManager\Utility\GeneralUtility::getTcaCtypes() as $ctype) {
-                [$label, $identifier, , $group] = $ctype;
+                [$label, $identifier, $icon, $group] = $ctype;
+
+                // check group existence
+                if (empty($group)) {
+                    $group = 'unassigned';
+                }
 
                 // init group storage
                 if (!array_key_exists($group, $ctypes)) {
@@ -97,7 +102,14 @@ class CtypeController extends ActionController
                 if (!array_key_exists('label', $ctypes[$group])) {
                     // get the group label from TCA group
                     $groupLabel = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getTcaCtypeGroups()[$group];
-                    $ctypes[$group]['label'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::locate($groupLabel);
+
+                    if ($groupLabel) {
+                        $ctypes[$group]['label'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::locate($groupLabel);
+                    } else if ($group === 'unassigned') {
+                        $ctypes[$group]['label'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
+                    } else {
+                        $ctypes[$group]['label'] = ucfirst($group);
+                    }
                 }
 
                 // exclude divider items
