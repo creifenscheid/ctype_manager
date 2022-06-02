@@ -1,3 +1,6 @@
+v11.3.1 +
+  * [BUGFIX]    - fix location of not existing group label
+
 v11.3.0 +
   * [TASK]      - separation of cleanup possibilities into separate module section
   * [FEATURE]   - overview section to take a look at all configured pages
