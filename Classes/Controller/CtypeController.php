@@ -177,17 +177,22 @@ class CtypeController extends ActionController
         // get request arguments
         $arguments = $this->request->getArguments();
 
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($arguments, __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);die();
+
         // get the page uid to store page tsconfig in
         $pageUid = (int)$arguments['pageUid'];
 
         // get enabled ctypes
         $enabledCtypes = empty($arguments['ctypes']) ? [] : $arguments['ctypes'];
 
+        // get enabled list_types
+        $enabledListTypes = empty($arguments['listTypes']) ? [] : $arguments['listTypes'];
+
         // resolve page tsconfig for the current page
         $this->resolvePageTSConfig($pageUid);
 
         // only write pageTSConfig if the submitted configuration differs from to existing one
-        if ($this->configurationDiffers($enabledCtypes)) {
+        if ($this->configurationDiffers($enabledCtypes, $enabledListTypes)) {
             // define ctype configuration
             $ctypeTSConfig[] = '### START ' . self::CONFIG_ID;
             $ctypeTSConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove';
@@ -272,13 +277,17 @@ class CtypeController extends ActionController
      * Function to compare set configuration vs. configuration sent via form
      *
      * @param array $formEnabledCtypes
+     * @param array $formEnabledListTypes
      *
      * @return boolean
      */
-    private function configurationDiffers(array $formEnabledCtypes) : bool
+    private function configurationDiffers(array $formEnabledCtypes, array $formEnabledListTypes) : bool
     {
         // store already enabled ctypes
         $alreadyEnabledCtypes = [];
+
+        // store already enabled list_types
+        $alreadyEnabledListTypes = [];
 
         foreach (CTypeUtility::getItems() as $ctype) {
             $identifier = $ctype[1];
@@ -307,7 +316,7 @@ class CtypeController extends ActionController
  *
  * [X] registrierte Plugins nur aus dem TCA nehmen (ListTypeUtility)
  * [x] auf Basis von "keep" und "remove" aktuellen Status ermitteln - vgl. CType
- * [ ] Template-Erweiterung
+ * [x] Template-Erweiterung
  * [ ] deaktivieren eines Plugins
  *     [ ] removeItems/keepItems setup
  *     [ ] mod.wizard auf ein element prüfen, dessen list_type der des deaktivierten ist
