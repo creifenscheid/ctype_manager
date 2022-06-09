@@ -177,8 +177,6 @@ class CtypeController extends ActionController
         // get request arguments
         $arguments = $this->request->getArguments();
 
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($arguments, __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);die();
-
         // get the page uid to store page tsconfig in
         $pageUid = (int)$arguments['pageUid'];
 
@@ -191,8 +189,13 @@ class CtypeController extends ActionController
         // resolve page tsconfig for the current page
         $this->resolvePageTSConfig($pageUid);
 
+        $ctypesDiffer = $this->configurationDiffers(CTypeUtility::getItems(), $this->ctypeConfiguration, $enabledCtypes);
+        $listTypesDiffer = $this->configurationDiffers(ListTypeUtility::getItems(), $this->ctypeConfiguration, $enabledListTypes);
+
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump([$ctypesDiffer,$listTypesDiffer], __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);die();
+        
         // only write pageTSConfig if the submitted configuration differs from to existing one
-        if ($this->configurationDiffers($enabledCtypes, $enabledListTypes)) {
+        if ($ctypesDiffer) {
             // define ctype configuration
             $ctypeTSConfig[] = '### START ' . self::CONFIG_ID;
             $ctypeTSConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove';
@@ -276,35 +279,31 @@ class CtypeController extends ActionController
     /**
      * Function to compare set configuration vs. configuration sent via form
      *
-     * @param array $formEnabledCtypes
-     * @param array $formEnabledListTypes
+     * @param array $available
+     * @param array $configuration
+     * @param array $formEnabled
      *
      * @return boolean
      */
-    private function configurationDiffers(array $formEnabledCtypes, array $formEnabledListTypes) : bool
+    private function configurationDiffers(array $available, array $configuration, array $formEnabled) : bool
     {
-        // store already enabled ctypes
-        $alreadyEnabledCtypes = [];
+        // store already enabled
+        $alreadyEnabled = [];
 
-        // store already enabled list_types
-        $alreadyEnabledListTypes = [];
-
-        foreach (CTypeUtility::getItems() as $ctype) {
-            $identifier = $ctype[1];
+        foreach ($available as $item) {
+            $identifier = $item[1];
 
             // exclude divider items
-            if ($identifier !== '--div--') {
-                if (GeneralUtility::getActivationState($this->ctypeConfiguration, $identifier)) {
-                    $alreadyEnabledCtypes[] = $identifier;
-                }
+            if (($identifier !== '--div--') && GeneralUtility::getActivationState($configuration, $identifier)) {
+                $alreadyEnabled[] = $identifier;
             }
         }
 
         // compare the arrays - note: the larger one has to be the first to get a correct result
-        if (count($alreadyEnabledCtypes) > count($formEnabledCtypes)) {
-            $result = array_diff($alreadyEnabledCtypes, $formEnabledCtypes);
+        if (count($alreadyEnabled) > count($formEnabled)) {
+            $result = array_diff($alreadyEnabled, $formEnabled);
         } else {
-            $result = array_diff($formEnabledCtypes, $alreadyEnabledCtypes);
+            $result = array_diff($formEnabled, $alreadyEnabled);
         }
 
         return !empty($result);
