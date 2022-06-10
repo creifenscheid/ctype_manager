@@ -48,60 +48,40 @@ class ListTypeUtility
     }
 
     /**
-     * Resolves pageTSConfig to get kept and removed ctypes and available list_types
+     * Returns all configured wizard items
      *
      * @param int $pageId
      *
-     * @return array
+     * @return array|null
      */
-    public static function DEPCR_resolvePageTSConfig(int $pageId) : array
+    public static function getWizardItems(int $pageId) : ?array
     {
-        $result = [];
-
         $pageTSconfig = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId));
 
         // check for mod -> wizards -> newContentElement -> wizardItems
         $wizardGroups = GeneralUtility::getArrayKeyValue($pageTSconfig, 'mod.wizards.newContentElement.wizardItems');
-        if ($wizardGroups !== false) {
+        if ($wizardGroups) {
 
             $listTypes = [];
 
             foreach ($wizardGroups as $groupName => $groupConfiguration) {
-
-                // if "show" is existing and not *
-                if (array_key_exists('show', $groupConfiguration) && !empty($groupConfiguration['show']) && $groupConfiguration['show'] !== '*') {
-
-                    // loop through every configured plugin to show
-                    foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $groupConfiguration['show']) as $elementIdentifier) {
-                        $elementConfiguration = $groupConfiguration['elements'][$elementIdentifier];
+                if (array_key_exists('elements', $groupConfiguration) && !empty($groupConfiguration['elements'])) {
+                    foreach ($groupConfiguration['elements'] as $elementIdentifier => $elementConfiguration) {
                         $listType = self::resolveListTypeConfiguration($elementIdentifier, $elementConfiguration);
                         if ($listType !== null) {
                             $listType['group'] = $groupName;
                             $listTypes[$listType['list_type']] = $listType;
                         }
                     }
-                } else {
-                    if (array_key_exists('show', $groupConfiguration) && $groupConfiguration['show'] === '*') {
-                        // 2. if show == '*' -> loop through every element -> tt_content_defValues -> is existing list_type
-                        if (array_key_exists('elements', $groupConfiguration) && !empty($groupConfiguration['elements'])) {
-                            foreach ($groupConfiguration['elements'] as $elementIdentifier => $elementConfiguration) {
-                                $listType = self::resolveListTypeConfiguration($elementIdentifier, $elementConfiguration);
-                                if ($listType !== null) {
-                                    $listType['group'] = $groupName;
-                                    $listTypes[$listType['list_type']] = $listType;
-                                }
-                            }
-                        }
-                    }
                 }
             }
 
             if (!empty($listTypes)) {
-                $result = $listTypes;
+                return $listTypes;
             }
         }
 
-        return $result;
+        return null;
     }
 
     /**

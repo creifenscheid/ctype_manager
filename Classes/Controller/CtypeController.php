@@ -190,26 +190,54 @@ class CtypeController extends ActionController
         $this->resolvePageTSConfig($pageUid);
 
         $ctypesDiffer = $this->configurationDiffers(CTypeUtility::getItems(), $this->ctypeConfiguration, $enabledCtypes);
-        $listTypesDiffer = $this->configurationDiffers(ListTypeUtility::getItems(), $this->ctypeConfiguration, $enabledListTypes);
+        $listTypesDiffer = $this->configurationDiffers(ListTypeUtility::getItems(), $this->listTypeConfiguration, $enabledListTypes);
 
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump([$ctypesDiffer,$listTypesDiffer], __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);die();
-        
         // only write pageTSConfig if the submitted configuration differs from to existing one
-        if ($ctypesDiffer) {
+        if ($ctypesDiffer || $listTypesDiffer) {
             // define ctype configuration
-            $ctypeTSConfig[] = '### START ' . self::CONFIG_ID;
-            $ctypeTSConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove';
-            // unset existing removeItems configuration
-            $ctypeTSConfig[] = 'TCEFORM.tt_content.CType.removeItems >';
+            $tsConfig[] = '### START ' . self::CONFIG_ID;
+            $tsConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove';
 
-            // build keep ctype configuration
-            $ctypeConfiguration = 'TCEFORM.tt_content.CType.keepItems';
-            $ctypeTSConfig[] = empty($enabledCtypes) ? $ctypeConfiguration . ' = none' : $ctypeConfiguration . ' = ' . implode(',', $enabledCtypes);
-            $ctypeTSConfig[] = '### END ' . self::CONFIG_ID;
+            // CType tsconfig
+            if ($ctypesDiffer) {
+                // unset existing removeItems configuration
+                $tsConfig[] = 'TCEFORM.tt_content.CType.removeItems >';
+
+                // build keep ctype configuration
+                $ctypeConfiguration = 'TCEFORM.tt_content.CType.keepItems';
+                $tsConfig[] = empty($enabledCtypes) ? $ctypeConfiguration . ' = none' : $ctypeConfiguration . ' = ' . implode(',', $enabledCtypes);
+            }
+
+            // list_type tsconfig
+            if ($listTypesDiffer) {
+                // unset existing removeItems configuration
+                $tsConfig[] = 'TCEFORM.tt_content.list_type.removeItems >';
+
+                // build keep list_type configuration
+                $listTypeConfiguration = 'TCEFORM.tt_content.list_type.keepItems';
+                $tsConfig[] = empty($enabledListTypes) ? $listTypeConfiguration . ' = none' : $listTypeConfiguration . ' = ' . implode(',', $enabledListTypes);
+
+                \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump([ListTypeUtility::getWizardItems($pageUid),$enabledListTypes], __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
+
+                // loop through every wizard group
+                foreach (ListTypeUtility::getWizardItems($pageUid) as $wizardGroup => $wizardGroupConfiguration) {
+                    // loop through every wizard group element
+                    foreach ($wizardGroupConfiguration['elements'] as $elementIdentifier => $elementConfiguration) {
+
+                    }
+                }
+
+                die();
+
+                // mod.wizards.newContentElement.wizardItems.fnncalendar.show = EventCalendar
+                // mod.wizards.newContentElement.wizardItems.fnncalendar.EventTeaser >
+            }
+
+            $tsConfig[] = '### END ' . self::CONFIG_ID;
 
             /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
             $configurationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
-            $configurationService->writeConfiguration($pageUid, $ctypeTSConfig);
+            $configurationService->writeConfiguration($pageUid, $tsConfig);
 
             // persist changes
             $configurationService->persist();
@@ -293,8 +321,8 @@ class CtypeController extends ActionController
         foreach ($available as $item) {
             $identifier = $item[1];
 
-            // exclude divider items
-            if (($identifier !== '--div--') && GeneralUtility::getActivationState($configuration, $identifier)) {
+            // exclude divider and empty items
+            if ((!empty($identifier) && $identifier !== '--div--') && GeneralUtility::getActivationState($configuration, $identifier)) {
                 $alreadyEnabled[] = $identifier;
             }
         }
@@ -313,32 +341,35 @@ class CtypeController extends ActionController
 /**
  * SeppTodo:
  *
- * [X] registrierte Plugins nur aus dem TCA nehmen (ListTypeUtility)
+ * [x] registrierte Plugins nur aus dem TCA nehmen (ListTypeUtility)
  * [x] auf Basis von "keep" und "remove" aktuellen Status ermitteln - vgl. CType
  * [x] Template-Erweiterung
  * [ ] deaktivieren eines Plugins
- *     [ ] removeItems/keepItems setup
+ *     [x] removeItems/keepItems setup
  *     [ ] mod.wizard auf ein element prüfen, dessen list_type der des deaktivierten ist
  *        [ ] nein: ok
  *        [ ] ja:
  *             [ ] von .show entfernen
  *            [ ] element leeren Bsp. plugins.elements.news >
  * [ ] aktivieren eines Plugins
- *     [ ] aktualisieren der removeItems/keepItems-Konfiguration
+ *     [x] aktualisieren der removeItems/keepItems-Konfiguration
  *     [ ] aktualisieren der .show-Konfiguration, ggf. komplettes entfernen der Zeile, wenn kein weiterer ListType vorhanden ist
  *     [ ] entfernen der Element-Leerung
+ *
+ * [ ] OverviewController-Anpassungen
  *
  * NOTES
  * TSCONFIG:
  * # remove from select field
- * TCEFORM.tt_content.list_type.removeItems >
+ * [x] TCEFORM.tt_content.list_type.removeItems >
  * TCEFORM.tt_content.list_type.keepItems = fnncalendar_calendar
  *
  * # remove from custom content element wizard
- * mod.wizards.newContentElement.wizardItems.fnncalendar.show := removeFromList(EventTeaser,EventList,EventDatesList)
+ * mod.wizards.newContentElement.wizardItems.fnncalendar.show = EventCalendar
  * mod.wizards.newContentElement.wizardItems.fnncalendar.EventTeaser >
  * mod.wizards.newContentElement.wizardItems.fnncalendar.EventList >
  * mod.wizards.newContentElement.wizardItems.fnncalendar.EventDatesList >
+ *
  * mod.wizards.newContentElement.wizardItems.plugins.show := removeFromList(news)
  * mod.wizards.newContentElement.wizardItems.plugins.elements.news >
  */

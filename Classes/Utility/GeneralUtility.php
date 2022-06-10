@@ -86,7 +86,7 @@ class GeneralUtility
      * @param array  $array
      * @param string $keyChain - dot separated list of keys to check, last is checked for value, e.g. tt_content.columns.sys_language_uid.label
      *
-     * @return mixed
+     * @return array|mixed|null
      */
     public static function getArrayKeyValue(array $array, string $keyChain)
     {
@@ -107,7 +107,7 @@ class GeneralUtility
             return $keyValue;
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -126,7 +126,7 @@ class GeneralUtility
 
         // check for TCEFORM -> tt_content -> CType
         $configuration = self::getArrayKeyValue($pageTSconfig, 'TCEFORM.tt_content.' . $field);
-        if ($configuration !== false) {
+        if (!empty($configuration)) {
             // check for items to keep
             if (array_key_exists('keepItems', $configuration) && !empty($configuration['keepItems'])) {
                 $result['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $configuration['keepItems']);
@@ -204,7 +204,7 @@ class GeneralUtility
     {
         // check for items to keep
         $ctypeConfiguration = self::getArrayKeyValue($configuration, $key);
-        if ($ctypeConfiguration !== false) {
+        if (!empty($ctypeConfiguration)) {
             return $ctypeConfiguration;
         }
 
