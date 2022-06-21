@@ -65,8 +65,9 @@ class ListTypeUtility
             $listTypes = [];
 
             foreach ($wizardGroups as $groupName => $groupConfiguration) {
-                if (array_key_exists('elements', $groupConfiguration) && !empty($groupConfiguration['elements'])) {
-                    foreach ($groupConfiguration['elements'] as $elementIdentifier => $elementConfiguration) {
+                $groupConfigurationElements = GeneralUtility::getArrayKeyValue($groupConfiguration, 'elements');
+                if ($groupConfigurationElements) {
+                    foreach ($groupConfigurationElements as $elementIdentifier => $elementConfiguration) {
                         $listType = self::resolveListTypeConfiguration($elementIdentifier, $elementConfiguration);
                         if ($listType !== null) {
                             $listType['group'] = $groupName;

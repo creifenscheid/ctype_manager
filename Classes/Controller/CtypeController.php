@@ -8,7 +8,6 @@ use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use function array_key_exists;
 use function count;
@@ -217,20 +216,38 @@ class CtypeController extends ActionController
                 $listTypeConfiguration = 'TCEFORM.tt_content.list_type.keepItems';
                 $tsConfig[] = empty($enabledListTypes) ? $listTypeConfiguration . ' = none' : $listTypeConfiguration . ' = ' . implode(',', $enabledListTypes);
 
-                \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump([ListTypeUtility::getWizardItems($pageUid),$enabledListTypes], __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
+                // get all available wizard items
+                $wizardConfiguration = ListTypeUtility::getWizardItems($pageUid);
+
+                // store all list types to remove from wizard for each group
+                $listTypeRemovals = [];
 
                 // loop through every wizard group
-                foreach (ListTypeUtility::getWizardItems($pageUid) as $wizardGroup => $wizardGroupConfiguration) {
-                    // loop through every wizard group element
-                    foreach ($wizardGroupConfiguration['elements'] as $elementIdentifier => $elementConfiguration) {
+                foreach ($wizardConfiguration as $wizardElement) {
+                    ['identifier' => $identifier, 'listType' => $listType, 'group' => $group, 'label' => $label] = $wizardElement;
 
+                    // check if wizard item has a group and is not listed in enabled list types
+                    if (!empty($group) && !in_array($listType, $enabledListTypes, true)) {
+
+                        // clear wizard item configuration
+                        $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.' . $identifier . ' >';
+
+                        // add item to removal storage
+                        $listTypeRemovals[$group][] = $identifier;
                     }
                 }
 
-                die();
+                // adjust "show" configuration for each group, if needed
 
-                // mod.wizards.newContentElement.wizardItems.fnncalendar.show = EventCalendar
-                // mod.wizards.newContentElement.wizardItems.fnncalendar.EventTeaser >
+                /***
+                 * @SeppToDo
+                 *          This seems to be buggy, plugin news is still available. Maybe it really must be show = xxx,yyy
+                 */
+                if (!empty($listTypeRemovals)) {
+                    foreach ($listTypeRemovals as $group => $listTypesToRemove) {
+                        $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
+                    }
+                }
             }
 
             $tsConfig[] = '### END ' . self::CONFIG_ID;
@@ -347,10 +364,10 @@ class CtypeController extends ActionController
  * [ ] deaktivieren eines Plugins
  *     [x] removeItems/keepItems setup
  *     [ ] mod.wizard auf ein element prüfen, dessen list_type der des deaktivierten ist
- *        [ ] nein: ok
+ *        [x] nein: ok
  *        [ ] ja:
  *             [ ] von .show entfernen
- *            [ ] element leeren Bsp. plugins.elements.news >
+ *            [x] element leeren Bsp. plugins.elements.news >
  * [ ] aktivieren eines Plugins
  *     [x] aktualisieren der removeItems/keepItems-Konfiguration
  *     [ ] aktualisieren der .show-Konfiguration, ggf. komplettes entfernen der Zeile, wenn kein weiterer ListType vorhanden ist
