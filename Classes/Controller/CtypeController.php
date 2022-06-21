@@ -230,19 +230,18 @@ class CtypeController extends ActionController
                     if (!empty($group) && !in_array($listType, $enabledListTypes, true)) {
 
                         // clear wizard item configuration
-                        $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.' . $identifier . ' >';
+                        $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.elements.' . $identifier . ' >';
 
                         // add item to removal storage
                         $listTypeRemovals[$group][] = $identifier;
                     }
                 }
 
-                // adjust "show" configuration for each group, if needed
-
                 /***
                  * @SeppToDo
                  *          This seems to be buggy, plugin news is still available. Maybe it really must be show = xxx,yyy
                  */
+                // adjust "show" configuration for each group, if needed
                 if (!empty($listTypeRemovals)) {
                     foreach ($listTypeRemovals as $group => $listTypesToRemove) {
                         $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
@@ -251,6 +250,8 @@ class CtypeController extends ActionController
             }
 
             $tsConfig[] = '### END ' . self::CONFIG_ID;
+
+            die();
 
             /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
             $configurationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
