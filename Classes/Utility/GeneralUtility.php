@@ -67,6 +67,20 @@ class GeneralUtility
 
         return $pageRepository->getPage($pageUid);
     }
+    
+    /**
+     * Returns uid of root page
+     *
+     * @param int $pageUid
+     *
+     * @return int
+     */
+    public static function getRootPageId(int $pageUid) : int
+    {
+        var_dump("test me");die();
+        $rootline = self::getRootline($pageUid);
+        return end($rootline);
+    }
 
     /**
      * Returns the located label, if it's locatable
@@ -202,10 +216,9 @@ class GeneralUtility
      */
     private static function getItems(array $configuration, string $key) : ?array
     {
-        // check for items to keep
-        $ctypeConfiguration = self::getArrayKeyValue($configuration, $key);
-        if (!empty($ctypeConfiguration)) {
-            return $ctypeConfiguration;
+        $result = self::getArrayKeyValue($configuration, $key);
+        if (!empty($result)) {
+            return $result;
         }
 
         return null;

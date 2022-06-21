@@ -216,8 +216,8 @@ class CtypeController extends ActionController
                 $listTypeConfiguration = 'TCEFORM.tt_content.list_type.keepItems';
                 $tsConfig[] = empty($enabledListTypes) ? $listTypeConfiguration . ' = none' : $listTypeConfiguration . ' = ' . implode(',', $enabledListTypes);
 
-                // get all available wizard items
-                $wizardConfiguration = ListTypeUtility::getWizardItems($pageUid);
+                // get all available wizard items of current root
+                $wizardConfiguration = ListTypeUtility::getWizardItems(GeneralUtility::getRootPageId($pageUid));
 
                 // store all list types to remove from wizard for each group
                 $listTypeRemovals = [];
