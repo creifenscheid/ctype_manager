@@ -3,10 +3,10 @@
    <file source-language="en" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="theme">
       <header/>
       <body>
-          <!-- FALLBACK -->
-          <trans-unit id="group.unassigned" resname="group.unassigned">
-              <source>Unassigned</source>
-          </trans-unit>
+         <!-- FALLBACK -->
+         <trans-unit id="group.unassigned" resname="group.unassigned">
+               <source>Unassigned</source>
+         </trans-unit>
 
          <!-- INDEX -->
          <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
@@ -86,7 +86,7 @@
           <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext">
               <source>A cleanup mode was missing, please select a mode to clean up.</source>
           </trans-unit>
-          
+
           <!-- APPROVAL -->
           <trans-unit id="cleanup.approval.headline" resname="cleanup.approval.headline">
               <source>Are you sure?</source>

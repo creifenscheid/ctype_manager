@@ -1,5 +1,8 @@
 v11.4.0 +
   * [FEATURE]   - configurable list types
+  
+v11.3.1 +
+  * [BUGFIX]    - localisation of unregistered group label
 
 v11.3.0 +
   * [TASK]      - separation of cleanup possibilities into separate module section

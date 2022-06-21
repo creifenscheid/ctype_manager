@@ -77,7 +77,7 @@ class GeneralUtility
      */
     public static function locate(string $stringToLocate) : string
     {
-        return str_starts_with($stringToLocate, 'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
+        return \TYPO3\CMS\Core\Utility\StringUtility::beginsWith($stringToLocate,'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
     }
 
     /**
