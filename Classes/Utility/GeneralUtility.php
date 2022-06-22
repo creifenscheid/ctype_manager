@@ -77,9 +77,9 @@ class GeneralUtility
      */
     public static function getRootPageId(int $pageUid) : int
     {
-        var_dump("test me");die();
         $rootline = self::getRootline($pageUid);
-        return end($rootline);
+        $rootpage = end($rootline);
+        return $rootpage['uid'];
     }
 
     /**

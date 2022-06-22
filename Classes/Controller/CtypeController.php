@@ -222,9 +222,11 @@ class CtypeController extends ActionController
                 // store all list types to remove from wizard for each group
                 $listTypeRemovals = [];
 
+                \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump([$enabledListTypes,$wizardConfiguration], __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
+
                 // loop through every wizard group
                 foreach ($wizardConfiguration as $wizardElement) {
-                    ['identifier' => $identifier, 'listType' => $listType, 'group' => $group, 'label' => $label] = $wizardElement;
+                    ['identifier' => $identifier, 'list_type' => $listType, 'group' => $group, 'label' => $label] = $wizardElement;
 
                     // check if wizard item has a group and is not listed in enabled list types
                     if (!empty($group) && !in_array($listType, $enabledListTypes, true)) {
@@ -237,10 +239,6 @@ class CtypeController extends ActionController
                     }
                 }
 
-                /***
-                 * @SeppToDo
-                 *          This seems to be buggy, plugin news is still available. Maybe it really must be show = xxx,yyy
-                 */
                 // adjust "show" configuration for each group, if needed
                 if (!empty($listTypeRemovals)) {
                     foreach ($listTypeRemovals as $group => $listTypesToRemove) {
@@ -250,8 +248,6 @@ class CtypeController extends ActionController
             }
 
             $tsConfig[] = '### END ' . self::CONFIG_ID;
-
-            die();
 
             /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
             $configurationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
@@ -364,15 +360,15 @@ class CtypeController extends ActionController
  * [x] Template-Erweiterung
  * [ ] deaktivieren eines Plugins
  *     [x] removeItems/keepItems setup
- *     [ ] mod.wizard auf ein element prüfen, dessen list_type der des deaktivierten ist
+ *     [x] mod.wizard auf ein element prüfen, dessen list_type der des deaktivierten ist
  *        [x] nein: ok
- *        [ ] ja:
- *             [ ] von .show entfernen
+ *        [x] ja:
+ *             [x] von .show entfernen
  *            [x] element leeren Bsp. plugins.elements.news >
- * [ ] aktivieren eines Plugins
+ * [x] aktivieren eines Plugins
  *     [x] aktualisieren der removeItems/keepItems-Konfiguration
- *     [ ] aktualisieren der .show-Konfiguration, ggf. komplettes entfernen der Zeile, wenn kein weiterer ListType vorhanden ist
- *     [ ] entfernen der Element-Leerung
+ *     [x] aktualisieren der .show-Konfiguration, ggf. komplettes entfernen der Zeile, wenn kein weiterer ListType vorhanden ist
+ *     [x] entfernen der Element-Leerung
  *
  * [ ] OverviewController-Anpassungen
  *

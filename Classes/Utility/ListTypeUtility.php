@@ -60,6 +60,7 @@ class ListTypeUtility
 
         // check for mod -> wizards -> newContentElement -> wizardItems
         $wizardGroups = GeneralUtility::getArrayKeyValue($pageTSconfig, 'mod.wizards.newContentElement.wizardItems');
+
         if ($wizardGroups) {
 
             $listTypes = [];
