@@ -17,7 +17,8 @@
                             <thead>
                             <tr>
                                 <th><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.table.head.page" /></th>
-                                <th colspan="2"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.table.head.ctypes" /></th>
+                                <th><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.table.head.ctypes" /></th>
+                                <th colspan="2"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.table.head.listTypes" /></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -38,11 +39,32 @@
                                             {page.title} [{page.uid}]
                                         </td>
                                         <td>
-                                            <ul>
-                                                <f:for each="{page.allowedCTypes}" as="ctype">
-                                                    <li>{ctype}</li>
-                                                </f:for>
-                                            </ul>
+                                            <f:if condition="{page.allowedCTypes} == '*'">
+                                                <f:then>
+                                                    <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.noRestrictions" />
+                                                </f:then>
+                                                <f:else>
+                                                    <ul>
+                                                        <f:for each="{page.allowedCTypes}" as="ctype">
+                                                            <li>{ctype}</li>
+                                                        </f:for>
+                                                    </ul>
+                                                </f:else>
+                                            </f:if>
+                                        </td>
+                                        <td>
+                                            <f:if condition="{page.allowedListTypes} == '*'">
+                                                <f:then>
+                                                    <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.noRestrictions" />
+                                                </f:then>
+                                                <f:else>
+                                                    <ul>
+                                                        <f:for each="{page.allowedListTypes}" as="listType">
+                                                            <li>{listType}</li>
+                                                        </f:for>
+                                                    </ul>
+                                                </f:else>
+                                            </f:if>
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
