@@ -2,10 +2,10 @@
 
 namespace CReifenscheid\CtypeManager\Service;
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 
 /***************************************************************
  *
@@ -50,14 +50,14 @@ class ConfigurationService implements SingletonInterface
      * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
      */
     private $pageRepository;
-    
+
     /**
      * Data handler
      *
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
      */
     private $dataHandler;
-    
+
     /**
      * Array for data handler data
      *
@@ -136,13 +136,13 @@ class ConfigurationService implements SingletonInterface
 
         // merge existing tsconfig with ctype configuration
         $pageTSConfig = array_merge($tsConfig, $ctypeConfig);
-        
+
         // add page to data handler data
         $this->dataHandlerData['pages'][$pageUid] = [
             'TSconfig' => empty($pageTSConfig) ? '' : implode(PHP_EOL, $pageTSConfig)
         ];
     }
-    
+
     /**
      * Function to run data handler with stored data
      *

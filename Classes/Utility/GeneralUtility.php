@@ -5,6 +5,7 @@ namespace CReifenscheid\CtypeManager\Utility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use function array_key_exists;
 
@@ -67,7 +68,7 @@ class GeneralUtility
 
         return $pageRepository->getPage($pageUid);
     }
-    
+
     /**
      * Returns uid of root page
      *
@@ -79,6 +80,7 @@ class GeneralUtility
     {
         $rootline = self::getRootline($pageUid);
         $rootpage = end($rootline);
+
         return $rootpage['uid'];
     }
 
@@ -91,7 +93,7 @@ class GeneralUtility
      */
     public static function locate(string $stringToLocate) : string
     {
-        return \TYPO3\CMS\Core\Utility\StringUtility::beginsWith($stringToLocate,'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
+        return StringUtility::beginsWith($stringToLocate, 'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
     }
 
     /**

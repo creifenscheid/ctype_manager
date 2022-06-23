@@ -2,11 +2,11 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
+use CReifenscheid\CtypeManager\Utility\CTypeUtility;
+use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
  *
@@ -63,7 +63,7 @@ class OverviewController extends ActionController
                 $allowedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($cTypeConfiguration);
 
                 foreach ($allowedCTypes as $allowedCType) {
-                    $page['allowedCTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(\CReifenscheid\CtypeManager\Utility\CTypeUtility::getItems(), $allowedCType);
+                    $page['allowedCTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(CTypeUtility::getItems(), $allowedCType);
                 }
             } else {
                 $page['allowedCTypes'] = '*';
@@ -75,7 +75,7 @@ class OverviewController extends ActionController
                 $allowedListTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($listTypeConfiguration);
 
                 foreach ($allowedListTypes as $allowedListType) {
-                    $page['allowedListTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(\CReifenscheid\CtypeManager\Utility\ListTypeUtility::getItems(), $allowedListType);
+                    $page['allowedListTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(ListTypeUtility::getItems(), $allowedListType);
                 }
             } else {
                 $page['allowedListTypes'] = '*';

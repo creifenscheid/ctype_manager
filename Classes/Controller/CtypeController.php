@@ -113,10 +113,12 @@ class CtypeController extends ActionController
 
                     if ($groupLabel) {
                         $ctypes[$group]['label'] = GeneralUtility::locate($groupLabel);
-                    } else if ($group === 'unassigned') {
-                        $ctypes[$group]['label'] = GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
                     } else {
-                        $ctypes[$group]['label'] = ucfirst($group);
+                        if ($group === 'unassigned') {
+                            $ctypes[$group]['label'] = GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
+                        } else {
+                            $ctypes[$group]['label'] = ucfirst($group);
+                        }
                     }
                 }
 
@@ -221,8 +223,6 @@ class CtypeController extends ActionController
 
                 // store all list types to remove from wizard for each group
                 $listTypeRemovals = [];
-
-                \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump([$enabledListTypes,$wizardConfiguration], __CLASS__ . ':' . __FUNCTION__ . '::' . __LINE__);
 
                 // loop through every wizard group
                 foreach ($wizardConfiguration as $wizardElement) {

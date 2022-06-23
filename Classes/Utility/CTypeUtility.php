@@ -2,8 +2,6 @@
 
 namespace CReifenscheid\CtypeManager\Utility;
 
-use function array_key_exists;
-
 /***************************************************************
  *
  *  Copyright notice
