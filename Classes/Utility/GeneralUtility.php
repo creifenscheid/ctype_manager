@@ -223,4 +223,25 @@ class GeneralUtility
 
         return null;
     }
+
+    /**
+     * Returns the located label of the given identifier
+     *
+     * @param array  $items
+     * @param string $requestedIdentifier
+     *
+     * @return string|null
+     */
+    public static function getLabel(array $items, string $requestedIdentifier) : ?string
+    {
+        foreach ($items as $item) {
+            [$label, $identifier, , $group] = $item;
+
+            if ($identifier === $requestedIdentifier) {
+                return GeneralUtility::locate($label);
+            }
+        }
+
+        return null;
+    }
 }

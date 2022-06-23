@@ -55,24 +55,4 @@ class CTypeUtility
     {
         return $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'];
     }
-
-    /**
-     * Returns the located label of the given CType
-     *
-     * @param string $requestedIdentifier
-     *
-     * @return string|null
-     */
-    public static function getCTypeLabel(string $requestedIdentifier) : ?string
-    {
-        foreach (self::getItems() as $ctype) {
-            [$label, $identifier, , $group] = $ctype;
-
-            if ($identifier === $requestedIdentifier) {
-                return GeneralUtility::locate($label);
-            }
-        }
-
-        return null;
-    }
 }

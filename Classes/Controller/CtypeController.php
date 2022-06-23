@@ -351,39 +351,3 @@ class CtypeController extends ActionController
         return !empty($result);
     }
 }
-
-/**
- * SeppTodo:
- *
- * [x] registrierte Plugins nur aus dem TCA nehmen (ListTypeUtility)
- * [x] auf Basis von "keep" und "remove" aktuellen Status ermitteln - vgl. CType
- * [x] Template-Erweiterung
- * [ ] deaktivieren eines Plugins
- *     [x] removeItems/keepItems setup
- *     [x] mod.wizard auf ein element prüfen, dessen list_type der des deaktivierten ist
- *        [x] nein: ok
- *        [x] ja:
- *             [x] von .show entfernen
- *            [x] element leeren Bsp. plugins.elements.news >
- * [x] aktivieren eines Plugins
- *     [x] aktualisieren der removeItems/keepItems-Konfiguration
- *     [x] aktualisieren der .show-Konfiguration, ggf. komplettes entfernen der Zeile, wenn kein weiterer ListType vorhanden ist
- *     [x] entfernen der Element-Leerung
- *
- * [ ] OverviewController-Anpassungen
- *
- * NOTES
- * TSCONFIG:
- * # remove from select field
- * [x] TCEFORM.tt_content.list_type.removeItems >
- * TCEFORM.tt_content.list_type.keepItems = fnncalendar_calendar
- *
- * # remove from custom content element wizard
- * mod.wizards.newContentElement.wizardItems.fnncalendar.show = EventCalendar
- * mod.wizards.newContentElement.wizardItems.fnncalendar.EventTeaser >
- * mod.wizards.newContentElement.wizardItems.fnncalendar.EventList >
- * mod.wizards.newContentElement.wizardItems.fnncalendar.EventDatesList >
- *
- * mod.wizards.newContentElement.wizardItems.plugins.show := removeFromList(news)
- * mod.wizards.newContentElement.wizardItems.plugins.elements.news >
- */

@@ -56,11 +56,29 @@ class OverviewController extends ActionController
         $pages = $this->getPages();
 
         foreach ($pages as $key => $page) {
-            $configuration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid']);
-            $allowedCTypes = \CReifenscheid\CtypeManager\Utility\CTypeUtility::getKeptCTypes($configuration);
-            $labelledCTypes = [];
-            foreach ($allowedCTypes as $allowedCType) {
-                $page['allowedCTypes'][] = \CReifenscheid\CtypeManager\Utility\CTypeUtility::getCTypeLabel($allowedCType);
+
+            // CTypes
+            $cTypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'CType');
+            if (!empty($cTypeConfiguration)) {
+                $allowedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($cTypeConfiguration);
+
+                foreach ($allowedCTypes as $allowedCType) {
+                    $page['allowedCTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(\CReifenscheid\CtypeManager\Utility\CTypeUtility::getItems(), $allowedCType);
+                }
+            } else {
+                $page['allowedCTypes'] = '*';
+            }
+
+            // List types
+            $listTypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'list_type');
+            if (!empty($listTypeConfiguration)) {
+                $allowedListTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($listTypeConfiguration);
+
+                foreach ($allowedListTypes as $allowedListType) {
+                    $page['allowedListTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(\CReifenscheid\CtypeManager\Utility\ListTypeUtility::getItems(), $allowedListType);
+                }
+            } else {
+                $page['allowedListTypes'] = '*';
             }
 
             $pages[$key] = $page;
