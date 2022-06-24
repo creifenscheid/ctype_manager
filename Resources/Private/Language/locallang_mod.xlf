@@ -78,7 +78,7 @@
               <source>Oops</source>
           </trans-unit>
           <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext">
-              <source>A page uid was missing, please select a page in the page tree and try again.</source>
+              <source>A page uid is missing. Please select a page in the page tree and try again.</source>
           </trans-unit>
           <trans-unit id="cleanup.message.error.cleanupMode.header" resname="cleanup.message.error.cleanupMode.header">
               <source>Oops</source>
