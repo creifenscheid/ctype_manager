@@ -18,44 +18,44 @@
         <f:render partial="Switch" arguments="{state:groupConfiguration.state,label:toggleLabel,ariaLabel:toggleAriaLabel,target:'js-group-{group}'}"/>
         <f:for each="{groupConfiguration.ctypes}" key="identifier" as="ctypeConfiguration">
 
-            <div class="form-check form-switch d-flex flex-row justify-content-start align-items-start flex-wrap">
+            <div class="form-check form-switch d-flex flex-row justify-content-start align-items-start flex-wrap{f:if(condition:ctypeConfiguration.active, then: ' enabled-ctype')}">
                 <f:if condition="{ctypeConfiguration.active}">
                     <f:then>
-                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-ctype js-group-{group}" value="{identifier}" additionalAttributes="{checked:'checked', onclick:'TYPO3.CtypeManager.update()'}" />
+                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-ctype js-group-{group}" value="{identifier}" additionalAttributes="{checked:'checked', onclick:'TYPO3.CtypeManager.update(this)'}" />
                     </f:then>
                     <f:else>
-                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-ctype js-group-{group}" value="{identifier}" additionalAttributes="{onclick:'TYPO3.CtypeManager.update()'}" />
+                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-ctype js-group-{group}" value="{identifier}" additionalAttributes="{onclick:'TYPO3.CtypeManager.update(this)'}" />
                     </f:else>
                 </f:if>
 
                 <label class="form-check-label" for="ctype-manager-{identifier}" style="width: 100%;">
                     <span class="form-check-label-text px-3">{ctypeConfiguration.label}</span>
                 </label>
+
+                <f:if condition="{identifier} == 'list' && {listTypes}">
+                    <div class="show-if-enabled list-types{f:if(condition:ctypeConfiguration.active, then:'', else:' d-none')}">
+
+                        <h3 class="list-types__header"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.listTypes.headline" /></h3>
+
+                        <f:for each="{listTypes}" key="listTypeIdentifier" as="listTypeConfiguration">
+                            <div class="form-check form-switch d-flex flex-row justify-content-start align-items-start flex-wrap">
+                                <f:if condition="{listTypeConfiguration.active}">
+                                    <f:then>
+                                        <f:form.checkbox id="ctype-manager-listtype-{listTypeIdentifier}" name="listTypes[]" class="form-check-input" value="{listTypeIdentifier}" additionalAttributes="{checked:'checked'}" />
+                                    </f:then>
+                                    <f:else>
+                                        <f:form.checkbox id="ctype-manager-listtype-{listTypeIdentifier}" name="listTypes[]" class="form-check-input" value="{listTypeIdentifier}" />
+                                    </f:else>
+                                </f:if>
+
+                                <label class="form-check-label" for="ctype-manager-listtype-{listTypeIdentifier}" style="width: 100%;">
+                                    <span class="form-check-label-text px-3">{listTypeConfiguration.label}</span>
+                                </label>
+                            </div>
+                        </f:for>
+                    </div>
+                </f:if>
             </div>
-
-            <f:if condition="{identifier} == 'list' && {listTypes}">
-                <div class="list-types{f:if(condition:ctypeConfiguration.active, then:'', else:' d-none')}">
-
-                    <h3 class="list-types__header"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.listTypes.headline" /></h3>
-
-                    <f:for each="{listTypes}" key="listTypeIdentifier" as="listTypeConfiguration">
-                        <div class="form-check form-switch d-flex flex-row justify-content-start align-items-start flex-wrap">
-                            <f:if condition="{listTypeConfiguration.active}">
-                                <f:then>
-                                    <f:form.checkbox id="ctype-manager-listtype-{listTypeIdentifier}" name="listTypes[]" class="form-check-input" value="{listTypeIdentifier}" additionalAttributes="{checked:'checked'}" />
-                                </f:then>
-                                <f:else>
-                                    <f:form.checkbox id="ctype-manager-listtype-{listTypeIdentifier}" name="listTypes[]" class="form-check-input" value="{listTypeIdentifier}" />
-                                </f:else>
-                            </f:if>
-
-                            <label class="form-check-label" for="ctype-manager-listtype-{listTypeIdentifier}" style="width: 100%;">
-                                <span class="form-check-label-text px-3">{listTypeConfiguration.label}</span>
-                            </label>
-                        </div>
-                    </f:for>
-                </div>
-            </f:if>
         </f:for>
     </div>
 </div>

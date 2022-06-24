@@ -1,7 +1,13 @@
 .list-types {
-    padding: 12px 0 12px 46px;
+    display: none;
+
+    padding: 12px 0 12px 7px;
 
     &__header {
         font-size: 15px;
     }
+}
+
+.enabled-ctype > .show-if-enabled {
+    display: block;
 }

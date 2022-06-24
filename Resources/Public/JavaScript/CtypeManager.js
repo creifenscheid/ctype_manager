@@ -21,7 +21,10 @@ define([
         CtypeManager.update()
     };
     
-    CtypeManager.update = function () {
+    CtypeManager.update = function (element) {
+
+        $(element).parent().toggleClass('enabled-ctype')
+
         $('.js-btn-switch').each(function(){
             let state = true
             let targetId = $(this).data('target')
