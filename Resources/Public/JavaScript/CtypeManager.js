@@ -16,12 +16,24 @@ define([
         // toggle targets
         $('.' + targetId).each(function(){
             $(this).prop('checked', !currentState)
+
+            if (currentState) {
+                $(this).parent().removeClass('enabled-ctype')
+            } else {
+                $(this).parent().addClass('enabled-ctype')
+            }
         });
 
         CtypeManager.update()
     };
     
     CtypeManager.update = function (element) {
+
+        if ($(element).prop('checked') === false) {
+            $(this).parent().removeClass('enabled-ctype')
+        } else {
+            $(this).parent().addClass('enabled-ctype')
+        }
 
         $(element).parent().toggleClass('enabled-ctype')
 
