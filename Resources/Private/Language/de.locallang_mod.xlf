@@ -53,6 +53,10 @@
         <source>Enable all content element types in group "%s"</source>
         <target state="final">Alle Inhaltselementtypen in Gruppe "%s" aktivieren</target>
       </trans-unit>
+      <trans-unit id="index.listTypes.headline" resname="index.listTypes.headline">
+        <source>Available plugins</source>
+        <target state="needs-translation">Available plugins</target>
+      </trans-unit>
       <!-- CLEANUP -->
       <trans-unit id="cleanup.navigation" resname="cleanup.navigation">
         <source>Cleanup</source>
@@ -155,6 +159,14 @@
       <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
         <source>Allowed CTypes</source>
         <target state="needs-translation">Allowed CTypes</target>
+      </trans-unit>
+      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
+        <source>Allowed list types</source>
+        <target state="needs-translation">Allowed list types</target>
+      </trans-unit>
+      <trans-unit id="overview.noRestrictions" resname="overview.noRestrictions">
+        <source>No restrictions</source>
+        <target state="needs-translation">No restrictions</target>
       </trans-unit>
       <trans-unit id="overview.toolbar.edit.label" resname="overview.toolbar.edit.label">
         <source>Edit CType configuration of page "%s".</source>
