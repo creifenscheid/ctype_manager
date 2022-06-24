@@ -99,16 +99,16 @@
         <target state="needs-translation">Oops</target>
       </trans-unit>
       <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext">
-        <source>A page uid was missing, please select a page in the page tree and try again.</source>
-        <target state="needs-translation">A page uid was missing, please select a page in the page tree and try again.</target>
+        <source>A page uid is missing. Please select a page in the page tree and try again.</source>
+        <target state="needs-translation">A page uid is missing. Please select a page in the page tree and try again.</target>
       </trans-unit>
       <trans-unit id="cleanup.message.error.cleanupMode.header" resname="cleanup.message.error.cleanupMode.header">
         <source>Oops</source>
         <target state="needs-translation">Oops</target>
       </trans-unit>
       <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext">
-        <source>A cleanup mode was missing, please select a mode to clean up.</source>
-        <target state="needs-translation">A cleanup mode was missing, please select a mode to clean up.</target>
+        <source>A cleanup mode is missing. Please select a mode to clean up.</source>
+        <target state="needs-translation">A cleanup mode is missing. Please select a mode to clean up.</target>
       </trans-unit>
       <!-- APPROVAL -->
       <trans-unit id="cleanup.approval.headline" resname="cleanup.approval.headline">
@@ -149,8 +149,8 @@
         <target state="needs-translation">The following pages have been configured with the CType manager.</target>
       </trans-unit>
       <trans-unit id="overview.bodytext.noPages" resname="overview.bodytext.noPages">
-        <source>There are currently no pages configured with the ctype manager.</source>
-        <target state="needs-translation">There are currently no pages configured with the ctype manager.</target>
+        <source>There are currently no pages configured with the CType Manager.</source>
+        <target state="needs-translation">There are currently no pages configured with the CType Manager.</target>
       </trans-unit>
       <trans-unit id="overview.table.head.page" resname="overview.table.head.page">
         <source>Page</source>
@@ -161,8 +161,8 @@
         <target state="needs-translation">Allowed CTypes</target>
       </trans-unit>
       <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
-        <source>Allowed list types</source>
-        <target state="needs-translation">Allowed list types</target>
+        <source>Allowed plugins</source>
+        <target state="needs-translation">Allowed plugins</target>
       </trans-unit>
       <trans-unit id="overview.noRestrictions" resname="overview.noRestrictions">
         <source>No restrictions</source>
