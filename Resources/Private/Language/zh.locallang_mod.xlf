@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" version="1.0">
-  <file source-language="en" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="theme" target-language="zh-CN">
+  <file source-language="en" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="theme" target-language="zh-TW">
     <header/>
     <body>
       <!-- FALLBACK -->
@@ -52,6 +52,10 @@
       <trans-unit id="index.switch.group" resname="index.toggle.group">
         <source>Enable all content element types in group "%s"</source>
         <target state="needs-translation">Enable all content element types in group "%s"</target>
+      </trans-unit>
+      <trans-unit id="index.listTypes.headline" resname="index.listTypes.headline">
+        <source>Available plugins</source>
+        <target state="needs-translation">Available plugins</target>
       </trans-unit>
       <!-- CLEANUP -->
       <trans-unit id="cleanup.navigation" resname="cleanup.navigation">
@@ -155,6 +159,14 @@
       <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
         <source>Allowed CTypes</source>
         <target state="needs-translation">Allowed CTypes</target>
+      </trans-unit>
+      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
+        <source>Allowed list types</source>
+        <target state="needs-translation">Allowed list types</target>
+      </trans-unit>
+      <trans-unit id="overview.noRestrictions" resname="overview.noRestrictions">
+        <source>No restrictions</source>
+        <target state="needs-translation">No restrictions</target>
       </trans-unit>
       <trans-unit id="overview.toolbar.edit.label" resname="overview.toolbar.edit.label">
         <source>Edit CType configuration of page "%s".</source>
