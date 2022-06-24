@@ -1,6 +1,7 @@
 v11.4.0 +
   * [FEATURE]   - configurable list types
-  
+  * [BUGFIX]    - Missing redirect after cleanup via overview section
+
 v11.3.1 +
   * [BUGFIX]    - localisation of unregistered group label
 

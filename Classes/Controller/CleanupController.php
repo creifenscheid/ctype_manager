@@ -123,6 +123,7 @@ class CleanupController extends ActionController
         // get request arguments
         $arguments = $this->request->getArguments();
         $cleanupMode = $arguments['cleanupMode'];
+        $srcController = $arguments['srcController'] ?: 'Cleanup';
         $pageUid = (int)$arguments['pageUid'];
 
 
@@ -171,7 +172,7 @@ class CleanupController extends ActionController
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
 
         // redirect to index
-        $this->redirect('index', 'Cleanup', 'CtypeManager', ['pageUid' => $pageUid]);
+        $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $pageUid]);
     }
 
     /**
