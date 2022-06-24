@@ -84,7 +84,7 @@
               <source>Oops</source>
           </trans-unit>
           <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext">
-              <source>A cleanup mode was missing, please select a mode to clean up.</source>
+              <source>A cleanup mode is missing. Please select a mode to clean up.</source>
           </trans-unit>
 
           <!-- APPROVAL -->
