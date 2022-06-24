@@ -3,7 +3,9 @@
 # TYPO3 Extension "CType Manager"
 
 ## Features
-- Backend module for ctype configuration for the current page
+- Backend module to
+  - configure ctypes per page 
+  - configure list type per page
 
 If you want advanced or more specific content element configuration, you might take a look at the [Content Defender extension.](https://extensions.typo3.org/extension/content_defender)
 
