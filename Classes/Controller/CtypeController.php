@@ -199,51 +199,48 @@ class CtypeController extends ActionController
             $tsConfig[] = '### START ' . self::CONFIG_ID;
             $tsConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove';
 
-            // CType tsconfig
-            if ($ctypesDiffer) {
-                // unset existing removeItems configuration
-                $tsConfig[] = 'TCEFORM.tt_content.CType.removeItems >';
+            // CTYPE
+            // unset existing removeItems configuration
+            $tsConfig[] = 'TCEFORM.tt_content.CType.removeItems >';
 
-                // build keep ctype configuration
-                $ctypeConfiguration = 'TCEFORM.tt_content.CType.keepItems';
-                $tsConfig[] = empty($enabledCtypes) ? $ctypeConfiguration . ' = none' : $ctypeConfiguration . ' = ' . implode(',', $enabledCtypes);
+            // build keep ctype configuration
+            $ctypeConfiguration = 'TCEFORM.tt_content.CType.keepItems';
+            $tsConfig[] = empty($enabledCtypes) ? $ctypeConfiguration . ' = none' : $ctypeConfiguration . ' = ' . implode(',', $enabledCtypes);
+
+
+            // LIST_TYPE
+            // unset existing removeItems configuration
+            $tsConfig[] = 'TCEFORM.tt_content.list_type.removeItems >';
+
+            // build keep list_type configuration
+            $listTypeConfiguration = 'TCEFORM.tt_content.list_type.keepItems';
+            $tsConfig[] = empty($enabledListTypes) ? $listTypeConfiguration . ' = none' : $listTypeConfiguration . ' = ' . implode(',', $enabledListTypes);
+
+            // get all available wizard items of current root
+            $wizardConfiguration = ListTypeUtility::getWizardItems(GeneralUtility::getRootPageId($pageUid));
+
+            // store all list types to remove from wizard for each group
+            $listTypeRemovals = [];
+
+            // loop through every wizard group
+            foreach ($wizardConfiguration as $wizardElement) {
+                ['identifier' => $identifier, 'list_type' => $listType, 'group' => $group, 'label' => $label] = $wizardElement;
+
+                // check if wizard item has a group and is not listed in enabled list types
+                if (!empty($group) && !in_array($listType, $enabledListTypes, true)) {
+
+                    // clear wizard item configuration
+                    $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.elements.' . $identifier . ' >';
+
+                    // add item to removal storage
+                    $listTypeRemovals[$group][] = $identifier;
+                }
             }
 
-            // list_type tsconfig
-            if ($listTypesDiffer) {
-                // unset existing removeItems configuration
-                $tsConfig[] = 'TCEFORM.tt_content.list_type.removeItems >';
-
-                // build keep list_type configuration
-                $listTypeConfiguration = 'TCEFORM.tt_content.list_type.keepItems';
-                $tsConfig[] = empty($enabledListTypes) ? $listTypeConfiguration . ' = none' : $listTypeConfiguration . ' = ' . implode(',', $enabledListTypes);
-
-                // get all available wizard items of current root
-                $wizardConfiguration = ListTypeUtility::getWizardItems(GeneralUtility::getRootPageId($pageUid));
-
-                // store all list types to remove from wizard for each group
-                $listTypeRemovals = [];
-
-                // loop through every wizard group
-                foreach ($wizardConfiguration as $wizardElement) {
-                    ['identifier' => $identifier, 'list_type' => $listType, 'group' => $group, 'label' => $label] = $wizardElement;
-
-                    // check if wizard item has a group and is not listed in enabled list types
-                    if (!empty($group) && !in_array($listType, $enabledListTypes, true)) {
-
-                        // clear wizard item configuration
-                        $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.elements.' . $identifier . ' >';
-
-                        // add item to removal storage
-                        $listTypeRemovals[$group][] = $identifier;
-                    }
-                }
-
-                // adjust "show" configuration for each group, if needed
-                if (!empty($listTypeRemovals)) {
-                    foreach ($listTypeRemovals as $group => $listTypesToRemove) {
-                        $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
-                    }
+            // adjust "show" configuration for each group, if needed
+            if (!empty($listTypeRemovals)) {
+                foreach ($listTypeRemovals as $group => $listTypesToRemove) {
+                    $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
                 }
             }
 

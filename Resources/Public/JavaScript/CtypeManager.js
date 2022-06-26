@@ -18,7 +18,7 @@ define([
             $(this).prop('checked', !currentState)
 
             // toggle element state
-            CtypeManager.setButtonState(this)
+            CtypeManager.setElementState(this)
         });
 
         CtypeManager.update()
@@ -27,7 +27,7 @@ define([
     CtypeManager.update = function (element) {
 
         // toggle element state
-        CtypeManager.setButtonState(element)
+        CtypeManager.setElementState(element)
 
         $('.js-btn-switch').each(function(){
             let state = true
