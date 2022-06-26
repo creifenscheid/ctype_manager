@@ -169,7 +169,7 @@ class CleanupController extends ActionController
         $this->configurationService->persist();
 
         $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message';
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
+        $this->addMessage($messagePrefix,FlashMessage::OK);
 
         // redirect to index
         $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $pageUid]);
@@ -203,16 +203,14 @@ class CleanupController extends ActionController
      * Function to add a flash message based on the given message prefix
      *
      * @param string $messagePrefix
+     * @param int $type
      *
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
-    private function addMessage(string $messagePrefix) : void
+    private function addMessage(string $messagePrefix, int $type) : void
     {
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::ERROR);
-
-        // redirect to index
-        $this->redirect('index', 'Cleanup');
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . $type), $type);
     }
 
     /**
@@ -226,12 +224,18 @@ class CleanupController extends ActionController
     {
         if (!$this->request->hasArgument('pageUid')) {
             $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message.error.pageuid';
-            $this->addMessage($messagePrefix);
+            $this->addMessage($messagePrefix,FlashMessage::ERROR);
+            
+            // redirect to index
+            $this->redirect('index', 'Cleanup');
         }
 
         if (!$this->request->hasArgument('cleanupMode')) {
             $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message.error.cleanupMode';
-            $this->addMessage($messagePrefix);
+            $this->addMessage($messagePrefix,FlashMessage::ERROR);
+            
+            // redirect to index
+            $this->redirect('index', 'Cleanup');
         }
 
         return true;

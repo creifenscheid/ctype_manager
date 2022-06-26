@@ -17,11 +17,8 @@ define([
         $('.' + targetId).each(function(){
             $(this).prop('checked', !currentState)
 
-            if (currentState) {
-                $(this).parent().removeClass('enabled-ctype')
-            } else {
-                $(this).parent().addClass('enabled-ctype')
-            }
+            // toggle element state
+            CtypeManager.setElementState(this)
         });
 
         CtypeManager.update()
@@ -29,13 +26,8 @@ define([
     
     CtypeManager.update = function (element) {
 
-        if ($(element).prop('checked') === false) {
-            $(this).parent().removeClass('enabled-ctype')
-        } else {
-            $(this).parent().addClass('enabled-ctype')
-        }
-
-        $(element).parent().toggleClass('enabled-ctype')
+        // toggle element state
+        CtypeManager.setElementState(element)
 
         $('.js-btn-switch').each(function(){
             let state = true
@@ -59,6 +51,14 @@ define([
         } else {
             button.attr('aria-pressed', 'false')
             button.removeClass('on')
+        }
+    }
+    
+    CtypeManager.setElementState = function (element) {
+        if ($(element).prop('checked')) {
+            $(element).parent().addClass('enabled-ctype')
+        } else {
+            $(element).parent().removeClass('enabled-ctype')
         }
     }
 
