@@ -7,7 +7,8 @@
     <div class="ctype_manager-be-module">
         <div class="container">
             <div class="row">
-                <h1><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.header" /></h1>
+                <f:variable name="header" value="{f:translate(key:'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.cleanup')}" />
+                <h1><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.header" arguments="{0:header}" /></h1>
                 <p><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.bodytext" /></p>
 
                 <f:form id="ctype-cleanup" action="approval" controller="Cleanup" method="post" enctype="multipart/form-data">

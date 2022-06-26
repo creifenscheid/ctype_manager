@@ -3,11 +3,14 @@
    <file source-language="en" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="theme">
       <header/>
       <body>
-          <!-- GENERAL--> 
-          <trans-unit id="message.error.header" resname="message.error.header">
+          <!-- GENERAL-->
+          <trans-unit id="section.header" resname="section.header">
+              <source>%s | CType Manager</source>
+          </trans-unit>
+          <trans-unit id="message.header.2" resname="message.header.2">
               <source>Oops</source>
           </trans-unit>
-          <trans-unit id="message.header" resname="message.header">
+          <trans-unit id="message.header.0" resname="message.header.0">
                <source>OK</source>
           </trans-unit>
           
@@ -16,15 +19,23 @@
                <source>Unassigned</source>
           </trans-unit>
           
+          <!-- SECTIONS -->
+          <trans-unit id="section.index" resname="section.index">
+               <source>Page "%s"</source>
+          </trans-unit>
+          <trans-unit id="section.cleanup" resname="section.cleanup">
+               <source>Cleanup</source>
+          </trans-unit>
+          <trans-unit id="section.overview" resname="section.cleanup">
+               <source>Overview</source>
+          </trans-unit>
+          
           <!-- INDEX -->
           <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
                <source>CType Manager</source>
           </trans-unit>
           <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
                <source>CType Manager</source>
-          </trans-unit>
-          <trans-unit id="index.header" resname="index.header">
-               <source>Page "%s" | CType Manager</source>
           </trans-unit>
           <trans-unit id="index.bodytext" resname="index.bodytext">
                <source>Choose all content types, which shall be available on this page and it's children.</source>
@@ -36,7 +47,7 @@
                <source>Save</source>
           </trans-unit>
           <trans-unit id="index.message.bodytext" resname="index.message.bodytext">
-               <source>CType manager configuration has been saved.</source>
+               <source>CType Manager configuration has been saved.</source>
           </trans-unit>
           <trans-unit id="index.switch.label" resname="index.switch.label">
                <source>Enable all</source>
@@ -52,12 +63,6 @@
           </trans-unit>
 
           <!-- CLEANUP -->
-          <trans-unit id="cleanup.navigation" resname="cleanup.navigation">
-              <source>Cleanup</source>
-          </trans-unit>
-          <trans-unit id="cleanup.header" resname="cleanup.headline">
-               <source>Cleanup</source>
-          </trans-unit>
           <trans-unit id="cleanup.bodytext" resname="cleanup.bodytext">
                <source>Remove the configurations made by the CType Manager.</source>
           </trans-unit>
@@ -68,10 +73,10 @@
               <source>Current page: %s [%s]</source>
           </trans-unit>
           <trans-unit id="cleanup.mode.rootline" resname="cleanup.mode.rootline">
-              <source>Root line</source>
+              <source>Rootline</source>
           </trans-unit>
           <trans-unit id="cleanup.mode.rootpage" resname="cleanup.mode.rootpage">
-              <source>Root page</source>
+              <source>Rootpage</source>
           </trans-unit>
           <trans-unit id="cleanup.mode.all" resname="cleanup.mode.all">
               <source>All (this affects ALL pages and might take some time!)</source>
@@ -100,18 +105,12 @@
               <source>No, abort!</source>
           </trans-unit>
           <trans-unit id="cleanup.message.bodytext" resname="cleanup.message.bodytext">
-               <source>CType manager configuration has been removed.</source>
+               <source>CType Manager configuration has been removed.</source>
           </trans-unit>
 
           <!-- OVERVIEW -->
-          <trans-unit id="overview.navigation" resname="overview.navigation">
-              <source>Overview</source>
-          </trans-unit>
-          <trans-unit id="overview.headline" resname="overview.headline">
-              <source>Overview | CType manager</source>
-          </trans-unit>
           <trans-unit id="overview.bodytext" resname="overview.bodytext">
-              <source>The following pages have been configured with the CType manager.</source>
+              <source>The following pages have been configured with the CType Manager.</source>
           </trans-unit>
           <trans-unit id="overview.bodytext.noPages" resname="overview.bodytext.noPages">
               <source>There are currently no pages configured with the CType Manager.</source>

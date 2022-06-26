@@ -10,7 +10,8 @@
                 
                 <f:if condition="{page.title}">
                     <f:then>
-                        <f:variable name="header" value="{f:translate(key:'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.header',arguments:{0:page.title})}" />
+                        <f:variable name="header" value="{f:translate(key:'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.index',arguments:{0:page.title})}" />
+                        <f:variable name="header" value="{f:translate(key:'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.header',arguments:{0:header})}" />
                     </f:then>
                     <f:else>
                         <f:variable name="header" value="{f:translate(key:'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab')}" />

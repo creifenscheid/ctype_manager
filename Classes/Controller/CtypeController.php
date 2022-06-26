@@ -258,7 +258,7 @@ class CtypeController extends ActionController
         }
 
         $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.message';
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate($messagePrefix . '.header'), FlashMessage::OK, true);
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . FlashMessage::OK), FlashMessage::OK, true);
 
         // redirect to index
         $this->redirect('index', 'Ctype', 'CtypeManager', ['pageUid' => $pageUid]);
