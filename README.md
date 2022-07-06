@@ -4,8 +4,8 @@
 
 ## Features
 - Backend module to
-  - configure ctypes per page 
-  - configure list type per page
+  - configure available content types on page level
+  - configure available plugin types on page level
 
 If you want advanced or more specific content element configuration, you might take a look at the [Content Defender extension.](https://extensions.typo3.org/extension/content_defender)
 
