@@ -27,7 +27,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'CType Manager',
-    'description' => 'Backend module for CType configuration on page level',
+    'description' => 'This TYPO3 extension implements a backend module through which available content and plugin types can be configured, on the page level.',
     'category' => 'be',
     'author' => 'C. Reifenscheid',
     'version' => '11.4.0',
