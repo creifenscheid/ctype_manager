@@ -30,7 +30,7 @@ namespace CReifenscheid\CtypeManager\Utility;
 /**
  * Class CTypeUtility
  *
- * @package \CReifenscheid\CtypeManager\Utility\
+ * @package \CReifenscheid\CtypeManager\Utility
  */
 class CTypeUtility
 {

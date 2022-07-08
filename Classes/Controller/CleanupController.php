@@ -38,7 +38,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * Class CtypeController
  *
- * @package \CReifenscheid\CtypeManager\Controller\
+ * @package \CReifenscheid\CtypeManager\Controller
  */
 class CleanupController extends ActionController
 {

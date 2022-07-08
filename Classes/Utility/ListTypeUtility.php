@@ -33,7 +33,7 @@ use function array_key_exists;
 /**
  * Class ListTypeUtility
  *
- * @package \CReifenscheid\CtypeManager\Utility\
+ * @package \CReifenscheid\CtypeManager\Utility
  */
 class ListTypeUtility
 {

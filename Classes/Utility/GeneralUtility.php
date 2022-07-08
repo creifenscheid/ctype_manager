@@ -37,7 +37,7 @@ use function array_key_exists;
 /**
  * Class GeneralUtility
  *
- * @package \CReifenscheid\CtypeManager\Utility\
+ * @package \CReifenscheid\CtypeManager\Utility
  */
 class GeneralUtility
 {

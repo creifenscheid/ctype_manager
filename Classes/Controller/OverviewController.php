@@ -36,7 +36,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 /**
  * Class OverviewController
  *
- * @package \CReifenscheid\CtypeManager\Controller\
+ * @package \CReifenscheid\CtypeManager\Controller
  */
 class OverviewController extends ActionController
 {

@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class ConfigurationService
  *
- * @package \CReifenscheid\CtypeManager\Service\
+ * @package \CReifenscheid\CtypeManager\Service
  */
 class ConfigurationService implements SingletonInterface
 {

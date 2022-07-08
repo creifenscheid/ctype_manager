@@ -40,7 +40,7 @@ use function count;
 /**
  * Class CtypeController
  *
- * @package \CReifenscheid\CtypeManager\Controller\
+ * @package \CReifenscheid\CtypeManager\Controller
  */
 class CtypeController extends ActionController
 {
