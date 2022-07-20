@@ -4,17 +4,17 @@
     <header/>
     <body>
       <!-- GENERAL-->
-      <trans-unit id="section.header" resname="section.header">
+      <trans-unit id="section.header" resname="section.header" approved="yes">
         <source>%s | CType Manager</source>
-        <target state="translated">%s | CType Manager</target>
+        <target state="final">%s | CType Manager</target>
       </trans-unit>
-      <trans-unit id="message.header.2" resname="message.header.2">
+      <trans-unit id="message.header.2" resname="message.header.2" approved="yes">
         <source>Oops</source>
-        <target state="translated">Ups</target>
+        <target state="final">Ups</target>
       </trans-unit>
-      <trans-unit id="message.header.0" resname="message.header.0">
+      <trans-unit id="message.header.0" resname="message.header.0" approved="yes">
         <source>OK</source>
-        <target state="translated">OK</target>
+        <target state="final">OK</target>
       </trans-unit>
       <!-- FALLBACK -->
       <trans-unit id="group.unassigned" resname="group.unassigned" approved="yes">
@@ -22,17 +22,17 @@
         <target state="final">Nicht zugewiesen</target>
       </trans-unit>
       <!-- SECTIONS -->
-      <trans-unit id="section.index" resname="section.index">
+      <trans-unit id="section.index" resname="section.index" approved="yes">
         <source>Page "%s"</source>
-        <target state="translated">Seite "%s"</target>
+        <target state="final">Seite "%s"</target>
       </trans-unit>
-      <trans-unit id="section.cleanup" resname="section.cleanup">
+      <trans-unit id="section.cleanup" resname="section.cleanup" approved="yes">
         <source>Cleanup</source>
-        <target state="translated">Bereinigen</target>
+        <target state="final">Bereinigen</target>
       </trans-unit>
-      <trans-unit id="section.overview" resname="section.cleanup">
+      <trans-unit id="section.overview" resname="section.cleanup" approved="yes">
         <source>Overview</source>
-        <target state="translated">Übersicht</target>
+        <target state="final">Übersicht</target>
       </trans-unit>
       <!-- INDEX -->
       <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
@@ -55,9 +55,9 @@
         <source>Save</source>
         <target state="final">Speichern</target>
       </trans-unit>
-      <trans-unit id="index.message.bodytext" resname="index.message.bodytext">
+      <trans-unit id="index.message.bodytext" resname="index.message.bodytext" approved="yes">
         <source>CType Manager configuration has been saved.</source>
-        <target state="translated">Die Konfiguration des CType Managers wurde gespeichert.</target>
+        <target state="final">Die Konfiguration des CType Managers wurde gespeichert.</target>
       </trans-unit>
       <trans-unit id="index.switch.label" resname="index.switch.label" approved="yes">
         <source>Enable all</source>
@@ -88,13 +88,13 @@
         <source>Current page: %s [%s]</source>
         <target state="final">Aktuelle Seite: %s [%s]</target>
       </trans-unit>
-      <trans-unit id="cleanup.mode.rootline" resname="cleanup.mode.rootline">
+      <trans-unit id="cleanup.mode.rootline" resname="cleanup.mode.rootline" approved="yes">
         <source>Rootline</source>
-        <target state="translated">Rootline</target>
+        <target state="final">Rootline</target>
       </trans-unit>
-      <trans-unit id="cleanup.mode.rootpage" resname="cleanup.mode.rootpage">
+      <trans-unit id="cleanup.mode.rootpage" resname="cleanup.mode.rootpage" approved="yes">
         <source>Rootpage</source>
-        <target state="translated">Rootpage</target>
+        <target state="final">Rootpage</target>
       </trans-unit>
       <trans-unit id="cleanup.mode.all" resname="cleanup.mode.all" approved="yes">
         <source>All (this affects ALL pages and might take some time!)</source>
@@ -104,13 +104,13 @@
         <source>Clean up</source>
         <target state="final">Bereinigen</target>
       </trans-unit>
-      <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext">
+      <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext" approved="yes">
         <source>A page uid is missing. Please select a page in the page tree and try again.</source>
-        <target state="translated">Eine Seiten-ID fehlt. Bitte wählen Sie eine Seite im Seitenbaum und versuchen Sie es erneut.</target>
+        <target state="final">Eine Seiten-ID fehlt. Bitte wählen Sie eine Seite im Seitenbaum und versuchen Sie es erneut.</target>
       </trans-unit>
-      <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext">
+      <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext" approved="yes">
         <source>A cleanup mode is missing. Please select a mode to clean up.</source>
-        <target state="translated">Ein Bereinigungsmodus fehlt. Bitte wählen Sie einen Modus zum Bereinigen aus.</target>
+        <target state="final">Ein Bereinigungsmodus fehlt. Bitte wählen Sie einen Modus zum Bereinigen aus.</target>
       </trans-unit>
       <!-- APPROVAL -->
       <trans-unit id="cleanup.approval.headline" resname="cleanup.approval.headline" approved="yes">
@@ -129,18 +129,18 @@
         <source>No, abort!</source>
         <target state="final">Nein, abbrechen!</target>
       </trans-unit>
-      <trans-unit id="cleanup.message.bodytext" resname="cleanup.message.bodytext">
+      <trans-unit id="cleanup.message.bodytext" resname="cleanup.message.bodytext" approved="yes">
         <source>CType Manager configuration has been removed.</source>
-        <target state="translated">Die Konfiguration des CType Managers wurde entfernt.</target>
+        <target state="final">Die Konfiguration des CType Managers wurde entfernt.</target>
       </trans-unit>
       <!-- OVERVIEW -->
-      <trans-unit id="overview.bodytext" resname="overview.bodytext">
+      <trans-unit id="overview.bodytext" resname="overview.bodytext" approved="yes">
         <source>The following pages have been configured with the CType Manager.</source>
-        <target state="translated">Die folgenden Seiten wurden mit dem CType Manager konfiguriert.</target>
+        <target state="final">Die folgenden Seiten wurden mit dem CType Manager konfiguriert.</target>
       </trans-unit>
-      <trans-unit id="overview.bodytext.noPages" resname="overview.bodytext.noPages">
+      <trans-unit id="overview.bodytext.noPages" resname="overview.bodytext.noPages" approved="yes">
         <source>There are currently no pages configured with the CType Manager.</source>
-        <target state="translated">Derzeit sind keine Seiten mit dem CType Manager konfiguriert.</target>
+        <target state="final">Derzeit sind keine Seiten mit dem CType Manager konfiguriert.</target>
       </trans-unit>
       <trans-unit id="overview.table.head.page" resname="overview.table.head.page" approved="yes">
         <source>Page</source>
@@ -150,9 +150,9 @@
         <source>Allowed CTypes</source>
         <target state="final">Erlaubte Inhaltselemente</target>
       </trans-unit>
-      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
+      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes" approved="yes">
         <source>Allowed plugins</source>
-        <target state="needs-translation">Allowed plugins</target>
+        <target state="final">Erlaubte Plugins</target>
       </trans-unit>
       <trans-unit id="overview.noRestrictions" resname="overview.noRestrictions" approved="yes">
         <source>No restrictions</source>
