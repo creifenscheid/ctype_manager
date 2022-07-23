@@ -96,9 +96,6 @@ class ListTypeUtility
      */
     private static function resolveListTypeConfiguration(string $identifier, array $configuration) : ?array
     {
-        /**
-         * @SeppToDo: Here is something wrong: it is possible that nothing is returned or elements are missing, if TSConfig is set on this page.
-         */
         $configuredListType = GeneralUtility::getArrayKeyValue($configuration, 'tt_content_defValues.list_type');
         if (!empty($configuredListType)) {
             // build list type information
