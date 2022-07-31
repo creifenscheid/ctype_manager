@@ -223,17 +223,19 @@ class CtypeController extends ActionController
             $listTypeRemovals = [];
 
             // loop through every wizard group
-            foreach ($wizardConfiguration as $wizardElement) {
-                ['identifier' => $identifier, 'list_type' => $listType, 'group' => $group, 'label' => $label] = $wizardElement;
+            if ($wizardConfiguration) {
+                foreach ($wizardConfiguration as $wizardElement) {
+                    ['identifier' => $identifier, 'list_type' => $listType, 'group' => $group, 'label' => $label] = $wizardElement;
 
-                // check if wizard item has a group and is not listed in enabled list types
-                if (!empty($group) && !in_array($listType, $enabledListTypes, true)) {
+                    // check if wizard item has a group and is not listed in enabled list types
+                    if (!empty($group) && !in_array($listType, $enabledListTypes, true)) {
 
-                    // clear wizard item configuration
-                    $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.elements.' . $identifier . ' >';
+                        // clear wizard item configuration
+                        $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.elements.' . $identifier . ' >';
 
-                    // add item to removal storage
-                    $listTypeRemovals[$group][] = $identifier;
+                        // add item to removal storage
+                        $listTypeRemovals[$group][] = $identifier;
+                    }
                 }
             }
 
