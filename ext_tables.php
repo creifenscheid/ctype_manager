@@ -6,9 +6,9 @@ defined('TYPO3_MODE') or die();
     
     // BACKEND MODULE
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'CtypeManager',
+        ucfirst(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($extKey)),
         'web',
-        'ctype_manager',
+        $extKey,
         'bottom',
         [
             \CReifenscheid\CtypeManager\Controller\CtypeController::class => 'index,submit',
@@ -18,7 +18,7 @@ defined('TYPO3_MODE') or die();
         [
             'access' => 'admin',
             'iconIdentifier' => 'ctype-manager-extension',
-            'labels' => 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf',
+            'labels' => 'LLL:EXT:' . $extKey . '/Resources/Private/Language/locallang_mod.xlf',
             'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
             'inheritNavigationComponentFromMainModule' => false,
         ]
