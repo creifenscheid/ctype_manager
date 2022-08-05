@@ -4,7 +4,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2022 C. Reifenscheid
+ *  (c) 2022 Christian Reifenscheid
  *
  *  All rights reserved
  *
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'CType Manager',
     'description' => 'This TYPO3 extension implements a backend module through which available content and plugin types can be configured on page level.',
     'category' => 'be',
-    'author' => 'C. Reifenscheid',
+    'author' => 'Christian Reifenscheid',
     'version' => '11.4.2',
     'state' => 'beta',
     'constraints' => [

@@ -12,7 +12,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  *
  *  Copyright notice
  *
- *  (c) 2022 C. Reifenscheid
+ *  (c) 2022 Christian Reifenscheid
  *
  *  All rights reserved
  *

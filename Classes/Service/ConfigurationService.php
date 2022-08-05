@@ -11,7 +11,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  *  Copyright notice
  *
- *  (c) 2022 C. Reifenscheid
+ *  (c) 2022 Christian Reifenscheid
  *
  *  All rights reserved
  *

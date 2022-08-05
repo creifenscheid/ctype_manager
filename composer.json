@@ -21,7 +21,7 @@
     },
 	"minimum-stability" : "beta",
 	"authors" : [{
-			"name" : "C. Reifenscheid",
+			"name" : "Christian Reifenscheid",
 			"email" : "dev@christian-reifenscheid.de"
 		}
 	],
