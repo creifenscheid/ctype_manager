@@ -19,7 +19,7 @@
     "replace": {
         "typo3-ter/ctype-manager": "self.version"
     },
-	"minimum-stability" : "beta",
+	"minimum-stability" : "stable",
 	"authors" : [{
 			"name" : "Christian Reifenscheid",
 			"email" : "dev@christian-reifenscheid.de"
