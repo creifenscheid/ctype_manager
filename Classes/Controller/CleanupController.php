@@ -46,7 +46,7 @@ class CleanupController extends ActionController
      * Configuration l10n base
      */
     private const L10N = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:';
-    
+
     /**
      * Page repository
      *
@@ -128,7 +128,7 @@ class CleanupController extends ActionController
         // get request arguments
         $arguments = $this->request->getArguments();
         $cleanupMode = $arguments['cleanupMode'];
-        $srcController = $arguments['srcController'] ?: 'Cleanup';
+        $srcController = $arguments['srcController'] ? : 'Cleanup';
         $pageUid = (int)$arguments['pageUid'];
 
 
@@ -161,13 +161,16 @@ class CleanupController extends ActionController
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
                 $result = $queryBuilder
                     ->select('uid')
-                    ->from($tableToQuery) 
+                    ->from($tableToQuery)
+                    ->where(
+                        $queryBuilder->expr()->like('TSconfig', $queryBuilder->createNamedParameter('%' . $this->configurationService::CONFIG_ID . '%')),
+                    )
                     ->executeQuery();
-                    // @SeppTodo implement where like to shorten the result
 
                 while ($row = $result->fetchAssociative()) {
                     $this->configurationService->removeConfiguration($row['uid']);
                 }
+
                 break;
         }
 
@@ -175,7 +178,7 @@ class CleanupController extends ActionController
         $this->configurationService->persist();
 
         $messagePrefix = self::L10N . 'cleanup.message';
-        $this->addMessage($messagePrefix,FlashMessage::OK);
+        $this->addMessage($messagePrefix, FlashMessage::OK);
 
         // redirect to index
         $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $pageUid]);
@@ -209,7 +212,7 @@ class CleanupController extends ActionController
      * Function to add a flash message based on the given message prefix
      *
      * @param string $messagePrefix
-     * @param int $type
+     * @param int    $type
      *
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
@@ -230,16 +233,16 @@ class CleanupController extends ActionController
     {
         if (!$this->request->hasArgument('pageUid')) {
             $messagePrefix = self::L10N . 'cleanup.message.error.pageuid';
-            $this->addMessage($messagePrefix,FlashMessage::ERROR);
-            
+            $this->addMessage($messagePrefix, FlashMessage::ERROR);
+
             // redirect to index
             $this->redirect('index', 'Cleanup');
         }
 
         if (!$this->request->hasArgument('cleanupMode')) {
             $messagePrefix = self::L10N . 'cleanup.message.error.cleanupMode';
-            $this->addMessage($messagePrefix,FlashMessage::ERROR);
-            
+            $this->addMessage($messagePrefix, FlashMessage::ERROR);
+
             // redirect to index
             $this->redirect('index', 'Cleanup');
         }

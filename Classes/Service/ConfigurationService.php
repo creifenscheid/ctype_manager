@@ -41,7 +41,7 @@ class ConfigurationService implements SingletonInterface
     /**
      * Configuration identifier
      */
-    private const CONFIG_ID = 'ctype-manager';
+    public const CONFIG_ID = 'ctype-manager';
 
     /**
      * Data handler
