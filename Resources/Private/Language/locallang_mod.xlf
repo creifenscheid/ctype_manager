@@ -127,6 +127,9 @@
           <trans-unit id="overview.noRestrictions" resname="overview.noRestrictions">
               <source>No restrictions</source>
           </trans-unit>
+          <trans-unit id="overview.none" resname="overview.none">
+              <source>None</source>
+          </trans-unit>
           <trans-unit id="overview.toolbar.edit.label" resname="overview.toolbar.edit.label">
               <source>Edit CType configuration of page "%s".</source>
           </trans-unit>

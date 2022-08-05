@@ -40,31 +40,39 @@
                                             {page.title} [{page.uid}]
                                         </td>
                                         <td>
-                                            <f:if condition="{page.allowedCTypes} == '*'">
-                                                <f:then>
+                                            <f:switch expression="{page.allowedCTypes}">
+                                                <f:case value="*">
                                                     <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.noRestrictions" />
-                                                </f:then>
-                                                <f:else>
+                                                </f:case>
+                                                <f:case value="none">
+                                                    <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.none" />
+                                                </f:case>
+                                                <f:defaultCase>
                                                     <ul>
                                                         <f:for each="{page.allowedCTypes}" as="ctype">
                                                             <li>{ctype}</li>
                                                         </f:for>
                                                     </ul>
-                                                </f:else>
-                                            </f:if>
+                                                </f:defaultCase>
+                                            </f:switch>
                                         </td>
                                         <td>
-                                            <f:if condition="{page.allowedListTypes} == '*'">
-                                                <f:then>
-                                                    <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.noRestrictions" />
-                                                </f:then>
-                                                <f:else>
-                                                    <ul>
-                                                        <f:for each="{page.allowedListTypes}" as="listType">
-                                                            <li>{listType}</li>
-                                                        </f:for>
-                                                    </ul>
-                                                </f:else>
+                                            <f:if condition="{page.allowedCTypes.list}">
+                                                <f:switch expression="{page.allowedListTypes}">
+                                                    <f:case value="*">
+                                                        <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.noRestrictions" />
+                                                    </f:case>
+                                                    <f:case value="none">
+                                                        <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.none" />
+                                                    </f:case>
+                                                    <f:defaultCase>
+                                                        <ul>
+                                                            <f:for each="{page.allowedListTypes}" as="listType">
+                                                                <li>{listType}</li>
+                                                            </f:for>
+                                                        </ul>
+                                                    </f:defaultCase>
+                                                </f:switch>
                                             </f:if>
                                         </td>
                                         <td>

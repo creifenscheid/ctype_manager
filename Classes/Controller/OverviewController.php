@@ -61,9 +61,13 @@ class OverviewController extends ActionController
             $cTypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'CType');
             if (!empty($cTypeConfiguration)) {
                 $allowedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($cTypeConfiguration);
-
                 foreach ($allowedCTypes as $allowedCType) {
-                    $page['allowedCTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(CTypeUtility::getItems(), $allowedCType);
+                    if($allowedCType === 'none') {
+                        $page['allowedCTypes'] = 'none';
+                        break;
+                    } else {
+                        $page['allowedCTypes'][$allowedCType] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(CTypeUtility::getItems(), $allowedCType);
+                    }
                 }
             } else {
                 $page['allowedCTypes'] = '*';
@@ -75,7 +79,12 @@ class OverviewController extends ActionController
                 $allowedListTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($listTypeConfiguration);
 
                 foreach ($allowedListTypes as $allowedListType) {
-                    $page['allowedListTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(ListTypeUtility::getItems(), $allowedListType);
+                    if($allowedListType === 'none') {
+                        $page['allowedListTypes'] = 'none';
+                        break;
+                    } else {
+                        $page['allowedListTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(ListTypeUtility::getItems(), $allowedListType);
+                    }
                 }
             } else {
                 $page['allowedListTypes'] = '*';
