@@ -43,6 +43,11 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class CleanupController extends ActionController
 {
     /**
+     * Configuration l10n base
+     */
+    private const L10N = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:';
+    
+    /**
      * Page repository
      *
      * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
@@ -65,7 +70,7 @@ class CleanupController extends ActionController
      */
     public function indexAction() : void
     {
-        // get the current page from request
+        // get the current page is from the request
         if ($this->request->hasArgument('pageUid')) {
             $pageUid = (int)$this->request->getArgument('pageUid');
         } else {
@@ -94,6 +99,8 @@ class CleanupController extends ActionController
         $arguments = $this->request->getArguments();
         $assignments['cleanupMode'] = $arguments['cleanupMode'];
         $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage((int)$arguments['pageUid']);
+        
+        // @SeppTodo: arguments['srcController'] ?: 'Cleanup'
 
         if ($this->request->hasArgument('srcController')) {
             $assignments['srcController'] = $this->request->getArgument('srcController');
@@ -156,8 +163,9 @@ class CleanupController extends ActionController
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
                 $result = $queryBuilder
                     ->select('uid')
-                    ->from($tableToQuery)
+                    ->from($tableToQuery) 
                     ->executeQuery();
+                    // @SeppTodo implement where like to shorten the result
 
                 while ($row = $result->fetchAssociative()) {
                     $this->configurationService->removeConfiguration($row['uid']);
@@ -168,7 +176,7 @@ class CleanupController extends ActionController
         // persist changes
         $this->configurationService->persist();
 
-        $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message';
+        $messagePrefix = self::L10N . 'cleanup.message';
         $this->addMessage($messagePrefix,FlashMessage::OK);
 
         // redirect to index
@@ -210,7 +218,7 @@ class CleanupController extends ActionController
      */
     private function addMessage(string $messagePrefix, int $type) : void
     {
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . $type), $type);
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate(self::L10N . 'message.header.' . $type), $type);
     }
 
     /**
@@ -223,7 +231,7 @@ class CleanupController extends ActionController
     private function checkRequestArguments() : bool
     {
         if (!$this->request->hasArgument('pageUid')) {
-            $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message.error.pageuid';
+            $messagePrefix = self::L10N . 'cleanup.message.error.pageuid';
             $this->addMessage($messagePrefix,FlashMessage::ERROR);
             
             // redirect to index
@@ -231,7 +239,7 @@ class CleanupController extends ActionController
         }
 
         if (!$this->request->hasArgument('cleanupMode')) {
-            $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.message.error.cleanupMode';
+            $messagePrefix = self::L10N . 'cleanup.message.error.cleanupMode';
             $this->addMessage($messagePrefix,FlashMessage::ERROR);
             
             // redirect to index

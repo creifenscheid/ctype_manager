@@ -101,8 +101,7 @@ class ListTypeUtility
             // build list type information
             $listType = [
                 'identifier' => $identifier,
-                'list_type' => $configuredListType,
-                'group' => $configuredListType
+                'list_type' => $configuredListType
             ];
 
             if (array_key_exists('title', $configuration) && !empty($configuration['title'])) {

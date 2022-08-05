@@ -140,7 +140,7 @@ class GeneralUtility
 
         $pageTSconfig = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId));
 
-        // check for TCEFORM -> tt_content -> CType
+        // check for TCEFORM -> tt_content -> $field
         $configuration = self::getArrayKeyValue($pageTSconfig, 'TCEFORM.tt_content.' . $field);
         if (!empty($configuration)) {
             // check for items to keep
@@ -180,7 +180,7 @@ class GeneralUtility
             $return = false;
         }
 
-        // if no keepItems configuration exists or the current identifier is listed in the configuration - it's active
+        // if no removeItems configuration exists or the current identifier is listed in the keepItems configuration - it's active
         return $return;
     }
 
