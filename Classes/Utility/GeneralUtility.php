@@ -93,7 +93,7 @@ class GeneralUtility
      */
     public static function locate(string $stringToLocate) : string
     {
-        return StringUtility::beginsWith($stringToLocate, 'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
+        return str_starts_with($stringToLocate, 'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
     }
 
     /**
