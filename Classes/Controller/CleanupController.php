@@ -70,7 +70,7 @@ class CleanupController extends ActionController
      */
     public function indexAction() : void
     {
-        // get the current page is from the request
+        // get the current page id from the request
         if ($this->request->hasArgument('pageUid')) {
             $pageUid = (int)$this->request->getArgument('pageUid');
         } else {
@@ -99,8 +99,6 @@ class CleanupController extends ActionController
         $arguments = $this->request->getArguments();
         $assignments['cleanupMode'] = $arguments['cleanupMode'];
         $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage((int)$arguments['pageUid']);
-        
-        // @SeppTodo: arguments['srcController'] ?: 'Cleanup'
 
         if ($this->request->hasArgument('srcController')) {
             $assignments['srcController'] = $this->request->getArgument('srcController');
