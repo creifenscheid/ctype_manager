@@ -158,9 +158,9 @@
         <source>No restrictions</source>
         <target state="final">Keine Beschränkungen</target>
       </trans-unit>
-      <trans-unit id="overview.none" resname="overview.none">
+      <trans-unit id="overview.none" resname="overview.none" approved="yes">
         <source>None</source>
-        <target state="needs-translation">None</target>
+        <target state="final">Keine</target>
       </trans-unit>
       <trans-unit id="overview.toolbar.edit.label" resname="overview.toolbar.edit.label" approved="yes">
         <source>Edit CType configuration of page "%s".</source>
