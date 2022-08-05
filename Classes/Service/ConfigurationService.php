@@ -3,7 +3,6 @@
 namespace CReifenscheid\CtypeManager\Service;
 
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -45,13 +44,6 @@ class ConfigurationService implements SingletonInterface
     private const CONFIG_ID = 'ctype-manager';
 
     /**
-     * Page repository
-     *
-     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
-     */
-    private $pageRepository;
-
-    /**
      * Data handler
      *
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
@@ -70,7 +62,6 @@ class ConfigurationService implements SingletonInterface
      */
     public function __construct()
     {
-        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
     }
 
@@ -115,7 +106,7 @@ class ConfigurationService implements SingletonInterface
         /**
          * PREPARE TSCONFIG
          */
-        $page = $this->pageRepository->getPage($pageUid);
+        $page = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($pageUid);
         $tsConfig = GeneralUtility::trimExplode(PHP_EOL, $page['TSconfig']);
 
         // remove existing ctype_manager configuration
