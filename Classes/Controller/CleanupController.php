@@ -7,7 +7,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
@@ -40,7 +39,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *
  * @package \CReifenscheid\CtypeManager\Controller
  */
-class CleanupController extends ActionController
+class CleanupController extends BaseController
 {
     /**
      * Configuration l10n base

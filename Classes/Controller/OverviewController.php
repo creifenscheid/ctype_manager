@@ -6,7 +6,6 @@ use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /***************************************************************
  *
@@ -38,13 +37,8 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  *
  * @package \CReifenscheid\CtypeManager\Controller
  */
-class OverviewController extends ActionController
+class OverviewController extends BaseController
 {
-    /**
-     * Configuration identifier
-     */
-    private const CONFIG_ID = 'ctype-manager';
-
     /**
      * Index action
      *
@@ -114,7 +108,7 @@ class OverviewController extends ActionController
             ->select('uid', 'title', 'is_siteroot')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->like('TSconfig', '\'%### START ' . self::CONFIG_ID . '%\'')
+                $queryBuilder->expr()->like('TSconfig', '\'%### START ' . parent::CONFIG_ID . '%\'')
             )
             ->execute()->fetchAllAssociative();
     }

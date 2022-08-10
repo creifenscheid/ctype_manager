@@ -7,7 +7,6 @@ use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use function array_key_exists;
 use function count;
@@ -42,13 +41,8 @@ use function count;
  *
  * @package \CReifenscheid\CtypeManager\Controller
  */
-class CtypeController extends ActionController
+class CtypeController extends BaseController
 {
-    /**
-     * Configuration identifier
-     */
-    private const CONFIG_ID = 'ctype-manager';
-
     /**
      * Array of ctypes configured in pageTSConfig
      *
@@ -196,7 +190,7 @@ class CtypeController extends ActionController
         // only write pageTSConfig if the submitted configuration differs from to existing one
         if ($ctypesDiffer || $listTypesDiffer) {
             // define ctype configuration
-            $tsConfig[] = '### START ' . self::CONFIG_ID;
+            $tsConfig[] = '### START ' . parent::CONFIG_ID;
             $tsConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove';
 
             // CTYPE
@@ -246,7 +240,7 @@ class CtypeController extends ActionController
                 }
             }
 
-            $tsConfig[] = '### END ' . self::CONFIG_ID;
+            $tsConfig[] = '### END ' . parent::CONFIG_ID;
 
             /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
             $configurationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
