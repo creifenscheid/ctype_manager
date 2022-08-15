@@ -41,9 +41,6 @@
                                         </td>
                                         <td>
                                             <f:switch expression="{page.allowedCTypes}">
-                                                <f:case value="*">
-                                                    <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.noRestrictions" />
-                                                </f:case>
                                                 <f:case value="none">
                                                     <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.none" />
                                                 </f:case>
@@ -59,9 +56,6 @@
                                         <td>
                                             <f:if condition="{page.allowedCTypes.list}">
                                                 <f:switch expression="{page.allowedListTypes}">
-                                                    <f:case value="*">
-                                                        <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.noRestrictions" />
-                                                    </f:case>
                                                     <f:case value="none">
                                                         <f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:overview.none" />
                                                     </f:case>

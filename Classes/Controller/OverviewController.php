@@ -63,8 +63,6 @@ class OverviewController extends BaseController
                         $page['allowedCTypes'][$allowedCType] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(CTypeUtility::getItems(), $allowedCType);
                     }
                 }
-            } else {
-                $page['allowedCTypes'] = '*';
             }
 
             // List types
@@ -80,8 +78,6 @@ class OverviewController extends BaseController
                         $page['allowedListTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(ListTypeUtility::getItems(), $allowedListType);
                     }
                 }
-            } else {
-                $page['allowedListTypes'] = '*';
             }
 
             $pages[$key] = $page;

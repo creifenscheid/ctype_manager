@@ -124,9 +124,6 @@
           <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
               <source>Allowed plugins</source>
           </trans-unit>
-          <trans-unit id="overview.noRestrictions" resname="overview.noRestrictions">
-              <source>No restrictions</source>
-          </trans-unit>
           <trans-unit id="overview.none" resname="overview.none">
               <source>None</source>
           </trans-unit>
