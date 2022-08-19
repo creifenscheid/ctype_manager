@@ -6,6 +6,7 @@ use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use function array_key_exists;
@@ -60,10 +61,10 @@ class CtypeController extends BaseController
     /**
      * Index action
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function indexAction() : void
+    public function indexAction() : ResponseInterface
     {
         // get the current page from request
         if ($this->request->hasArgument('pageUid')) {
@@ -78,6 +79,10 @@ class CtypeController extends BaseController
             $assignments = [
                 'page' => GeneralUtility::getPage($pageUid)
             ];
+
+            if ($this->request->hasArgument('srcController')) {
+                $assignments['srcController'] = $this->request->getArgument('srcController');
+            }
 
             // resolve page tsconfig for the current page
             $this->resolvePageTSConfig($pageUid);
@@ -158,6 +163,10 @@ class CtypeController extends BaseController
 
             $this->view->assignMultiple($assignments);
         }
+
+        $this->moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -174,6 +183,7 @@ class CtypeController extends BaseController
 
         // get the page uid to store page tsconfig in
         $pageUid = (int)$arguments['pageUid'];
+        $srcController = $arguments['srcController'] ? : 'Ctype';
 
         // get enabled ctypes
         $enabledCtypes = empty($arguments['ctypes']) ? [] : $arguments['ctypes'];
@@ -254,7 +264,7 @@ class CtypeController extends BaseController
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . FlashMessage::OK), FlashMessage::OK, true);
 
         // redirect to index
-        $this->redirect('index', 'Ctype', 'CtypeManager', ['pageUid' => $pageUid]);
+        $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $pageUid]);
     }
 
     /**

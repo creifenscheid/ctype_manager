@@ -4,6 +4,7 @@ namespace CReifenscheid\CtypeManager\Controller;
 
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -42,10 +43,11 @@ class OverviewController extends BaseController
     /**
      * Index action
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
-    public function indexAction() : void
+    public function indexAction() : ResponseInterface
     {
         $pages = $this->getPages();
 
@@ -56,7 +58,7 @@ class OverviewController extends BaseController
             if (!empty($cTypeConfiguration)) {
                 $allowedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($cTypeConfiguration);
                 foreach ($allowedCTypes as $allowedCType) {
-                    if($allowedCType === 'none') {
+                    if ($allowedCType === 'none') {
                         $page['allowedCTypes'] = 'none';
                         break;
                     } else {
@@ -71,12 +73,12 @@ class OverviewController extends BaseController
                 $allowedListTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($listTypeConfiguration);
 
                 foreach ($allowedListTypes as $allowedListType) {
-                    if($allowedListType === 'none') {
+                    if ($allowedListType === 'none') {
                         $page['allowedListTypes'] = 'none';
                         break;
-                    } else {
-                        $page['allowedListTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(ListTypeUtility::getItems(), $allowedListType);
                     }
+
+                    $page['allowedListTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(ListTypeUtility::getItems(), $allowedListType);
                 }
             }
 
@@ -86,6 +88,10 @@ class OverviewController extends BaseController
         if (!empty($pages)) {
             $this->view->assign('pages', $pages);
         }
+
+        $this->moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**

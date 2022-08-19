@@ -3,6 +3,7 @@
 namespace CReifenscheid\CtypeManager\Controller;
 
 use CReifenscheid\CtypeManager\Service\ConfigurationService;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -63,11 +64,10 @@ class CleanupController extends BaseController
     /**
      * Index action
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
-    public function indexAction() : void
+    public function indexAction() : ResponseInterface
     {
         // get the current page id from the request
         if ($this->request->hasArgument('pageUid')) {
@@ -77,35 +77,42 @@ class CleanupController extends BaseController
         }
 
         $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($pageUid));
+
+        $this->moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * Double opt-in for cleanup
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
-    public function approvalAction() : void
+    public function approvalAction() : ResponseInterface
     {
-        if (!$this->checkRequestArguments()) {
-            return;
+        if ($this->checkRequestArguments()) {
+
+            $assignments = [];
+
+            // get request arguments
+            $arguments = $this->request->getArguments();
+            $assignments['cleanupMode'] = $arguments['cleanupMode'];
+            $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage((int)$arguments['pageUid']);
+
+            if ($this->request->hasArgument('srcController')) {
+                $assignments['srcController'] = $this->request->getArgument('srcController');
+            } else {
+                $assignments['srcController'] = 'Cleanup';
+            }
+
+            $this->view->assignMultiple($assignments);
         }
 
-        $assignments = [];
+        $this->moduleTemplate->setContent($this->view->render());
 
-        // get request arguments
-        $arguments = $this->request->getArguments();
-        $assignments['cleanupMode'] = $arguments['cleanupMode'];
-        $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage((int)$arguments['pageUid']);
-
-        if ($this->request->hasArgument('srcController')) {
-            $assignments['srcController'] = $this->request->getArgument('srcController');
-        } else {
-            $assignments['srcController'] = 'Cleanup';
-        }
-
-        $this->view->assignMultiple($assignments);
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
