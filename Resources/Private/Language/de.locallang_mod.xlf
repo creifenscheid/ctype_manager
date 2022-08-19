@@ -154,10 +154,6 @@
         <source>Allowed plugins</source>
         <target state="final">Erlaubte Plugins</target>
       </trans-unit>
-      <trans-unit id="overview.noRestrictions" resname="overview.noRestrictions" approved="yes">
-        <source>No restrictions</source>
-        <target state="final">Keine Beschränkungen</target>
-      </trans-unit>
       <trans-unit id="overview.none" resname="overview.none" approved="yes">
         <source>None</source>
         <target state="final">Keine</target>
