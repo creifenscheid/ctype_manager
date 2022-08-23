@@ -147,12 +147,12 @@
         <target state="needs-translation">Page</target>
       </trans-unit>
       <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
-        <source>Allowed CTypes</source>
-        <target state="needs-translation">Allowed CTypes</target>
+        <source>CType restrictions</source>
+        <target state="needs-translation">CType restrictions</target>
       </trans-unit>
       <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
-        <source>Allowed plugins</source>
-        <target state="needs-translation">Allowed plugins</target>
+        <source>Plugin restrictions</source>
+        <target state="needs-translation">Plugin restrictions</target>
       </trans-unit>
       <trans-unit id="overview.none" resname="overview.none">
         <source>None</source>
