@@ -2,6 +2,7 @@ v11.4.3 +
   * [TASK]      - module implementation improvements
   * [BUG]       - fixes redirection to the overview module after editing page via the overview module
   * [TASK]      - removes obsolete code
+  * [TASK]      - wording improvements
 
 v11.4.2 +
   * [TASK]      - template improvements

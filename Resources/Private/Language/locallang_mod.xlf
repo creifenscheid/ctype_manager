@@ -119,10 +119,10 @@
               <source>Page</source>
           </trans-unit>
           <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
-              <source>Allowed CTypes</source>
+              <source>CType restrictions</source>
           </trans-unit>
           <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
-              <source>Allowed plugins</source>
+              <source>Plugin restrictions</source>
           </trans-unit>
           <trans-unit id="overview.none" resname="overview.none">
               <source>None</source>
