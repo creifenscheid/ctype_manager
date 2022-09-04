@@ -146,13 +146,13 @@
         <source>Page</source>
         <target state="final">Seite</target>
       </trans-unit>
-      <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
+      <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes" approved="yes">
         <source>CType restrictions</source>
-        <target state="needs-translation">CType restrictions</target>
+        <target state="final">CType-Einschränkungen</target>
       </trans-unit>
-      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
+      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes" approved="yes">
         <source>Plugin restrictions</source>
-        <target state="needs-translation">Plugin restrictions</target>
+        <target state="final">Plugin-Einschränkungen</target>
       </trans-unit>
       <trans-unit id="overview.none" resname="overview.none" approved="yes">
         <source>None</source>
