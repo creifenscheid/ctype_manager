@@ -1,3 +1,6 @@
+v11.4.4 +
+  * [BUG]       - adds missing check on argument existence in controller
+
 v11.4.3 +
   * [TASK]      - module implementation improvements
   * [BUG]       - fixes redirection to the overview module after editing page via the overview module
