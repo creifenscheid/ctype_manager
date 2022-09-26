@@ -100,7 +100,7 @@ class CleanupController extends BaseController
             $arguments = $this->request->getArguments();
             $assignments['cleanupMode'] = $arguments['cleanupMode'];
             $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage((int)$arguments['pageUid']);
-            $assignments['srcController'] = $this->request->hasArgument('srcController') && $arguments['srcController'] ? : 'Cleanup';
+            $assignments['srcController'] = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Cleanup';
 
             $this->view->assignMultiple($assignments);
         }
@@ -129,7 +129,7 @@ class CleanupController extends BaseController
         // get request arguments
         $arguments = $this->request->getArguments();
         $cleanupMode = $arguments['cleanupMode'];
-        $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? : 'Cleanup';
+        $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Cleanup';
         $pageUid = (int)$arguments['pageUid'];
 
 

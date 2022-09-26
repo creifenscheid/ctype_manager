@@ -183,7 +183,7 @@ class CtypeController extends BaseController
 
         // get the page uid to store page tsconfig in
         $pageUid = (int)$arguments['pageUid'];
-        $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? : 'Ctype';
+        $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Ctype';
 
         // get enabled ctypes
         $enabledCtypes = empty($arguments['ctypes']) ? [] : $arguments['ctypes'];
