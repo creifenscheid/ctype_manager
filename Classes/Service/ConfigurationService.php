@@ -2,6 +2,7 @@
 
 namespace CReifenscheid\CtypeManager\Service;
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -46,7 +47,7 @@ class ConfigurationService implements SingletonInterface
     /**
      * Data handler
      *
-     * @var \TYPO3\CMS\Core\DataHandling\DataHandler
+     * @var DataHandler
      */
     private $dataHandler;
 
@@ -72,7 +73,7 @@ class ConfigurationService implements SingletonInterface
      * @param array $ctypeConfig
      *
      * @return void
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function writeConfiguration(int $pageUid, array $ctypeConfig) : void
     {
@@ -85,7 +86,7 @@ class ConfigurationService implements SingletonInterface
      * @param int $pageUid
      *
      * @return void
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function removeConfiguration(int $pageUid) : void
     {
@@ -99,7 +100,7 @@ class ConfigurationService implements SingletonInterface
      * @param array $ctypeConfig
      *
      * @return void
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     protected function handleConfiguration(int $pageUid, array $ctypeConfig = []) : void
     {

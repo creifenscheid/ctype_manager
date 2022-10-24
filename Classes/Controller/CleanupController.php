@@ -2,6 +2,10 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -50,29 +54,31 @@ class CleanupController extends BaseController
     /**
      * Page repository
      *
-     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
+     * @var PageRepository
      */
     private $pageRepository;
 
     /**
      * PageTSconfigService
      *
-     * @var \CReifenscheid\CtypeManager\Service\ConfigurationService
+     * @var ConfigurationService
      */
     private $configurationService;
 
     /**
      * Index action
      *
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @return ResponseInterface
+     * @throws NoSuchArgumentException
      */
     public function indexAction() : ResponseInterface
     {
-        // get the current page id from the request
+        $pageUid = null;
+
+        // get the current page from request
         if ($this->request->hasArgument('pageUid')) {
             $pageUid = (int)$this->request->getArgument('pageUid');
-        } else {
+        } elseif (array_key_exists('id', $this->request->getQueryParams())) {
             $pageUid = $this->request->getQueryParams()['id'];
         }
 
@@ -86,9 +92,9 @@ class CleanupController extends BaseController
     /**
      * Double opt-in for cleanup
      *
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @return ResponseInterface
+     * @throws NoSuchArgumentException
+     * @throws StopActionException
      */
     public function approvalAction() : ResponseInterface
     {
@@ -114,9 +120,9 @@ class CleanupController extends BaseController
      * Cleanup action to remove all ctype_manager tsconfig
      *
      * @return void
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws StopActionException
+     * @throws DBALException
+     * @throws NoSuchArgumentException
      */
     public function cleanupAction() : void
     {
@@ -179,7 +185,7 @@ class CleanupController extends BaseController
         $this->configurationService->persist();
 
         $messagePrefix = self::L10N . 'cleanup.message';
-        $this->addMessage($messagePrefix, FlashMessage::OK);
+        $this->addMessage($messagePrefix, AbstractMessage::OK);
 
         // redirect to index
         $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $pageUid]);
@@ -188,7 +194,7 @@ class CleanupController extends BaseController
     /**
      * Function to clean up a page and its children
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function cleanupPageRecursively(int $pageUid) : void
     {
@@ -216,7 +222,7 @@ class CleanupController extends BaseController
      * @param int    $type
      *
      * @return void
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws StopActionException
      */
     private function addMessage(string $messagePrefix, int $type) : void
     {
@@ -227,14 +233,14 @@ class CleanupController extends BaseController
      * Function to check the request for the needed arguments
      *
      * @return bool
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws NoSuchArgumentException
+     * @throws StopActionException
      */
     private function checkRequestArguments() : bool
     {
         if (!$this->request->hasArgument('pageUid')) {
             $messagePrefix = self::L10N . 'cleanup.message.error.pageuid';
-            $this->addMessage($messagePrefix, FlashMessage::ERROR);
+            $this->addMessage($messagePrefix, AbstractMessage::ERROR);
 
             // redirect to index
             $this->redirect('index', 'Cleanup');
@@ -242,7 +248,7 @@ class CleanupController extends BaseController
 
         if (!$this->request->hasArgument('cleanupMode')) {
             $messagePrefix = self::L10N . 'cleanup.message.error.cleanupMode';
-            $this->addMessage($messagePrefix, FlashMessage::ERROR);
+            $this->addMessage($messagePrefix, AbstractMessage::ERROR);
 
             // redirect to index
             $this->redirect('index', 'Cleanup');

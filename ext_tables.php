@@ -1,19 +1,24 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use CReifenscheid\CtypeManager\Controller\CtypeController;
+use CReifenscheid\CtypeManager\Controller\CleanupController;
+use CReifenscheid\CtypeManager\Controller\OverviewController;
+defined('TYPO3') or die();
 
 (function ($extKey) {
     
     // BACKEND MODULE
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        ucfirst(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($extKey)),
+    ExtensionUtility::registerModule(
+        ucfirst(GeneralUtility::underscoredToLowerCamelCase($extKey)),
         'web',
         $extKey,
         'bottom',
         [
-            \CReifenscheid\CtypeManager\Controller\CtypeController::class => 'index,submit',
-            \CReifenscheid\CtypeManager\Controller\CleanupController::class => 'index,approval,cleanup',
-            \CReifenscheid\CtypeManager\Controller\OverviewController::class => 'index'
+            CtypeController::class => 'index,submit',
+            CleanupController::class => 'index,approval,cleanup',
+            OverviewController::class => 'index'
         ],
         [
             'access' => 'admin',

@@ -2,6 +2,8 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Exception;
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use Psr\Http\Message\ResponseInterface;
@@ -43,9 +45,9 @@ class OverviewController extends BaseController
     /**
      * Index action
      *
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @return ResponseInterface
+     * @throws DBALException
+     * @throws Exception
      */
     public function indexAction() : ResponseInterface
     {
@@ -61,9 +63,9 @@ class OverviewController extends BaseController
                     if ($allowedCType === 'none') {
                         $page['allowedCTypes'] = 'none';
                         break;
-                    } else {
-                        $page['allowedCTypes'][$allowedCType] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(CTypeUtility::getItems(), $allowedCType);
                     }
+
+                    $page['allowedCTypes'][$allowedCType] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(CTypeUtility::getItems(), $allowedCType);
                 }
             }
 
@@ -71,14 +73,17 @@ class OverviewController extends BaseController
             $listTypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'list_type');
             if (!empty($listTypeConfiguration)) {
                 $allowedListTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($listTypeConfiguration);
-
+                
                 foreach ($allowedListTypes as $allowedListType) {
                     if ($allowedListType === 'none') {
                         $page['allowedListTypes'] = 'none';
                         break;
                     }
 
-                    $page['allowedListTypes'][] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(ListTypeUtility::getItems(), $allowedListType);
+                    $label = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(ListTypeUtility::getItems(), $allowedListType);
+                    if ($label) {
+                        $page['allowedListTypes'][] = $label;
+                    }
                 }
             }
 
@@ -98,8 +103,8 @@ class OverviewController extends BaseController
      * Returns array with all pages with ctype manager configuration
      *
      * @return array
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws DBALException
+     * @throws Exception
      */
     private function getPages() : array
     {

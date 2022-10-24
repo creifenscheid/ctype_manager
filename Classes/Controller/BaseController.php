@@ -2,6 +2,8 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use ReflectionClass;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -49,31 +51,31 @@ class BaseController extends ActionController
     /**
      * ModuleTemplateFactory
      *
-     * @var \TYPO3\CMS\Backend\Template\ModuleTemplateFactory
+     * @var ModuleTemplateFactory
      */
     protected ModuleTemplateFactory $moduleTemplateFactory;
 
     /**
      * ModuleTemplate
      *
-     * @var \TYPO3\CMS\Backend\Template\ModuleTemplate
+     * @var ModuleTemplate
      */
     protected ModuleTemplate $moduleTemplate;
 
     /**
      * Page renderer
      *
-     * @var \TYPO3\CMS\Core\Page\PageRenderer
+     * @var PageRenderer
      */
     protected PageRenderer $pageRenderer;
 
     /**
      * Constructor
      *
-     * @param \TYPO3\CMS\Backend\Template\ModuleTemplateFactory $moduleTemplateFactory
+     * @param ModuleTemplateFactory $moduleTemplateFactory
      *
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
+     * @throws ExtensionConfigurationExtensionNotConfiguredException
+     * @throws ExtensionConfigurationPathDoesNotExistException
      */
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,

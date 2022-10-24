@@ -2,6 +2,10 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\GeneralUtility;
@@ -61,15 +65,17 @@ class CtypeController extends BaseController
     /**
      * Index action
      *
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @return ResponseInterface
+     * @throws NoSuchArgumentException
      */
     public function indexAction() : ResponseInterface
     {
+        $pageUid = null;
+
         // get the current page from request
         if ($this->request->hasArgument('pageUid')) {
             $pageUid = (int)$this->request->getArgument('pageUid');
-        } else {
+        } elseif (array_key_exists('id', $this->request->getQueryParams())) {
             $pageUid = $this->request->getQueryParams()['id'];
         }
 
@@ -173,8 +179,8 @@ class CtypeController extends BaseController
      * Submit action
      *
      * @return void
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws StopActionException
+     * @throws DBALException
      */
     public function submitAction() : void
     {
@@ -252,7 +258,7 @@ class CtypeController extends BaseController
 
             $tsConfig[] = '### END ' . parent::CONFIG_ID;
 
-            /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
+            /** @var ConfigurationService $pageTSConfigService */
             $configurationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
             $configurationService->writeConfiguration($pageUid, $tsConfig);
 
@@ -261,7 +267,7 @@ class CtypeController extends BaseController
         }
 
         $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.message';
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . FlashMessage::OK), FlashMessage::OK, true);
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . AbstractMessage::OK), AbstractMessage::OK, true);
 
         // redirect to index
         $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $pageUid]);
@@ -328,7 +334,7 @@ class CtypeController extends BaseController
      * @param array $configuration
      * @param array $formEnabled
      *
-     * @return boolean
+     * @return bool
      */
     private function configurationDiffers(array $available, array $configuration, array $formEnabled) : bool
     {
