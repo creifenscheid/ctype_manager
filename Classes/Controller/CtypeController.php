@@ -250,10 +250,8 @@ class CtypeController extends BaseController
             }
 
             // adjust "show" configuration for each group, if needed
-            if (!empty($listTypeRemovals)) {
-                foreach ($listTypeRemovals as $group => $listTypesToRemove) {
-                    $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
-                }
+            foreach ($listTypeRemovals as $group => $listTypesToRemove) {
+                $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
             }
 
             $tsConfig[] = '### END ' . parent::CONFIG_ID;

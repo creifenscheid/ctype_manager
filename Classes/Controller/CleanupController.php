@@ -208,10 +208,8 @@ class CleanupController extends BaseController
 
         // get children of page
         $children = $this->pageRepository->getMenu($pageUid);
-        if (!empty($children)) {
-            foreach ($children as $child) {
-                $this->cleanupPageRecursively($child['uid']);
-            }
+        foreach ($children as $child) {
+            $this->cleanupPageRecursively($child['uid']);
         }
     }
 
