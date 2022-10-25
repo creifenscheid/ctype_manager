@@ -7,8 +7,7 @@ use CReifenscheid\CtypeManager\Controller\CleanupController;
 use CReifenscheid\CtypeManager\Controller\OverviewController;
 defined('TYPO3') or die();
 
-(function ($extKey) {
-    
+(static function ($extKey) {
     // BACKEND MODULE
     ExtensionUtility::registerModule(
         ucfirst(GeneralUtility::underscoredToLowerCamelCase($extKey)),
@@ -28,7 +27,6 @@ defined('TYPO3') or die();
             'inheritNavigationComponentFromMainModule' => false,
         ]
     );
-    
     // SKIN
     $GLOBALS['TBE_STYLES']['skins'][$extKey] = [
         'name' => 'CType manager',
@@ -36,5 +34,4 @@ defined('TYPO3') or die();
             'css' => 'EXT:' . $extKey . '/Resources/Public/Css/'
         ]
     ];
-    
 })('ctype_manager');

@@ -48,6 +48,7 @@ class CleanupController extends BaseController
 {
     /**
      * Configuration l10n base
+     * @var string
      */
     private const L10N = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:';
 

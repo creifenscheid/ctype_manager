@@ -45,6 +45,7 @@ class BaseController extends ActionController
 {
     /**
      * Configuration identifier
+     * @var string
      */
     protected const CONFIG_ID = 'ctype-manager';
 
@@ -90,7 +91,7 @@ class BaseController extends ActionController
      *
      * @return void
      */
-    public function initializeAction() : void
+    protected function initializeAction() : void
     {
         parent::initializeAction();
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);

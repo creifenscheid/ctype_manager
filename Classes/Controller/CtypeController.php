@@ -146,6 +146,7 @@ class CtypeController extends BaseController
                 $groupStates[] = $groupState;
                 $ctypes[$groupKey]['state'] = $groupState;
             }
+
             $assignments['ctypes'] = $ctypes;
             $assignments['groupsState'] = $this->getMainState($groupStates);
 

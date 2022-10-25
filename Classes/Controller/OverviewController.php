@@ -111,11 +111,10 @@ class OverviewController extends BaseController
         $table = 'pages';
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
-        return $queryBuilder
-            ->select('uid', 'title', 'is_siteroot')
+        return $queryBuilder->select(['uid', 'title', 'is_siteroot'])
             ->from($table)
             ->where(
-                $queryBuilder->expr()->like('TSconfig', '\'%### START ' . parent::CONFIG_ID . '%\'')
+                $queryBuilder->expr()->like('TSconfig', "'%### START " . parent::CONFIG_ID . "%'")
             )
             ->execute()->fetchAllAssociative();
     }
