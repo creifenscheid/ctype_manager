@@ -41,6 +41,7 @@ class ConfigurationService implements SingletonInterface
 {
     /**
      * Configuration identifier
+     *
      * @var string
      */
     public const CONFIG_ID = 'ctype-manager';
@@ -114,7 +115,6 @@ class ConfigurationService implements SingletonInterface
         // remove existing ctype_manager configuration
         $deleteLine = false;
         foreach ($tsConfig as $key => $line) {
-
             if ($line === '### START ' . self::CONFIG_ID) {
                 $deleteLine = true;
             } elseif ($line === '### END ' . self::CONFIG_ID) {

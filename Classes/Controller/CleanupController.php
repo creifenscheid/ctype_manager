@@ -2,16 +2,15 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
-use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use Doctrine\DBAL\DBALException;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use CReifenscheid\CtypeManager\Service\ConfigurationService;
+use Doctrine\DBAL\DBALException;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
@@ -48,6 +47,7 @@ class CleanupController extends BaseController
 {
     /**
      * Configuration l10n base
+     *
      * @var string
      */
     private const L10N = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:';
@@ -100,7 +100,6 @@ class CleanupController extends BaseController
     public function approvalAction() : ResponseInterface
     {
         if ($this->checkRequestArguments()) {
-
             $assignments = [];
 
             // get request arguments

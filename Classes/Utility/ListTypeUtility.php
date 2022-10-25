@@ -3,6 +3,7 @@
 namespace CReifenscheid\CtypeManager\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 use function array_key_exists;
 
 /***************************************************************
@@ -62,7 +63,6 @@ class ListTypeUtility
         $wizardGroups = GeneralUtility::getArrayKeyValue($pageTSconfig, 'mod.wizards.newContentElement.wizardItems');
 
         if ($wizardGroups) {
-
             $listTypes = [];
 
             foreach ($wizardGroups as $groupName => $groupConfiguration) {

@@ -2,10 +2,10 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\Exception;
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -54,7 +54,6 @@ class OverviewController extends BaseController
         $pages = $this->getPages();
 
         foreach ($pages as $key => $page) {
-
             // CTypes
             $cTypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'CType');
             if (!empty($cTypeConfiguration)) {
@@ -73,7 +72,7 @@ class OverviewController extends BaseController
             $listTypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'list_type');
             if (!empty($listTypeConfiguration)) {
                 $allowedListTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($listTypeConfiguration);
-                
+
                 foreach ($allowedListTypes as $allowedListType) {
                     if ($allowedListType === 'none') {
                         $page['allowedListTypes'] = 'none';
