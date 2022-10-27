@@ -70,19 +70,10 @@ class ConfigurationController extends BaseController
      */
     public function indexAction() : ResponseInterface
     {
-        $pageUid = null;
-
-        // get the current page from request
-        if ($this->request->hasArgument('pageUid')) {
-            $pageUid = (int)$this->request->getArgument('pageUid');
-        } elseif (array_key_exists('id', $this->request->getQueryParams())) {
-            $pageUid = $this->request->getQueryParams()['id'];
-        }
-
-        if ($pageUid && $pageUid > 0) {
+        if ($this->pageUid && $this->pageUid > 0) {
             // store all variables for the view
             $assignments = [
-                'page' => GeneralUtility::getPage($pageUid)
+                'page' => GeneralUtility::getPage($this->pageUid)
             ];
 
             if ($this->request->hasArgument('srcController')) {
@@ -90,7 +81,7 @@ class ConfigurationController extends BaseController
             }
 
             // resolve page tsconfig for the current page
-            $this->resolvePageTSConfig($pageUid);
+            $this->resolvePageTSConfig($this->pageUid);
 
             // CTYPES
             // sort CTypes by group
@@ -187,8 +178,6 @@ class ConfigurationController extends BaseController
         // get request arguments
         $arguments = $this->request->getArguments();
 
-        // get the page uid to store page tsconfig in
-        $pageUid = (int)$arguments['pageUid'];
         $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Configuration';
 
         // get enabled ctypes
@@ -198,7 +187,7 @@ class ConfigurationController extends BaseController
         $enabledListTypes = empty($arguments['listTypes']) ? [] : $arguments['listTypes'];
 
         // resolve page tsconfig for the current page
-        $this->resolvePageTSConfig($pageUid);
+        $this->resolvePageTSConfig($this->pageUid);
 
         $ctypesDiffer = $this->configurationDiffers(CTypeUtility::getItems(), $this->ctypeConfiguration, $enabledCtypes);
         $listTypesDiffer = $this->configurationDiffers(ListTypeUtility::getItems(), $this->listTypeConfiguration, $enabledListTypes);
@@ -227,7 +216,7 @@ class ConfigurationController extends BaseController
             $tsConfig[] = empty($enabledListTypes) ? $listTypeConfiguration . ' = none' : $listTypeConfiguration . ' = ' . implode(',', $enabledListTypes);
 
             // get all available wizard items of current root
-            $wizardConfiguration = ListTypeUtility::getWizardItems(GeneralUtility::getRootPageId($pageUid));
+            $wizardConfiguration = ListTypeUtility::getWizardItems(GeneralUtility::getRootPageId($this->pageUid));
 
             // store all list types to remove from wizard for each group
             $listTypeRemovals = [];
@@ -257,7 +246,7 @@ class ConfigurationController extends BaseController
 
             /** @var ConfigurationService $pageTSConfigService */
             $configurationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
-            $configurationService->writeConfiguration($pageUid, $tsConfig);
+            $configurationService->writeConfiguration($this->pageUid, $tsConfig);
 
             // persist changes
             $configurationService->persist();
@@ -267,7 +256,7 @@ class ConfigurationController extends BaseController
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . AbstractMessage::OK));
 
         // redirect to index
-        $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $pageUid]);
+        $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $this->pageUid]);
     }
 
     /**

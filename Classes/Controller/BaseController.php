@@ -51,6 +51,13 @@ class BaseController extends ActionController
     protected const CONFIG_ID = 'ctype-manager';
 
     /**
+     * Uid of currently chosen page
+     *
+     * @var null|int
+     */
+    protected ?int $pageUid = null;
+
+    /**
      * ModuleTemplateFactory
      *
      * @var ModuleTemplateFactory
@@ -103,6 +110,13 @@ class BaseController extends ActionController
         // drop down menu
         $reflect = new ReflectionClass($this);
         $this->buildMenu($reflect->getShortName());
+
+        // get the current page uid from request
+        if ($this->request->hasArgument('pageUid')) {
+            $this->pageUid = (int)$this->request->getArgument('pageUid');
+        } elseif (array_key_exists('id', $this->request->getQueryParams())) {
+            $this->pageUid = $this->request->getQueryParams()['id'];
+        }
     }
 
     /**
