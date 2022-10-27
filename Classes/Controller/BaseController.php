@@ -117,29 +117,20 @@ class BaseController extends ActionController
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('CtypeManagerModuleMenu');
 
-        // CtypeController
-        $menu->addMenuItem(
-            $menu->makeMenuItem()
-                ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'))
-                ->setHref($this->uriBuilder->uriFor('index', null, 'Ctype'))
-                ->setActive($currentController === 'CtypeController')
-        );
+        $menuElements = [
+            'Configuration',
+            'Overview',
+            'Cleanup'
+        ];
 
-        // Overview controller
-        $menu->addMenuItem(
-            $menu->makeMenuItem()
-                ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.overview'))
-                ->setHref($this->uriBuilder->uriFor('index', null, 'Overview'))
-                ->setActive($currentController === 'OverviewController')
-        );
-
-        // Cleanup controller
-        $menu->addMenuItem(
-            $menu->makeMenuItem()
-                ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.cleanup'))
-                ->setHref($this->uriBuilder->uriFor('index', null, 'Cleanup'))
-                ->setActive($currentController === 'CleanupController')
-        );
+        foreach ($menuElements as $menuElement) {
+            $menu->addMenuItem(
+                $menu->makeMenuItem()
+                    ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.' . strtolower($menuElement)))
+                    ->setHref($this->uriBuilder->uriFor('index', null, $menuElement))
+                    ->setActive($currentController === $menuElement . 'Controller')
+            );
+        }
 
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }

@@ -39,7 +39,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  ***************************************************************/
 
 /**
- * Class CtypeController
+ * Class CleanupController
  *
  * @package \CReifenscheid\CtypeManager\Controller
  */
@@ -236,20 +236,19 @@ class CleanupController extends BaseController
      */
     private function checkRequestArguments() : bool
     {
-        if (!$this->request->hasArgument('pageUid')) {
-            $messagePrefix = self::L10N . 'cleanup.message.error.pageuid';
-            $this->addMessage($messagePrefix, AbstractMessage::ERROR);
+        $argumentsToCheck = [
+            'pageUid',
+            'cleanupMode'
+        ];
 
-            // redirect to index
-            $this->redirect('index', 'Cleanup');
-        }
+        foreach ($argumentsToCheck as $argument) {
+            if (!$this->request->hasArgument($argument)) {
+                $messagePrefix = self::L10N . 'cleanup.message.error.' . $argument;
+                $this->addMessage($messagePrefix, AbstractMessage::ERROR);
 
-        if (!$this->request->hasArgument('cleanupMode')) {
-            $messagePrefix = self::L10N . 'cleanup.message.error.cleanupMode';
-            $this->addMessage($messagePrefix, AbstractMessage::ERROR);
-
-            // redirect to index
-            $this->redirect('index', 'Cleanup');
+                // redirect to index
+                $this->redirect('index', 'Cleanup');
+            }
         }
 
         return true;

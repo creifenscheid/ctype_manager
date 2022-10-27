@@ -237,7 +237,7 @@ class GeneralUtility
     public static function getLabel(array $items, string $requestedIdentifier) : ?string
     {
         foreach ($items as $item) {
-            [$label, $identifier, , $group] = $item;
+            [$label, $identifier] = $item;
 
             if ($identifier === $requestedIdentifier) {
                 return GeneralUtility::locate($label);
