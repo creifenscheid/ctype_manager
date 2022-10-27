@@ -2,7 +2,7 @@
 
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use CReifenscheid\CtypeManager\Controller\CtypeController;
+use CReifenscheid\CtypeManager\Controller\ConfigurationController;
 use CReifenscheid\CtypeManager\Controller\CleanupController;
 use CReifenscheid\CtypeManager\Controller\OverviewController;
 defined('TYPO3') or die();
@@ -15,7 +15,7 @@ defined('TYPO3') or die();
         $extKey,
         'bottom',
         [
-            CtypeController::class => 'index,submit',
+            ConfigurationController::class => 'index,submit',
             CleanupController::class => 'index,approval,cleanup',
             OverviewController::class => 'index'
         ],

@@ -42,11 +42,11 @@ use function count;
  ***************************************************************/
 
 /**
- * Class CtypeController
+ * Class ConfigurationController
  *
  * @package \CReifenscheid\CtypeManager\Controller
  */
-class CtypeController extends BaseController
+class ConfigurationController extends BaseController
 {
     /**
      * Array of ctypes configured in pageTSConfig
@@ -80,7 +80,6 @@ class CtypeController extends BaseController
         }
 
         if ($pageUid && $pageUid > 0) {
-
             // store all variables for the view
             $assignments = [
                 'page' => GeneralUtility::getPage($pageUid)
@@ -190,7 +189,7 @@ class CtypeController extends BaseController
 
         // get the page uid to store page tsconfig in
         $pageUid = (int)$arguments['pageUid'];
-        $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Ctype';
+        $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Configuration';
 
         // get enabled ctypes
         $enabledCtypes = empty($arguments['ctypes']) ? [] : $arguments['ctypes'];
@@ -208,7 +207,7 @@ class CtypeController extends BaseController
         if ($ctypesDiffer || $listTypesDiffer) {
             // define ctype configuration
             $tsConfig[] = '### START ' . parent::CONFIG_ID;
-            $tsConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove';
+            $tsConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove or remove completely';
 
             // CTYPE
             // unset existing removeItems configuration
@@ -240,7 +239,6 @@ class CtypeController extends BaseController
 
                     // check if wizard item has a group and is not listed in enabled list types
                     if (!empty($group) && !in_array($listType, $enabledListTypes, true)) {
-
                         // clear wizard item configuration
                         $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.elements.' . $identifier . ' >';
 
@@ -265,8 +263,8 @@ class CtypeController extends BaseController
             $configurationService->persist();
         }
 
-        $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.message';
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . AbstractMessage::OK), AbstractMessage::OK, true);
+        $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.message';
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . AbstractMessage::OK));
 
         // redirect to index
         $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $pageUid]);
@@ -322,7 +320,7 @@ class CtypeController extends BaseController
         // remove duplicate states
         $states = array_unique($states);
 
-        // if there are more then 1 state left (true and false) the state is false, otherwise the state of the group equals the leftover state (true or false)
+        // if there are more than 1 state left (true and false) the state is false, otherwise the state of the group equals the leftover state (true or false)
         return count($states) > 1 ? false : end($states);
     }
 
