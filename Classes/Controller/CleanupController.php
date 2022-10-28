@@ -46,32 +46,16 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class CleanupController extends BaseController
 {
     /**
-     * Configuration l10n base
+     * L10n base
      *
      * @var string
      */
     private const L10N = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:';
 
-    /**
-     * Page repository
-     *
-     * @var PageRepository
-     */
-    private $pageRepository;
+    private PageRepository $pageRepository;
 
-    /**
-     * PageTSconfigService
-     *
-     * @var ConfigurationService
-     */
-    private $configurationService;
+    private ConfigurationService $configurationService;
 
-    /**
-     * Index action
-     *
-     * @return ResponseInterface
-     * @throws NoSuchArgumentException
-     */
     public function indexAction() : ResponseInterface
     {
         $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
@@ -84,8 +68,6 @@ class CleanupController extends BaseController
     /**
      * Double opt-in for cleanup
      *
-     * @return ResponseInterface
-     * @throws NoSuchArgumentException
      * @throws StopActionException
      */
     public function approvalAction() : ResponseInterface
@@ -110,10 +92,10 @@ class CleanupController extends BaseController
     /**
      * Cleanup action to remove all ctype_manager tsconfig
      *
-     * @return void
-     * @throws StopActionException
-     * @throws DBALException
-     * @throws NoSuchArgumentException
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function cleanupAction() : void
     {
@@ -201,12 +183,6 @@ class CleanupController extends BaseController
 
     /**
      * Function to add a flash message based on the given message prefix
-     *
-     * @param string $messagePrefix
-     * @param int    $type
-     *
-     * @return void
-     * @throws StopActionException
      */
     private function addMessage(string $messagePrefix, int $type) : void
     {
@@ -216,8 +192,6 @@ class CleanupController extends BaseController
     /**
      * Function to check the request for the needed arguments
      *
-     * @return bool
-     * @throws NoSuchArgumentException
      * @throws StopActionException
      */
     private function checkRequestArguments() : bool

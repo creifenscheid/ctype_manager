@@ -41,13 +41,6 @@ use function array_key_exists;
  */
 class GeneralUtility
 {
-    /**
-     * Returns the rootline for the given uid
-     *
-     * @param int $uid
-     *
-     * @return array
-     */
     public static function getRootline(int $uid) : array
     {
         $rootlineUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(RootlineUtility::class, $uid);
@@ -55,13 +48,6 @@ class GeneralUtility
         return $rootlineUtility->get();
     }
 
-    /**
-     * Returns page information
-     *
-     * @param int $pageUid
-     *
-     * @return array
-     */
     public static function getPage(int $pageUid) : array
     {
         $pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRepository::class);
@@ -69,13 +55,6 @@ class GeneralUtility
         return $pageRepository->getPage($pageUid);
     }
 
-    /**
-     * Returns uid of root page
-     *
-     * @param int $pageUid
-     *
-     * @return int
-     */
     public static function getRootPageId(int $pageUid) : int
     {
         $rootline = self::getRootline($pageUid);
@@ -84,13 +63,6 @@ class GeneralUtility
         return $rootpage['uid'];
     }
 
-    /**
-     * Returns the located label, if it's locatable
-     *
-     * @param string $stringToLocate
-     *
-     * @return string
-     */
     public static function locate(string $stringToLocate) : string
     {
         return str_starts_with($stringToLocate, 'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
@@ -99,12 +71,10 @@ class GeneralUtility
     /**
      * Returns the value of a key within an array
      *
-     * @param array  $array
      * @param string $keyChain - dot separated list of keys to check, last is checked for value, e.g. tt_content.columns.sys_language_uid.label
-     *
      * @return array|mixed|null
      */
-    public static function getArrayKeyValue(array $array, string $keyChain)
+    public static function getArrayKeyValue(array $array, string $keyChain) : mixed
     {
         $keys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $keyChain);
 
@@ -128,11 +98,6 @@ class GeneralUtility
 
     /**
      * Resolves pageTSConfig to get kept and removed items of the given field
-     *
-     * @param int    $pageId
-     * @param string $field
-     *
-     * @return array
      */
     public static function resolvePageTSConfig(int $pageId, string $field) : array
     {
@@ -159,11 +124,6 @@ class GeneralUtility
 
     /**
      * Function to get the current activation state of the given identifier
-     *
-     * @param array  $configuration
-     * @param string $identifier
-     *
-     * @return bool
      */
     public static function getActivationState(array $configuration, string $identifier) : bool
     {
@@ -174,7 +134,6 @@ class GeneralUtility
         if (array_key_exists('remove', $configuration) && in_array($identifier, $configuration['remove'], true)) {
             $return = false;
         }
-
         // if the current identifier is not listed in keepItems - it's not active
         if (array_key_exists('keep', $configuration) && !in_array($identifier, $configuration['keep'], true)) {
             $return = false;
@@ -184,38 +143,16 @@ class GeneralUtility
         return $return;
     }
 
-    /**
-     * Returns the items configured to keep
-     *
-     * @param array $configuration
-     *
-     * @return array|null
-     */
     public static function getKeptItems(array $configuration) : ?array
     {
         return self::getItems($configuration, 'keep');
     }
 
-    /**
-     * Returns the items configured to be removed
-     *
-     * @param array $configuration
-     *
-     * @return array|null
-     */
     public static function getRemovedItems(array $configuration) : ?array
     {
         return self::getItems($configuration, 'remove');
     }
 
-    /**
-     * Returns the items configured
-     *
-     * @param array  $configuration
-     * @param string $key
-     *
-     * @return array|null
-     */
     private static function getItems(array $configuration, string $key) : ?array
     {
         $result = self::getArrayKeyValue($configuration, $key);
@@ -227,12 +164,7 @@ class GeneralUtility
     }
 
     /**
-     * Returns the located label of the given identifier
-     *
-     * @param array  $items
-     * @param string $requestedIdentifier
-     *
-     * @return string|null
+     * Returns the located label of the requested identifier
      */
     public static function getLabel(array $items, string $requestedIdentifier) : ?string
     {
@@ -240,7 +172,7 @@ class GeneralUtility
             [$label, $identifier] = $item;
 
             if ($identifier === $requestedIdentifier) {
-                return GeneralUtility::locate($label);
+                return self::locate($label);
             }
         }
 

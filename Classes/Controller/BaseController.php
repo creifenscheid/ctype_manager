@@ -52,47 +52,20 @@ class BaseController extends ActionController
 
     /**
      * Uid of currently chosen page
-     *
-     * @var null|int
      */
     protected ?int $pageUid = null;
 
     /**
      * Controller a request came from, to get back to it after the process has finished
-     *
-     * @var string
      */
     protected string $sourceController = '';
 
-    /**
-     * ModuleTemplateFactory
-     *
-     * @var ModuleTemplateFactory
-     */
     protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * ModuleTemplate
-     *
-     * @var ModuleTemplate
-     */
     protected ModuleTemplate $moduleTemplate;
 
-    /**
-     * Page renderer
-     *
-     * @var PageRenderer
-     */
     protected PageRenderer $pageRenderer;
 
-    /**
-     * Constructor
-     *
-     * @param ModuleTemplateFactory $moduleTemplateFactory
-     *
-     * @throws ExtensionConfigurationExtensionNotConfiguredException
-     * @throws ExtensionConfigurationPathDoesNotExistException
-     */
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,
         PageRenderer $pageRenderer
@@ -101,11 +74,6 @@ class BaseController extends ActionController
         $this->pageRenderer = $pageRenderer;
     }
 
-    /**
-     * Initialize action
-     *
-     * @return void
-     */
     protected function initializeAction() : void
     {
         parent::initializeAction();
@@ -129,11 +97,6 @@ class BaseController extends ActionController
         $this->sourceController = $this->request->hasArgument('sourceController') && $this->request->getArgument('sourceController') ? $this->request->getArgument('sourceController') : str_replace('Controller', '', $reflect->getShortName());
     }
 
-    /**
-     * Drop down menu
-     *
-     * @param string $currentController
-     */
     protected function buildMenu(string $currentController) : void
     {
         $this->uriBuilder->setRequest($this->request);

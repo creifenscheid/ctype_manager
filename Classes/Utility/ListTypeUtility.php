@@ -38,23 +38,11 @@ use function array_key_exists;
  */
 class ListTypeUtility
 {
-    /**
-     * Returns all configured list_types
-     *
-     * @return array
-     */
     public static function getItems() : array
     {
         return $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'];
     }
 
-    /**
-     * Returns all configured wizard items
-     *
-     * @param int $pageId
-     *
-     * @return array|null
-     */
     public static function getWizardItems(int $pageId) : ?array
     {
         $pageTSconfig = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId));
@@ -86,14 +74,6 @@ class ListTypeUtility
         return null;
     }
 
-    /**
-     * Returns an array with the corresponding list_type configuration
-     *
-     * @param string $identifier
-     * @param array  $configuration
-     *
-     * @return string[]|null
-     */
     private static function resolveListTypeConfiguration(string $identifier, array $configuration) : ?array
     {
         $configuredListType = GeneralUtility::getArrayKeyValue($configuration, 'tt_content_defValues.list_type');

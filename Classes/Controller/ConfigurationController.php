@@ -50,24 +50,14 @@ class ConfigurationController extends BaseController
 {
     /**
      * Array of ctypes configured in pageTSConfig
-     *
-     * @var array
      */
     private array $ctypeConfiguration = [];
 
     /**
      * Array of list_types configured in pageTSConfig
-     *
-     * @var array
      */
     private array $listTypeConfiguration = [];
 
-    /**
-     * Index action
-     *
-     * @return ResponseInterface
-     * @throws NoSuchArgumentException
-     */
     public function indexAction() : ResponseInterface
     {
         if ($this->pageUid && $this->pageUid > 0) {
@@ -105,12 +95,10 @@ class ConfigurationController extends BaseController
 
                     if ($groupLabel) {
                         $ctypes[$group]['label'] = GeneralUtility::locate($groupLabel);
+                    } elseif ($group === 'unassigned') {
+                        $ctypes[$group]['label'] = GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
                     } else {
-                        if ($group === 'unassigned') {
-                            $ctypes[$group]['label'] = GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
-                        } else {
-                            $ctypes[$group]['label'] = ucfirst($group);
-                        }
+                        $ctypes[$group]['label'] = ucfirst($group);
                     }
                 }
 
@@ -164,9 +152,6 @@ class ConfigurationController extends BaseController
     }
 
     /**
-     * Submit action
-     *
-     * @return void
      * @throws StopActionException
      * @throws DBALException
      */
@@ -239,7 +224,6 @@ class ConfigurationController extends BaseController
 
             $tsConfig[] = '### END ' . parent::CONFIG_ID;
 
-            /** @var ConfigurationService $pageTSConfigService */
             $configurationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
             $configurationService->writeConfiguration($this->pageUid, $tsConfig);
 
@@ -255,11 +239,7 @@ class ConfigurationController extends BaseController
     }
 
     /**
-     * Resolves pageTSConfig to get kept and removed ctypes
-     *
-     * @param int $currentPageId
-     *
-     * @return void
+     * Resolves pageTSConfig to get kept and removed ctypes and list_types
      */
     private function resolvePageTSConfig(int $currentPageId) : void
     {
@@ -294,10 +274,6 @@ class ConfigurationController extends BaseController
 
     /**
      * Function to determine the state of a group
-     *
-     * @param array $ctypeStates
-     *
-     * @return bool
      */
     private function getMainState(array $states) : bool
     {
@@ -310,12 +286,6 @@ class ConfigurationController extends BaseController
 
     /**
      * Function to compare set configuration vs. configuration sent via form
-     *
-     * @param array $available
-     * @param array $configuration
-     * @param array $formEnabled
-     *
-     * @return bool
      */
     private function configurationDiffers(array $available, array $configuration, array $formEnabled) : bool
     {

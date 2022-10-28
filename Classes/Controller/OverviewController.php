@@ -45,7 +45,6 @@ class OverviewController extends BaseController
     /**
      * Index action
      *
-     * @return ResponseInterface
      * @throws DBALException
      * @throws Exception
      */
@@ -101,7 +100,6 @@ class OverviewController extends BaseController
     /**
      * Returns array with all pages with ctype manager configuration
      *
-     * @return array
      * @throws DBALException
      * @throws Exception
      */

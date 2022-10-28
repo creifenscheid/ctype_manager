@@ -5,7 +5,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Controller\ConfigurationController;
 use CReifenscheid\CtypeManager\Controller\CleanupController;
 use CReifenscheid\CtypeManager\Controller\OverviewController;
-defined('TYPO3') or die();
+defined('TYPO3') || die();
 
 (static function ($extKey) {
     // BACKEND MODULE
