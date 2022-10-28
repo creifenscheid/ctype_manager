@@ -58,6 +58,13 @@ class BaseController extends ActionController
     protected ?int $pageUid = null;
 
     /**
+     * Controller a request came from, to get back to it after the process has finished
+     *
+     * @var string
+     */
+    protected string $sourceController = '';
+
+    /**
      * ModuleTemplateFactory
      *
      * @var ModuleTemplateFactory
@@ -111,12 +118,15 @@ class BaseController extends ActionController
         $reflect = new ReflectionClass($this);
         $this->buildMenu($reflect->getShortName());
 
-        // get the current page uid from request
+        // PAGE UID
         if ($this->request->hasArgument('pageUid')) {
             $this->pageUid = (int)$this->request->getArgument('pageUid');
         } elseif (array_key_exists('id', $this->request->getQueryParams())) {
             $this->pageUid = $this->request->getQueryParams()['id'];
         }
+
+        // SOURCE CONTROLLER
+        $this->sourceController = $this->request->hasArgument('sourceController') && $this->request->getArgument('sourceController') ? $this->request->getArgument('sourceController') : str_replace('Controller', '', $reflect->getShortName());
     }
 
     /**

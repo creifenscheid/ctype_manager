@@ -26,8 +26,8 @@
                         <f:form id="ctype-form" action="submit" controller="Configuration" method="post" enctype="multipart/form-data">
                             <f:form.hidden name="pageUid" value="{page.uid}"/>
 
-                            <f:if condition="{srcController}">
-                                <f:form.hidden name="srcController" value="{srcController}"/>
+                            <f:if condition="{sourceController}">
+                                <f:form.hidden name="sourceController" value="{sourceController}"/>
                             </f:if>
                             
                             <f:variable name="toggleAriaLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.switch.all" /></f:variable>

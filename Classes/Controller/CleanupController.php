@@ -97,7 +97,7 @@ class CleanupController extends BaseController
             $arguments = $this->request->getArguments();
             $assignments['cleanupMode'] = $arguments['cleanupMode'];
             $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid);
-            $assignments['srcController'] = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Cleanup';
+            $assignments['sourceController'] = $this->sourceController;
 
             $this->view->assignMultiple($assignments);
         }
@@ -123,10 +123,7 @@ class CleanupController extends BaseController
 
         $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
-        // get request arguments
-        $arguments = $this->request->getArguments();
-        $cleanupMode = $arguments['cleanupMode'];
-        $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Cleanup';
+        $cleanupMode = $this->request->getArgument('cleanupMode');
 
         // initialize rootline utility
         if ($cleanupMode === 'rootpage' || $cleanupMode === 'rootline') {
@@ -177,7 +174,7 @@ class CleanupController extends BaseController
         $this->addMessage($messagePrefix, AbstractMessage::OK);
 
         // redirect to index
-        $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $this->pageUid]);
+        $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
     }
 
     /**

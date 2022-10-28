@@ -73,12 +73,9 @@ class ConfigurationController extends BaseController
         if ($this->pageUid && $this->pageUid > 0) {
             // store all variables for the view
             $assignments = [
-                'page' => GeneralUtility::getPage($this->pageUid)
+                'page' => GeneralUtility::getPage($this->pageUid),
+                'sourceController' => $this->sourceController
             ];
-
-            if ($this->request->hasArgument('srcController')) {
-                $assignments['srcController'] = $this->request->getArgument('srcController');
-            }
 
             // resolve page tsconfig for the current page
             $this->resolvePageTSConfig($this->pageUid);
@@ -178,8 +175,6 @@ class ConfigurationController extends BaseController
         // get request arguments
         $arguments = $this->request->getArguments();
 
-        $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Configuration';
-
         // get enabled ctypes
         $enabledCtypes = empty($arguments['ctypes']) ? [] : $arguments['ctypes'];
 
@@ -256,7 +251,7 @@ class ConfigurationController extends BaseController
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . AbstractMessage::OK));
 
         // redirect to index
-        $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $this->pageUid]);
+        $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
     }
 
     /**
