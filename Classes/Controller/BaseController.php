@@ -79,22 +79,27 @@ class BaseController extends ActionController
         parent::initializeAction();
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
 
-        // load requireJS modules
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/CtypeManager/CtypeManager');
 
-        // drop down menu
+        /**
+         * Create a reflection of this
+         * to get e.g. the current class shortname
+         * for generical approaches
+         */
         $reflect = new ReflectionClass($this);
+        
+        // generate the drop down menu
         $this->buildMenu($reflect->getShortName());
 
-        // PAGE UID
+        // definiton of currently chosen page uid
         if ($this->request->hasArgument('pageUid')) {
             $this->pageUid = (int)$this->request->getArgument('pageUid');
         } elseif (array_key_exists('id', $this->request->getQueryParams())) {
             $this->pageUid = $this->request->getQueryParams()['id'];
         }
 
-        // SOURCE CONTROLLER
-        $this->sourceController = $this->request->hasArgument('sourceController') && $this->request->getArgument('sourceController') ? $this->request->getArgument('sourceController') : str_replace('Controller', '', $reflect->getShortName());
+        // source controller definition
+        $this->sourceController = $this->request->hasArgument('sourceController') && !empty($this->request->getArgument('sourceController')) ? $this->request->getArgument('sourceController') : str_replace('Controller', '', $reflect->getShortName());
     }
 
     protected function buildMenu(string $currentController) : void
