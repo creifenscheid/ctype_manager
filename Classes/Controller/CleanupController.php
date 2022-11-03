@@ -52,7 +52,7 @@ class CleanupController extends BaseController
      */
     private const L10N = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:';
 
-    private PageRepository $pageRepository;
+    private ?PageRepository $pageRepository = null;
 
     private ConfigurationService $configurationService;
 
@@ -73,15 +73,15 @@ class CleanupController extends BaseController
     public function approvalAction() : ResponseInterface
     {
         if ($this->checkRequestArguments()) {
-            $assignments = [];
 
             // get request arguments
             $arguments = $this->request->getArguments();
-            $assignments['cleanupMode'] = $arguments['cleanupMode'];
-            $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid);
-            $assignments['sourceController'] = $this->sourceController;
 
-            $this->view->assignMultiple($assignments);
+            $this->view->assignMultiple([
+                'cleanupMode' => $arguments['cleanupMode'],
+                'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid),
+                'sourceController' => $this->sourceController
+            ]);
         }
 
         $this->moduleTemplate->setContent($this->view->render());
@@ -132,6 +132,7 @@ class CleanupController extends BaseController
 
             case 'all':
                 // get all pages
+                // SeppTodo: move query to service to reuse in OverviewController
                 $tableToQuery = 'pages';
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
                 $result = $queryBuilder
@@ -153,7 +154,7 @@ class CleanupController extends BaseController
         $this->configurationService->persist();
 
         $messagePrefix = self::L10N . 'cleanup.message';
-        $this->addMessage($messagePrefix, AbstractMessage::OK);
+        $this->createFlashMessage($messagePrefix, AbstractMessage::OK);
 
         // redirect to index
         $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
@@ -184,7 +185,7 @@ class CleanupController extends BaseController
     /**
      * Function to add a flash message based on the given message prefix
      */
-    private function addMessage(string $messagePrefix, int $type) : void
+    private function createFlashMessage(string $messagePrefix, int $type) : void
     {
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate(self::L10N . 'message.header.' . $type), $type);
     }
@@ -196,19 +197,12 @@ class CleanupController extends BaseController
      */
     private function checkRequestArguments() : bool
     {
-        $argumentsToCheck = [
-            'pageUid',
-            'cleanupMode'
-        ];
+        if (!$this->request->hasArgument('cleanupMode')) {
+            $messagePrefix = self::L10N . 'cleanup.message.error.cleanupMode';
+            $this->createFlashMessage($messagePrefix, AbstractMessage::ERROR);
 
-        foreach ($argumentsToCheck as $argument) {
-            if (!$this->request->hasArgument($argument)) {
-                $messagePrefix = self::L10N . 'cleanup.message.error.' . $argument;
-                $this->addMessage($messagePrefix, AbstractMessage::ERROR);
-
-                // redirect to index
-                $this->redirect('index', 'Cleanup');
-            }
+            // redirect to index
+            $this->redirect('index', 'Cleanup');
         }
 
         return true;

@@ -5,8 +5,6 @@ namespace CReifenscheid\CtypeManager\Controller;
 use ReflectionClass;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
-use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -55,6 +53,8 @@ class BaseController extends ActionController
      */
     protected ?int $pageUid = null;
 
+    protected string $shortName = '';
+
     /**
      * Controller a request came from, to get back to it after the process has finished
      */
@@ -72,8 +72,14 @@ class BaseController extends ActionController
     ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
+
+        $reflect = new ReflectionClass($this);
+        $this->shortName = $reflect->getShortName();
     }
 
+    /**
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     */
     protected function initializeAction() : void
     {
         parent::initializeAction();
@@ -81,17 +87,10 @@ class BaseController extends ActionController
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/CtypeManager/CtypeManager');
 
-        /**
-         * Create a reflection of this
-         * to get e.g. the current class shortname
-         * for generical approaches
-         */
-        $reflect = new ReflectionClass($this);
-        
-        // generate the drop down menu
-        $this->buildMenu($reflect->getShortName());
+        // generate the dropdown menu
+        $this->buildMenu($this->shortName);
 
-        // definiton of currently chosen page uid
+        // definition of currently chosen page uid
         if ($this->request->hasArgument('pageUid')) {
             $this->pageUid = (int)$this->request->getArgument('pageUid');
         } elseif (array_key_exists('id', $this->request->getQueryParams())) {
@@ -99,7 +98,7 @@ class BaseController extends ActionController
         }
 
         // source controller definition
-        $this->sourceController = $this->request->hasArgument('sourceController') && !empty($this->request->getArgument('sourceController')) ? $this->request->getArgument('sourceController') : str_replace('Controller', '', $reflect->getShortName());
+        $this->sourceController = $this->request->hasArgument('sourceController') && !empty($this->request->getArgument('sourceController')) ? $this->request->getArgument('sourceController') : str_replace('Controller', '', $this->shortName);
     }
 
     protected function buildMenu(string $currentController) : void
@@ -109,18 +108,14 @@ class BaseController extends ActionController
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('CtypeManagerModuleMenu');
 
-        $menuElements = [
-            'Configuration',
-            'Overview',
-            'Cleanup'
-        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$this->request->getControllerExtensionName()]['modules'][$this->request->getPluginName()]['controllers'] as $configuredController) {
+            $alias = $configuredController['alias'];
 
-        foreach ($menuElements as $menuElement) {
             $menu->addMenuItem(
                 $menu->makeMenuItem()
-                    ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.' . strtolower($menuElement)))
-                    ->setHref($this->uriBuilder->uriFor('index', null, $menuElement))
-                    ->setActive($currentController === $menuElement . 'Controller')
+                    ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.' . strtolower($alias)))
+                    ->setHref($this->uriBuilder->uriFor('index', null, $alias))
+                    ->setActive($currentController === $alias . 'Controller')
             );
         }
 

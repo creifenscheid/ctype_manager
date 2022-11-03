@@ -23,8 +23,6 @@ defined('TYPO3') || die();
             'access' => 'admin',
             'iconIdentifier' => 'ctype-manager-extension',
             'labels' => 'LLL:EXT:' . $extKey . '/Resources/Private/Language/locallang_mod.xlf',
-            'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
-            'inheritNavigationComponentFromMainModule' => false,
         ]
     );
     // SKIN
