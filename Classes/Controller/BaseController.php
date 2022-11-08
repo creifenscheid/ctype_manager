@@ -82,7 +82,6 @@ class BaseController extends ActionController
     {
         parent::initializeAction();
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/CtypeManager/CtypeManager');
 
         // generate the dropdown menu

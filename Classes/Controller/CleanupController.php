@@ -54,7 +54,6 @@ class CleanupController extends BaseController
     public function indexAction() : ResponseInterface
     {
         $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
-
         $this->moduleTemplate->setContent($this->view->render());
 
         return $this->htmlResponse($this->moduleTemplate->renderContent());
