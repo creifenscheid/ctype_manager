@@ -167,8 +167,8 @@ class ConfigurationController extends BaseController
         // resolve page tsconfig for the current page
         $this->resolvePageTSConfig($this->pageUid);
 
-        $ctypesDiffer = $this->configurationDiffers(CTypeUtility::getItems(), $this->ctypeConfiguration, $enabledCtypes);
-        $listTypesDiffer = $this->configurationDiffers(ListTypeUtility::getItems(), $this->listTypeConfiguration, $enabledListTypes);
+        $ctypesDiffer = $this->configurationService->hasChanged(CTypeUtility::getItems(), $this->ctypeConfiguration, $enabledCtypes);
+        $listTypesDiffer = $this->configurationService->hasChanged(ListTypeUtility::getItems(), $this->listTypeConfiguration, $enabledListTypes);
 
         // only write pageTSConfig if the submitted configuration differs from to existing one
         if ($ctypesDiffer || $listTypesDiffer) {
@@ -176,16 +176,16 @@ class ConfigurationController extends BaseController
             $tsConfig[] = '### START ' . $this->configurationService::CONFIG_ID;
             $tsConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove or remove completely';
 
-            // CTYPE
+            // >>>> START CTYPE
             // unset existing removeItems configuration
             $tsConfig[] = 'TCEFORM.tt_content.CType.removeItems >';
 
             // build keep ctype configuration
             $ctypeConfiguration = 'TCEFORM.tt_content.CType.keepItems';
             $tsConfig[] = empty($enabledCtypes) ? $ctypeConfiguration . ' = none' : $ctypeConfiguration . ' = ' . implode(',', $enabledCtypes);
+            // <<<< END CTYPE
 
-
-            // LIST_TYPE
+            // >>>> START LIST TYPE
             // unset existing removeItems configuration
             $tsConfig[] = 'TCEFORM.tt_content.list_type.removeItems >';
 
@@ -219,6 +219,7 @@ class ConfigurationController extends BaseController
             foreach ($listTypeRemovals as $group => $listTypesToRemove) {
                 $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
             }
+            // <<<< END LIST TYPE
 
             $tsConfig[] = '### END ' . $this->configurationService::CONFIG_ID;
 
@@ -279,32 +280,5 @@ class ConfigurationController extends BaseController
 
         // if there are more than 1 state left (true and false) the state is false, otherwise the state of the group equals the leftover state (true or false)
         return count($states) > 1 ? false : end($states);
-    }
-
-    /**
-     * Function to compare set configuration vs. configuration sent via form
-     */
-    private function configurationDiffers(array $available, array $configuration, array $formEnabled) : bool
-    {
-        // store already enabled
-        $alreadyEnabled = [];
-
-        foreach ($available as $item) {
-            $identifier = $item[1];
-
-            // exclude divider and empty items
-            if ((!empty($identifier) && $identifier !== '--div--') && GeneralUtility::getActivationState($configuration, $identifier)) {
-                $alreadyEnabled[] = $identifier;
-            }
-        }
-
-        // compare the arrays - note: the larger one has to be the first to get a correct result
-        if (count($alreadyEnabled) > count($formEnabled)) {
-            $result = array_diff($alreadyEnabled, $formEnabled);
-        } else {
-            $result = array_diff($formEnabled, $alreadyEnabled);
-        }
-
-        return !empty($result);
     }
 }

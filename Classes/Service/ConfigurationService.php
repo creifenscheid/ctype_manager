@@ -123,4 +123,31 @@ class ConfigurationService implements SingletonInterface
 
         return $result->fetchAllAssociative();
     }
+
+    /**
+     * Function to compare set configuration vs. configuration sent via form
+     */
+    public function hasChanged(array $availableItems, array $configuration, array $enabledInForm) : bool
+    {
+        // store already enabled
+        $alreadyEnabled = [];
+
+        foreach ($availableItems as $item) {
+            $identifier = $item[1];
+
+            // exclude divider and empty items
+            if ((!empty($identifier) && $identifier !== '--div--') && \CReifenscheid\CtypeManager\Utility\GeneralUtility::getActivationState($configuration, $identifier)) {
+                $alreadyEnabled[] = $identifier;
+            }
+        }
+
+        // compare the arrays - note: the larger one has to be the first to get a correct result
+        if (count($alreadyEnabled) > count($enabledInForm)) {
+            $result = array_diff($alreadyEnabled, $enabledInForm);
+        } else {
+            $result = array_diff($enabledInForm, $alreadyEnabled);
+        }
+
+        return !empty($result);
+    }
 }
