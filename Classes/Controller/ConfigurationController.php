@@ -2,14 +2,12 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
-use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use Doctrine\DBAL\DBALException;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -175,7 +173,7 @@ class ConfigurationController extends BaseController
         // only write pageTSConfig if the submitted configuration differs from to existing one
         if ($ctypesDiffer || $listTypesDiffer) {
             // define ctype configuration
-            $tsConfig[] = '### START ' . parent::CONFIG_ID;
+            $tsConfig[] = '### START ' . $this->configurationService::CONFIG_ID;
             $tsConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove or remove completely';
 
             // CTYPE
@@ -222,13 +220,12 @@ class ConfigurationController extends BaseController
                 $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
             }
 
-            $tsConfig[] = '### END ' . parent::CONFIG_ID;
+            $tsConfig[] = '### END ' . $this->configurationService::CONFIG_ID;
 
-            $configurationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
-            $configurationService->writeConfiguration($this->pageUid, $tsConfig);
+            $this->configurationService->writeConfiguration($this->pageUid, $tsConfig);
 
             // persist changes
-            $configurationService->persist();
+            $this->configurationService->persist();
         }
 
         $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.message';

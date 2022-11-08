@@ -3,12 +3,11 @@
 namespace CReifenscheid\CtypeManager\Controller;
 
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
+use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *
@@ -50,27 +49,27 @@ class OverviewController extends BaseController
      */
     public function indexAction() : ResponseInterface
     {
-        $pages = $this->getPages();
+        $pages = $this->configurationService->getConfiguredPages();
 
         foreach ($pages as $key => $page) {
             // CTypes
-            $cTypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'CType');
+            $cTypeConfiguration = GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'CType');
             if (!empty($cTypeConfiguration)) {
-                $allowedCTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($cTypeConfiguration);
+                $allowedCTypes = GeneralUtility::getKeptItems($cTypeConfiguration);
                 foreach ($allowedCTypes as $allowedCType) {
                     if ($allowedCType === 'none') {
                         $page['allowedCTypes'] = 'none';
                         break;
                     }
 
-                    $page['allowedCTypes'][$allowedCType] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(CTypeUtility::getItems(), $allowedCType);
+                    $page['allowedCTypes'][$allowedCType] = GeneralUtility::getLabel(CTypeUtility::getItems(), $allowedCType);
                 }
             }
 
             // List types
-            $listTypeConfiguration = \CReifenscheid\CtypeManager\Utility\GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'list_type');
+            $listTypeConfiguration = GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'list_type');
             if (!empty($listTypeConfiguration)) {
-                $allowedListTypes = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getKeptItems($listTypeConfiguration);
+                $allowedListTypes = GeneralUtility::getKeptItems($listTypeConfiguration);
 
                 foreach ($allowedListTypes as $allowedListType) {
                     if ($allowedListType === 'none') {
@@ -78,7 +77,7 @@ class OverviewController extends BaseController
                         break;
                     }
 
-                    $label = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getLabel(ListTypeUtility::getItems(), $allowedListType);
+                    $label = GeneralUtility::getLabel(ListTypeUtility::getItems(), $allowedListType);
                     if ($label) {
                         $page['allowedListTypes'][] = $label;
                     }
@@ -95,24 +94,5 @@ class OverviewController extends BaseController
         $this->moduleTemplate->setContent($this->view->render());
 
         return $this->htmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Returns array with all pages with ctype manager configuration
-     *
-     * @throws DBALException
-     * @throws Exception
-     */
-    private function getPages() : array
-    {
-        $table = 'pages';
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-
-        return $queryBuilder->select('uid', 'title', 'is_siteroot')
-            ->from($table)
-            ->where(
-                $queryBuilder->expr()->like('TSconfig', "'%### START " . parent::CONFIG_ID . "%'")
-            )
-            ->execute()->fetchAllAssociative();
     }
 }

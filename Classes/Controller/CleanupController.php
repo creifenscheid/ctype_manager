@@ -2,14 +2,11 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
-use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use Doctrine\DBAL\DBALException;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -54,8 +51,6 @@ class CleanupController extends BaseController
 
     private ?PageRepository $pageRepository = null;
 
-    private ConfigurationService $configurationService;
-
     public function indexAction() : ResponseInterface
     {
         $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
@@ -73,7 +68,6 @@ class CleanupController extends BaseController
     public function approvalAction() : ResponseInterface
     {
         if ($this->checkRequestArguments()) {
-
             // get request arguments
             $arguments = $this->request->getArguments();
 
@@ -103,8 +97,6 @@ class CleanupController extends BaseController
             return;
         }
 
-        $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-
         $cleanupMode = $this->request->getArgument('cleanupMode');
 
         // initialize rootline utility
@@ -131,20 +123,10 @@ class CleanupController extends BaseController
                 break;
 
             case 'all':
-                // get all pages
-                // SeppTodo: move query to service to reuse in OverviewController
-                $tableToQuery = 'pages';
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
-                $result = $queryBuilder
-                    ->select('uid')
-                    ->from($tableToQuery)
-                    ->where(
-                        $queryBuilder->expr()->like('TSconfig', $queryBuilder->createNamedParameter('%' . $this->configurationService::CONFIG_ID . '%')),
-                    )
-                    ->executeQuery();
+                $configuredPages = $this->configurationService->getConfiguredPages();
 
-                while ($row = $result->fetchAssociative()) {
-                    $this->configurationService->removeConfiguration($row['uid']);
+                foreach ($configuredPages as $page) {
+                    $this->configurationService->removeConfiguration($page['uid']);
                 }
 
                 break;

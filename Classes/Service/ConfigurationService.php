@@ -2,7 +2,7 @@
 
 namespace CReifenscheid\CtypeManager\Service;
 
-use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -103,5 +103,24 @@ class ConfigurationService implements SingletonInterface
             $this->dataHandler->start($this->dataHandlerData, []);
             $this->dataHandler->process_datamap();
         }
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Driver\Exception
+     */
+    public function getConfiguredPages() : array
+    {
+        $tableToQuery = 'pages';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
+        $result = $queryBuilder
+            ->select('uid', 'title', 'is_siteroot')
+            ->from($tableToQuery)
+            ->where(
+                $queryBuilder->expr()->like('TSconfig', $queryBuilder->createNamedParameter('%' . self::CONFIG_ID . '%')),
+            )
+            ->executeQuery();
+
+        return $result->fetchAllAssociative();
     }
 }

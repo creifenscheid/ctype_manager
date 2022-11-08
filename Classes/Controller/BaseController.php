@@ -2,6 +2,7 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
+use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use ReflectionClass;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -42,13 +43,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class BaseController extends ActionController
 {
     /**
-     * Configuration identifier
-     *
-     * @var string
-     */
-    protected const CONFIG_ID = 'ctype-manager';
-
-    /**
      * Uid of currently chosen page
      */
     protected ?int $pageUid = null;
@@ -66,12 +60,16 @@ class BaseController extends ActionController
 
     protected PageRenderer $pageRenderer;
 
+    protected ConfigurationService $configurationService;
+
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,
-        PageRenderer $pageRenderer
+        PageRenderer $pageRenderer,
+        ConfigurationService $configurationService
     ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
+        $this->configurationService = $configurationService;
 
         $reflect = new ReflectionClass($this);
         $this->shortName = $reflect->getShortName();
