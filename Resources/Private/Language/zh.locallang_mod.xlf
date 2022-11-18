@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" version="1.0">
-  <file source-language="en" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="ctype-manager" target-language="zh-CN">
+  <file source-language="en" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="ctype-manager" target-language="zh-TW">
     <header/>
     <body>
       <!-- GENERAL-->
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>CType Manager</source>
+        <target state="needs-translation">CType Manager</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>CType Manager</source>
+        <target state="needs-translation">CType Manager</target>
+      </trans-unit>
       <trans-unit id="section.header" resname="section.header">
         <source>%s | CType Manager</source>
         <target state="needs-translation">%s | CType Manager</target>
@@ -26,6 +34,10 @@
         <source>Page "%s"</source>
         <target state="needs-translation">Page "%s"</target>
       </trans-unit>
+      <trans-unit id="section.configuration" resname="section.configuration">
+        <source>Configuration</source>
+        <target state="needs-translation">Configuration</target>
+      </trans-unit>
       <trans-unit id="section.cleanup" resname="section.cleanup">
         <source>Cleanup</source>
         <target state="needs-translation">Cleanup</target>
@@ -34,44 +46,36 @@
         <source>Overview</source>
         <target state="needs-translation">Overview</target>
       </trans-unit>
-      <!-- INDEX -->
-      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
-        <source>CType Manager</source>
-        <target state="needs-translation">CType Manager</target>
-      </trans-unit>
-      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
-        <source>CType Manager</source>
-        <target state="needs-translation">CType Manager</target>
-      </trans-unit>
-      <trans-unit id="index.bodytext" resname="index.bodytext">
+      <!-- CONFIGURATION -->
+      <trans-unit id="configuration.bodytext" resname="configuration.bodytext">
         <source>Choose all content types, which shall be available on this page and it's children.</source>
         <target state="needs-translation">Choose all content types, which shall be available on this page and it's children.</target>
       </trans-unit>
-      <trans-unit id="index.nopage" resname="index.nopage">
+      <trans-unit id="configuration.nopage" resname="configuration.nopage">
         <source>Please select a page from the page tree.</source>
         <target state="needs-translation">Please select a page from the page tree.</target>
       </trans-unit>
-      <trans-unit id="index.button.submit" resname="index.button.submit">
+      <trans-unit id="configuration.button.submit" resname="configuration.button.submit">
         <source>Save</source>
         <target state="needs-translation">Save</target>
       </trans-unit>
-      <trans-unit id="index.message.bodytext" resname="index.message.bodytext">
+      <trans-unit id="configuration.message.bodytext" resname="configuration.message.bodytext">
         <source>CType Manager configuration has been saved.</source>
         <target state="needs-translation">CType Manager configuration has been saved.</target>
       </trans-unit>
-      <trans-unit id="index.switch.label" resname="index.switch.label">
+      <trans-unit id="configuration.switch.label" resname="configuration.switch.label">
         <source>Enable all</source>
         <target state="needs-translation">Enable all</target>
       </trans-unit>
-      <trans-unit id="index.switch.all" resname="index.switch.all">
+      <trans-unit id="configuration.switch.all" resname="configuration.switch.all">
         <source>Enable all content element types</source>
         <target state="needs-translation">Enable all content element types</target>
       </trans-unit>
-      <trans-unit id="index.switch.group" resname="index.toggle.group">
+      <trans-unit id="configuration.switch.group" resname="configuration.toggle.group">
         <source>Enable all content element types in group "%s"</source>
         <target state="needs-translation">Enable all content element types in group "%s"</target>
       </trans-unit>
-      <trans-unit id="index.listTypes.headline" resname="index.listTypes.headline">
+      <trans-unit id="configuration.listTypes.headline" resname="configuration.listTypes.headline">
         <source>Available plugins</source>
         <target state="needs-translation">Available plugins</target>
       </trans-unit>
