@@ -1,29 +1,30 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use CReifenscheid\CtypeManager\Controller\ConfigurationController;
+use CReifenscheid\CtypeManager\Controller\CleanupController;
+use CReifenscheid\CtypeManager\Controller\OverviewController;
+defined('TYPO3') || die();
 
-(function ($extKey) {
-    
+(static function ($extKey) {
     // BACKEND MODULE
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        ucfirst(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($extKey)),
+    ExtensionUtility::registerModule(
+        ucfirst(GeneralUtility::underscoredToLowerCamelCase($extKey)),
         'web',
         $extKey,
         'bottom',
         [
-            \CReifenscheid\CtypeManager\Controller\CtypeController::class => 'index,submit',
-            \CReifenscheid\CtypeManager\Controller\CleanupController::class => 'index,approval,cleanup',
-            \CReifenscheid\CtypeManager\Controller\OverviewController::class => 'index'
+            ConfigurationController::class => 'index,submit',
+            CleanupController::class => 'index,approval,cleanup',
+            OverviewController::class => 'index'
         ],
         [
             'access' => 'admin',
             'iconIdentifier' => 'ctype-manager-extension',
             'labels' => 'LLL:EXT:' . $extKey . '/Resources/Private/Language/locallang_mod.xlf',
-            'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
-            'inheritNavigationComponentFromMainModule' => false,
         ]
     );
-    
     // SKIN
     $GLOBALS['TBE_STYLES']['skins'][$extKey] = [
         'name' => 'CType manager',
@@ -31,5 +32,4 @@ defined('TYPO3_MODE') or die();
             'css' => 'EXT:' . $extKey . '/Resources/Public/Css/'
         ]
     ];
-    
 })('ctype_manager');

@@ -13,7 +13,7 @@
                 <f:form id="ctype-cleanup" action="cleanup" controller="Cleanup" method="post" enctype="multipart/form-data">
                     <f:form.hidden name="pageUid" value="{page.uid}"/>
                     <f:form.hidden name="cleanupMode" value="{cleanupMode}"/>
-                    <f:form.hidden name="srcController" value="{srcController}"/>
+                    <f:form.hidden name="sourceController" value="{sourceController}"/>
 
                     <div class="card-container mt-3">
                         <div class="card card--danger">
@@ -36,7 +36,7 @@
                             <div class="card-body">
                                 <f:form.button class="btn btn--danger"><core:icon identifier="actions-exclamation-triangle-alt" size="small" /><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.submit" /></f:form.button>
 
-                                <f:link.action action="index" controller="{srcController}" class="btn btn-default"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.abort" /></f:link.action>
+                                <f:link.action action="index" controller="{sourceController}" class="btn btn-default"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:cleanup.approval.abort" /></f:link.action>
                             </div>
                         </div>
                     </div>

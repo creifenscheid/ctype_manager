@@ -2,6 +2,7 @@
 
 namespace CReifenscheid\CtypeManager\Service;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,67 +41,30 @@ class ConfigurationService implements SingletonInterface
 {
     /**
      * Configuration identifier
+     *
+     * @var string
      */
     public const CONFIG_ID = 'ctype-manager';
 
-    /**
-     * Data handler
-     *
-     * @var \TYPO3\CMS\Core\DataHandling\DataHandler
-     */
-    private $dataHandler;
+    private DataHandler $dataHandler;
 
-    /**
-     * Array for data handler data
-     *
-     * @var array
-     */
-    private $dataHandlerData = [];
+    private array $dataHandlerData = [];
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
     }
 
-    /**
-     * Function to write ctype manager configuration
-     *
-     * @param int   $pageUid
-     * @param array $ctypeConfig
-     *
-     * @return void
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function writeConfiguration(int $pageUid, array $ctypeConfig) : void
     {
         $this->handleConfiguration($pageUid, $ctypeConfig);
     }
 
-    /**
-     * Function to remove ctype manager configuration
-     *
-     * @param int $pageUid
-     *
-     * @return void
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function removeConfiguration(int $pageUid) : void
     {
         $this->handleConfiguration($pageUid);
     }
 
-    /**
-     * Function to write or remove ctype manager configuration
-     *
-     * @param int   $pageUid
-     * @param array $ctypeConfig
-     *
-     * @return void
-     * @throws \Doctrine\DBAL\DBALException
-     */
     protected function handleConfiguration(int $pageUid, array $ctypeConfig = []) : void
     {
         /**
@@ -112,7 +76,6 @@ class ConfigurationService implements SingletonInterface
         // remove existing ctype_manager configuration
         $deleteLine = false;
         foreach ($tsConfig as $key => $line) {
-
             if ($line === '### START ' . self::CONFIG_ID) {
                 $deleteLine = true;
             } elseif ($line === '### END ' . self::CONFIG_ID) {
@@ -134,16 +97,57 @@ class ConfigurationService implements SingletonInterface
         ];
     }
 
-    /**
-     * Function to run data handler with stored data
-     *
-     * @return void
-     */
     public function persist() : void
     {
         if (!empty($this->dataHandlerData)) {
             $this->dataHandler->start($this->dataHandlerData, []);
             $this->dataHandler->process_datamap();
         }
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Driver\Exception
+     */
+    public function getConfiguredPages() : array
+    {
+        $tableToQuery = 'pages';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
+        $result = $queryBuilder
+            ->select('uid', 'title', 'is_siteroot')
+            ->from($tableToQuery)
+            ->where(
+                $queryBuilder->expr()->like('TSconfig', $queryBuilder->createNamedParameter('%' . self::CONFIG_ID . '%')),
+            )
+            ->executeQuery();
+
+        return $result->fetchAllAssociative();
+    }
+
+    /**
+     * Function to compare set configuration vs. configuration sent via form
+     */
+    public function hasChanged(array $availableItems, array $configuration, array $enabledInForm) : bool
+    {
+        // store already enabled
+        $alreadyEnabled = [];
+
+        foreach ($availableItems as $item) {
+            $identifier = $item[1];
+
+            // exclude divider and empty items
+            if ((!empty($identifier) && $identifier !== '--div--') && \CReifenscheid\CtypeManager\Utility\GeneralUtility::getActivationState($configuration, $identifier)) {
+                $alreadyEnabled[] = $identifier;
+            }
+        }
+
+        // compare the arrays - note: the larger one has to be the first to get a correct result
+        if (count($alreadyEnabled) > count($enabledInForm)) {
+            $result = array_diff($alreadyEnabled, $enabledInForm);
+        } else {
+            $result = array_diff($enabledInForm, $alreadyEnabled);
+        }
+
+        return !empty($result);
     }
 }

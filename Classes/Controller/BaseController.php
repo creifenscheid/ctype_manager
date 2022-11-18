@@ -2,6 +2,7 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
+use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use ReflectionClass;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -42,70 +43,61 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class BaseController extends ActionController
 {
     /**
-     * Configuration identifier
+     * Uid of currently chosen page
      */
-    protected const CONFIG_ID = 'ctype-manager';
+    protected ?int $pageUid = null;
+
+    protected string $shortName = '';
 
     /**
-     * ModuleTemplateFactory
-     *
-     * @var \TYPO3\CMS\Backend\Template\ModuleTemplateFactory
+     * Controller a request came from, to get back to it after the process has finished
      */
+    protected string $sourceController = '';
+
     protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * ModuleTemplate
-     *
-     * @var \TYPO3\CMS\Backend\Template\ModuleTemplate
-     */
     protected ModuleTemplate $moduleTemplate;
 
-    /**
-     * Page renderer
-     *
-     * @var \TYPO3\CMS\Core\Page\PageRenderer
-     */
     protected PageRenderer $pageRenderer;
 
-    /**
-     * Constructor
-     *
-     * @param \TYPO3\CMS\Backend\Template\ModuleTemplateFactory $moduleTemplateFactory
-     *
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
-     */
+    protected ConfigurationService $configurationService;
+
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,
-        PageRenderer $pageRenderer
+        PageRenderer $pageRenderer,
+        ConfigurationService $configurationService
     ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
+        $this->configurationService = $configurationService;
+
+        $reflect = new ReflectionClass($this);
+        $this->shortName = $reflect->getShortName();
     }
 
     /**
-     * Initialize action
-     *
-     * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function initializeAction() : void
+    protected function initializeAction() : void
     {
         parent::initializeAction();
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-
-        // load requireJS modules
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/CtypeManager/CtypeManager');
 
-        // drop down menu
-        $reflect = new ReflectionClass($this);
-        $this->buildMenu($reflect->getShortName());
+        // generate the dropdown menu
+        $this->buildMenu($this->shortName);
+
+        // definition of currently chosen page uid
+        if ($this->request->hasArgument('pageUid')) {
+            $this->pageUid = (int)$this->request->getArgument('pageUid');
+        } elseif (array_key_exists('id', $this->request->getQueryParams())) {
+            $this->pageUid = $this->request->getQueryParams()['id'];
+        }
+
+        // source controller definition
+        $this->sourceController = $this->request->hasArgument('sourceController') && !empty($this->request->getArgument('sourceController')) ? $this->request->getArgument('sourceController') : str_replace('Controller', '', $this->shortName);
     }
 
-    /**
-     * Drop down menu
-     *
-     * @param string $currentController
-     */
     protected function buildMenu(string $currentController) : void
     {
         $this->uriBuilder->setRequest($this->request);
@@ -113,29 +105,16 @@ class BaseController extends ActionController
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('CtypeManagerModuleMenu');
 
-        // CtypeController
-        $menu->addMenuItem(
-            $menu->makeMenuItem()
-                ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'))
-                ->setHref($this->uriBuilder->uriFor('index', null, 'Ctype'))
-                ->setActive($currentController === 'CtypeController')
-        );
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$this->request->getControllerExtensionName()]['modules'][$this->request->getPluginName()]['controllers'] as $configuredController) {
+            $alias = $configuredController['alias'];
 
-        // Overview controller
-        $menu->addMenuItem(
-            $menu->makeMenuItem()
-                ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.overview'))
-                ->setHref($this->uriBuilder->uriFor('index', null, 'Overview'))
-                ->setActive($currentController === 'OverviewController')
-        );
-
-        // Cleanup controller
-        $menu->addMenuItem(
-            $menu->makeMenuItem()
-                ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.cleanup'))
-                ->setHref($this->uriBuilder->uriFor('index', null, 'Cleanup'))
-                ->setActive($currentController === 'CleanupController')
-        );
+            $menu->addMenuItem(
+                $menu->makeMenuItem()
+                    ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.' . strtolower($alias)))
+                    ->setHref($this->uriBuilder->uriFor('index', null, $alias))
+                    ->setActive($currentController === $alias . 'Controller')
+            );
+        }
 
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }

@@ -2,13 +2,15 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
-use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
+use Doctrine\DBAL\DBALException;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 use function array_key_exists;
 use function count;
 
@@ -38,54 +40,33 @@ use function count;
  ***************************************************************/
 
 /**
- * Class CtypeController
+ * Class ConfigurationController
  *
  * @package \CReifenscheid\CtypeManager\Controller
  */
-class CtypeController extends BaseController
+class ConfigurationController extends BaseController
 {
     /**
      * Array of ctypes configured in pageTSConfig
-     *
-     * @var array
      */
     private array $ctypeConfiguration = [];
 
     /**
      * Array of list_types configured in pageTSConfig
-     *
-     * @var array
      */
     private array $listTypeConfiguration = [];
 
-    /**
-     * Index action
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     */
     public function indexAction() : ResponseInterface
     {
-        // get the current page from request
-        if ($this->request->hasArgument('pageUid')) {
-            $pageUid = (int)$this->request->getArgument('pageUid');
-        } else {
-            $pageUid = $this->request->getQueryParams()['id'];
-        }
-
-        if ($pageUid && $pageUid > 0) {
-
+        if ($this->pageUid && $this->pageUid > 0) {
             // store all variables for the view
             $assignments = [
-                'page' => GeneralUtility::getPage($pageUid)
+                'page' => GeneralUtility::getPage($this->pageUid),
+                'sourceController' => $this->sourceController
             ];
 
-            if ($this->request->hasArgument('srcController')) {
-                $assignments['srcController'] = $this->request->getArgument('srcController');
-            }
-
             // resolve page tsconfig for the current page
-            $this->resolvePageTSConfig($pageUid);
+            $this->resolvePageTSConfig($this->pageUid);
 
             // CTYPES
             // sort CTypes by group
@@ -112,12 +93,10 @@ class CtypeController extends BaseController
 
                     if ($groupLabel) {
                         $ctypes[$group]['label'] = GeneralUtility::locate($groupLabel);
+                    } elseif ($group === 'unassigned') {
+                        $ctypes[$group]['label'] = GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
                     } else {
-                        if ($group === 'unassigned') {
-                            $ctypes[$group]['label'] = GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
-                        } else {
-                            $ctypes[$group]['label'] = ucfirst($group);
-                        }
+                        $ctypes[$group]['label'] = ucfirst($group);
                     }
                 }
 
@@ -140,6 +119,7 @@ class CtypeController extends BaseController
                 $groupStates[] = $groupState;
                 $ctypes[$groupKey]['state'] = $groupState;
             }
+
             $assignments['ctypes'] = $ctypes;
             $assignments['groupsState'] = $this->getMainState($groupStates);
 
@@ -170,20 +150,13 @@ class CtypeController extends BaseController
     }
 
     /**
-     * Submit action
-     *
-     * @return void
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws StopActionException
+     * @throws DBALException
      */
     public function submitAction() : void
     {
         // get request arguments
         $arguments = $this->request->getArguments();
-
-        // get the page uid to store page tsconfig in
-        $pageUid = (int)$arguments['pageUid'];
-        $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Ctype';
 
         // get enabled ctypes
         $enabledCtypes = empty($arguments['ctypes']) ? [] : $arguments['ctypes'];
@@ -192,27 +165,27 @@ class CtypeController extends BaseController
         $enabledListTypes = empty($arguments['listTypes']) ? [] : $arguments['listTypes'];
 
         // resolve page tsconfig for the current page
-        $this->resolvePageTSConfig($pageUid);
+        $this->resolvePageTSConfig($this->pageUid);
 
-        $ctypesDiffer = $this->configurationDiffers(CTypeUtility::getItems(), $this->ctypeConfiguration, $enabledCtypes);
-        $listTypesDiffer = $this->configurationDiffers(ListTypeUtility::getItems(), $this->listTypeConfiguration, $enabledListTypes);
+        $ctypesDiffer = $this->configurationService->hasChanged(CTypeUtility::getItems(), $this->ctypeConfiguration, $enabledCtypes);
+        $listTypesDiffer = $this->configurationService->hasChanged(ListTypeUtility::getItems(), $this->listTypeConfiguration, $enabledListTypes);
 
         // only write pageTSConfig if the submitted configuration differs from to existing one
         if ($ctypesDiffer || $listTypesDiffer) {
             // define ctype configuration
-            $tsConfig[] = '### START ' . parent::CONFIG_ID;
-            $tsConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove';
+            $tsConfig[] = '### START ' . $this->configurationService::CONFIG_ID;
+            $tsConfig[] = '# The following lines are set and updated by EXT:ctype_manager - do not remove or remove completely';
 
-            // CTYPE
+            // >>>> START CTYPE
             // unset existing removeItems configuration
             $tsConfig[] = 'TCEFORM.tt_content.CType.removeItems >';
 
             // build keep ctype configuration
             $ctypeConfiguration = 'TCEFORM.tt_content.CType.keepItems';
             $tsConfig[] = empty($enabledCtypes) ? $ctypeConfiguration . ' = none' : $ctypeConfiguration . ' = ' . implode(',', $enabledCtypes);
+            // <<<< END CTYPE
 
-
-            // LIST_TYPE
+            // >>>> START LIST TYPE
             // unset existing removeItems configuration
             $tsConfig[] = 'TCEFORM.tt_content.list_type.removeItems >';
 
@@ -221,7 +194,7 @@ class CtypeController extends BaseController
             $tsConfig[] = empty($enabledListTypes) ? $listTypeConfiguration . ' = none' : $listTypeConfiguration . ' = ' . implode(',', $enabledListTypes);
 
             // get all available wizard items of current root
-            $wizardConfiguration = ListTypeUtility::getWizardItems(GeneralUtility::getRootPageId($pageUid));
+            $wizardConfiguration = ListTypeUtility::getWizardItems(GeneralUtility::getRootPageId($this->pageUid));
 
             // store all list types to remove from wizard for each group
             $listTypeRemovals = [];
@@ -233,7 +206,6 @@ class CtypeController extends BaseController
 
                     // check if wizard item has a group and is not listed in enabled list types
                     if (!empty($group) && !in_array($listType, $enabledListTypes, true)) {
-
                         // clear wizard item configuration
                         $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.elements.' . $identifier . ' >';
 
@@ -244,35 +216,28 @@ class CtypeController extends BaseController
             }
 
             // adjust "show" configuration for each group, if needed
-            if (!empty($listTypeRemovals)) {
-                foreach ($listTypeRemovals as $group => $listTypesToRemove) {
-                    $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
-                }
+            foreach ($listTypeRemovals as $group => $listTypesToRemove) {
+                $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
             }
+            // <<<< END LIST TYPE
 
-            $tsConfig[] = '### END ' . parent::CONFIG_ID;
+            $tsConfig[] = '### END ' . $this->configurationService::CONFIG_ID;
 
-            /** @var \CReifenscheid\CtypeManager\Service\ConfigurationService $pageTSConfigService */
-            $configurationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
-            $configurationService->writeConfiguration($pageUid, $tsConfig);
+            $this->configurationService->writeConfiguration($this->pageUid, $tsConfig);
 
             // persist changes
-            $configurationService->persist();
+            $this->configurationService->persist();
         }
 
-        $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:index.message';
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . FlashMessage::OK), FlashMessage::OK, true);
+        $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.message';
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . AbstractMessage::OK));
 
         // redirect to index
-        $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $pageUid]);
+        $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
     }
 
     /**
-     * Resolves pageTSConfig to get kept and removed ctypes
-     *
-     * @param int $currentPageId
-     *
-     * @return void
+     * Resolves pageTSConfig to get kept and removed ctypes and list_types
      */
     private function resolvePageTSConfig(int $currentPageId) : void
     {
@@ -307,50 +272,13 @@ class CtypeController extends BaseController
 
     /**
      * Function to determine the state of a group
-     *
-     * @param array $ctypeStates
-     *
-     * @return bool
      */
     private function getMainState(array $states) : bool
     {
         // remove duplicate states
         $states = array_unique($states);
 
-        // if there are more then 1 state left (true and false) the state is false, otherwise the state of the group equals the leftover state (true or false)
+        // if there are more than 1 state left (true and false) the state is false, otherwise the state of the group equals the leftover state (true or false)
         return count($states) > 1 ? false : end($states);
-    }
-
-    /**
-     * Function to compare set configuration vs. configuration sent via form
-     *
-     * @param array $available
-     * @param array $configuration
-     * @param array $formEnabled
-     *
-     * @return boolean
-     */
-    private function configurationDiffers(array $available, array $configuration, array $formEnabled) : bool
-    {
-        // store already enabled
-        $alreadyEnabled = [];
-
-        foreach ($available as $item) {
-            $identifier = $item[1];
-
-            // exclude divider and empty items
-            if ((!empty($identifier) && $identifier !== '--div--') && GeneralUtility::getActivationState($configuration, $identifier)) {
-                $alreadyEnabled[] = $identifier;
-            }
-        }
-
-        // compare the arrays - note: the larger one has to be the first to get a correct result
-        if (count($alreadyEnabled) > count($formEnabled)) {
-            $result = array_diff($alreadyEnabled, $formEnabled);
-        } else {
-            $result = array_diff($formEnabled, $alreadyEnabled);
-        }
-
-        return !empty($result);
     }
 }

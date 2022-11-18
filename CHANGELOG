@@ -1,3 +1,8 @@
+v11.5.0 +
+  * [TASK]      - rename ctype controller to match functionality
+  * [TASK]      - code improvements
+  * [TASK]      - wording improvements
+
 v11.4.4 +
   * [BUG]       - adds missing check on argument existence in controller
 

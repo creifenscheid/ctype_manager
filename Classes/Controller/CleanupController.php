@@ -2,12 +2,12 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
-use CReifenscheid\CtypeManager\Service\ConfigurationService;
+use Doctrine\DBAL\DBALException;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
@@ -36,48 +36,24 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  ***************************************************************/
 
 /**
- * Class CtypeController
+ * Class CleanupController
  *
  * @package \CReifenscheid\CtypeManager\Controller
  */
 class CleanupController extends BaseController
 {
     /**
-     * Configuration l10n base
+     * L10n base
+     *
+     * @var string
      */
     private const L10N = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:';
 
-    /**
-     * Page repository
-     *
-     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
-     */
-    private $pageRepository;
+    private ?PageRepository $pageRepository = null;
 
-    /**
-     * PageTSconfigService
-     *
-     * @var \CReifenscheid\CtypeManager\Service\ConfigurationService
-     */
-    private $configurationService;
-
-    /**
-     * Index action
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     */
     public function indexAction() : ResponseInterface
     {
-        // get the current page id from the request
-        if ($this->request->hasArgument('pageUid')) {
-            $pageUid = (int)$this->request->getArgument('pageUid');
-        } else {
-            $pageUid = $this->request->getQueryParams()['id'];
-        }
-
-        $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($pageUid));
-
+        $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
         $this->moduleTemplate->setContent($this->view->render());
 
         return $this->htmlResponse($this->moduleTemplate->renderContent());
@@ -86,23 +62,19 @@ class CleanupController extends BaseController
     /**
      * Double opt-in for cleanup
      *
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws StopActionException
      */
     public function approvalAction() : ResponseInterface
     {
         if ($this->checkRequestArguments()) {
-
-            $assignments = [];
-
             // get request arguments
             $arguments = $this->request->getArguments();
-            $assignments['cleanupMode'] = $arguments['cleanupMode'];
-            $assignments['page'] = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage((int)$arguments['pageUid']);
-            $assignments['srcController'] = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Cleanup';
 
-            $this->view->assignMultiple($assignments);
+            $this->view->assignMultiple([
+                'cleanupMode' => $arguments['cleanupMode'],
+                'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid),
+                'sourceController' => $this->sourceController
+            ]);
         }
 
         $this->moduleTemplate->setContent($this->view->render());
@@ -113,10 +85,10 @@ class CleanupController extends BaseController
     /**
      * Cleanup action to remove all ctype_manager tsconfig
      *
-     * @return void
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function cleanupAction() : void
     {
@@ -124,23 +96,16 @@ class CleanupController extends BaseController
             return;
         }
 
-        $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-
-        // get request arguments
-        $arguments = $this->request->getArguments();
-        $cleanupMode = $arguments['cleanupMode'];
-        $srcController = $this->request->hasArgument('srcController') && $arguments['srcController'] ? $arguments['srcController'] : 'Cleanup';
-        $pageUid = (int)$arguments['pageUid'];
-
+        $cleanupMode = $this->request->getArgument('cleanupMode');
 
         // initialize rootline utility
         if ($cleanupMode === 'rootpage' || $cleanupMode === 'rootline') {
-            $rootline = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getRootline($pageUid);
+            $rootline = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getRootline($this->pageUid);
         }
 
         switch ($cleanupMode) {
             case 'page':
-                $this->configurationService->removeConfiguration($pageUid);
+                $this->configurationService->removeConfiguration($this->pageUid);
                 break;
 
             case 'rootline':
@@ -157,19 +122,10 @@ class CleanupController extends BaseController
                 break;
 
             case 'all':
-                // get all pages
-                $tableToQuery = 'pages';
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
-                $result = $queryBuilder
-                    ->select('uid')
-                    ->from($tableToQuery)
-                    ->where(
-                        $queryBuilder->expr()->like('TSconfig', $queryBuilder->createNamedParameter('%' . $this->configurationService::CONFIG_ID . '%')),
-                    )
-                    ->executeQuery();
+                $configuredPages = $this->configurationService->getConfiguredPages();
 
-                while ($row = $result->fetchAssociative()) {
-                    $this->configurationService->removeConfiguration($row['uid']);
+                foreach ($configuredPages as $page) {
+                    $this->configurationService->removeConfiguration($page['uid']);
                 }
 
                 break;
@@ -179,16 +135,16 @@ class CleanupController extends BaseController
         $this->configurationService->persist();
 
         $messagePrefix = self::L10N . 'cleanup.message';
-        $this->addMessage($messagePrefix, FlashMessage::OK);
+        $this->createFlashMessage($messagePrefix, AbstractMessage::OK);
 
         // redirect to index
-        $this->redirect('index', $srcController, 'CtypeManager', ['pageUid' => $pageUid]);
+        $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
     }
 
     /**
      * Function to clean up a page and its children
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function cleanupPageRecursively(int $pageUid) : void
     {
@@ -202,23 +158,15 @@ class CleanupController extends BaseController
 
         // get children of page
         $children = $this->pageRepository->getMenu($pageUid);
-        if (!empty($children)) {
-            foreach ($children as $child) {
-                $this->cleanupPageRecursively($child['uid']);
-            }
+        foreach ($children as $child) {
+            $this->cleanupPageRecursively($child['uid']);
         }
     }
 
     /**
      * Function to add a flash message based on the given message prefix
-     *
-     * @param string $messagePrefix
-     * @param int    $type
-     *
-     * @return void
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
-    private function addMessage(string $messagePrefix, int $type) : void
+    private function createFlashMessage(string $messagePrefix, int $type) : void
     {
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate(self::L10N . 'message.header.' . $type), $type);
     }
@@ -226,23 +174,13 @@ class CleanupController extends BaseController
     /**
      * Function to check the request for the needed arguments
      *
-     * @return bool
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws StopActionException
      */
     private function checkRequestArguments() : bool
     {
-        if (!$this->request->hasArgument('pageUid')) {
-            $messagePrefix = self::L10N . 'cleanup.message.error.pageuid';
-            $this->addMessage($messagePrefix, FlashMessage::ERROR);
-
-            // redirect to index
-            $this->redirect('index', 'Cleanup');
-        }
-
         if (!$this->request->hasArgument('cleanupMode')) {
             $messagePrefix = self::L10N . 'cleanup.message.error.cleanupMode';
-            $this->addMessage($messagePrefix, FlashMessage::ERROR);
+            $this->createFlashMessage($messagePrefix, AbstractMessage::ERROR);
 
             // redirect to index
             $this->redirect('index', 'Cleanup');
