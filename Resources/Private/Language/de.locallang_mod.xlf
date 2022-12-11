@@ -34,9 +34,9 @@
         <source>Page "%s"</source>
         <target state="final">Seite "%s"</target>
       </trans-unit>
-      <trans-unit id="section.configuration" resname="section.configuration">
+      <trans-unit id="section.configuration" resname="section.configuration" approved="yes">
         <source>Configuration</source>
-        <target state="needs-translation">Configuration</target>
+        <target state="final">Konfiguration</target>
       </trans-unit>
       <trans-unit id="section.cleanup" resname="section.cleanup" approved="yes">
         <source>Cleanup</source>
@@ -47,37 +47,37 @@
         <target state="final">Übersicht</target>
       </trans-unit>
       <!-- CONFIGURATION -->
-      <trans-unit id="configuration.bodytext" resname="configuration.bodytext">
+      <trans-unit id="configuration.bodytext" resname="configuration.bodytext" approved="yes">
         <source>Choose all content types, which shall be available on this page and it's children.</source>
-        <target state="needs-translation">Choose all content types, which shall be available on this page and it's children.</target>
+        <target state="final">Wählen Sie alle Inhaltstypen, die auf dieser Seite und ihren Unterseiten verfügbar sein sollen.</target>
       </trans-unit>
-      <trans-unit id="configuration.nopage" resname="configuration.nopage">
+      <trans-unit id="configuration.nopage" resname="configuration.nopage" approved="yes">
         <source>Please select a page from the page tree.</source>
-        <target state="needs-translation">Please select a page from the page tree.</target>
+        <target state="final">Bitte wählen Sie eine Seite aus dem Seitenbaum.</target>
       </trans-unit>
-      <trans-unit id="configuration.button.submit" resname="configuration.button.submit">
+      <trans-unit id="configuration.button.submit" resname="configuration.button.submit" approved="yes">
         <source>Save</source>
-        <target state="needs-translation">Save</target>
+        <target state="final">Speichern</target>
       </trans-unit>
-      <trans-unit id="configuration.message.bodytext" resname="configuration.message.bodytext">
+      <trans-unit id="configuration.message.bodytext" resname="configuration.message.bodytext" approved="yes">
         <source>CType Manager configuration has been saved.</source>
-        <target state="needs-translation">CType Manager configuration has been saved.</target>
+        <target state="final">Die Konfiguration des CType Managers wurde gespeichert.</target>
       </trans-unit>
-      <trans-unit id="configuration.switch.label" resname="configuration.switch.label">
+      <trans-unit id="configuration.switch.label" resname="configuration.switch.label" approved="yes">
         <source>Enable all</source>
-        <target state="needs-translation">Enable all</target>
+        <target state="final">Alle aktivieren</target>
       </trans-unit>
-      <trans-unit id="configuration.switch.all" resname="configuration.switch.all">
+      <trans-unit id="configuration.switch.all" resname="configuration.switch.all" approved="yes">
         <source>Enable all content element types</source>
-        <target state="needs-translation">Enable all content element types</target>
+        <target state="final">Alle Inhaltselementtypen aktivieren</target>
       </trans-unit>
-      <trans-unit id="configuration.switch.group" resname="configuration.toggle.group">
+      <trans-unit id="configuration.switch.group" resname="configuration.toggle.group" approved="yes">
         <source>Enable all content element types in group "%s"</source>
-        <target state="needs-translation">Enable all content element types in group "%s"</target>
+        <target state="final">Alle Inhaltselementtypen in Gruppe "%s" aktivieren</target>
       </trans-unit>
-      <trans-unit id="configuration.listTypes.headline" resname="configuration.listTypes.headline">
+      <trans-unit id="configuration.listTypes.headline" resname="configuration.listTypes.headline" approved="yes">
         <source>Available plugins</source>
-        <target state="needs-translation">Available plugins</target>
+        <target state="final">Verfügbare Plugins</target>
       </trans-unit>
       <!-- CLEANUP -->
       <trans-unit id="cleanup.bodytext" resname="cleanup.bodytext" approved="yes">
