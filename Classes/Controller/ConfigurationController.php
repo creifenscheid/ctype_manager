@@ -89,14 +89,11 @@ class ConfigurationController extends BaseController
                 // set group label
                 if (!array_key_exists('label', $ctypes[$group])) {
                     // get the group label from TCA group
-                    $groupLabel = CTypeUtility::getGroups()[$group];
-
-                    if ($groupLabel) {
-                        $ctypes[$group]['label'] = GeneralUtility::locate($groupLabel);
-                    } elseif ($group === 'unassigned') {
+                    if ($group === 'unassigned') {
                         $ctypes[$group]['label'] = GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
                     } else {
-                        $ctypes[$group]['label'] = ucfirst($group);
+                        $configuredGroups = CTypeUtility::getGroups();
+                        $ctypes[$group]['label'] = array_key_exists($group, $configuredGroups) ? GeneralUtility::locate($configuredGroups[$group]) : ucfirst($group);
                     }
                 }
 
