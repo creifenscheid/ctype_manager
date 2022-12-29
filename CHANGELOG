@@ -1,5 +1,5 @@
 v11.5.1 +
-  * [BUGFIX]    - fixes undefined array keys in ConfigurationCobtroller
+  * [BUGFIX]    - fixes undefined array keys in ConfigurationController
 
 v11.5.0 +
   * [TASK]      - rename ctype controller to match functionality

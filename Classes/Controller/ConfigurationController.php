@@ -74,7 +74,10 @@ class ConfigurationController extends BaseController
             $ctypeStates = [];
             $groupStates = [];
             foreach (CTypeUtility::getItems() as $ctype) {
-                [$label, $identifier, , $group] = $ctype;
+
+                $label = $ctype[0] ?? null;
+                $identifier = $ctype[1] ?? null;
+                $group = $ctype[3] ?? null;
 
                 // check group existence
                 if (empty($group)) {
