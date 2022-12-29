@@ -110,7 +110,7 @@ class BaseController extends ActionController
 
             $menu->addMenuItem(
                 $menu->makeMenuItem()
-                    ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.' . strtolower($alias)))
+                    ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.' . strtolower((string) $alias)))
                     ->setHref($this->uriBuilder->uriFor('index', null, $alias))
                     ->setActive($currentController === $alias . 'Controller')
             );

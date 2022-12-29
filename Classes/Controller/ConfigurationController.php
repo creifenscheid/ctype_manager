@@ -96,7 +96,7 @@ class ConfigurationController extends BaseController
                         $ctypes[$group]['label'] = GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
                     } else {
                         $configuredGroups = CTypeUtility::getGroups();
-                        $ctypes[$group]['label'] = array_key_exists($group, $configuredGroups) ? GeneralUtility::locate($configuredGroups[$group]) : ucfirst($group);
+                        $ctypes[$group]['label'] = array_key_exists($group, $configuredGroups) ? GeneralUtility::locate($configuredGroups[$group]) : ucfirst((string) $group);
                     }
                 }
 
@@ -219,6 +219,7 @@ class ConfigurationController extends BaseController
             foreach ($listTypeRemovals as $group => $listTypesToRemove) {
                 $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
             }
+
             // <<<< END LIST TYPE
 
             $tsConfig[] = '### END ' . $this->configurationService::CONFIG_ID;

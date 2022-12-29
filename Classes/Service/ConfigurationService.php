@@ -113,8 +113,7 @@ class ConfigurationService implements SingletonInterface
     {
         $tableToQuery = 'pages';
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
-        $result = $queryBuilder
-            ->select('uid', 'title', 'is_siteroot')
+        $result = $queryBuilder->select('uid', 'title', 'is_siteroot')
             ->from($tableToQuery)
             ->where(
                 $queryBuilder->expr()->like('TSconfig', $queryBuilder->createNamedParameter('%' . self::CONFIG_ID . '%')),
