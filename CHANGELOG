@@ -8,11 +8,11 @@ v11.5.0 +
   * [TASK]      - wording improvements
 
 v11.4.4 +
-  * [BUG]       - adds missing check on argument existence in controller
+  * [BUGFIX]    - adds missing check on argument existence in controller
 
 v11.4.3 +
   * [TASK]      - module implementation improvements
-  * [BUG]       - fixes redirection to the overview module after editing page via the overview module
+  * [BUGFIX]    - fixes redirection to the overview module after editing page via the overview module
   * [TASK]      - removes obsolete code
   * [TASK]      - wording improvements
 
