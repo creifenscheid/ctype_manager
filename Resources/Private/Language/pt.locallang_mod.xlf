@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" version="1.0">
-  <file source-language="en" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="ctype-manager" target-language="pt-BR">
+  <file source-language="en" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="ctype-manager" target-language="pt-PT">
     <header/>
     <body>
       <!-- GENERAL-->
@@ -151,12 +151,12 @@
         <target state="needs-translation">Page</target>
       </trans-unit>
       <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
-        <source>CType restrictions</source>
-        <target state="needs-translation">CType restrictions</target>
+        <source>Allowed CTypes</source>
+        <target state="needs-translation">Allowed CTypes</target>
       </trans-unit>
       <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
-        <source>Plugin restrictions</source>
-        <target state="needs-translation">Plugin restrictions</target>
+        <source>Allowed plugins</source>
+        <target state="needs-translation">Allowed plugins</target>
       </trans-unit>
       <trans-unit id="overview.none" resname="overview.none">
         <source>None</source>
