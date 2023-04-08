@@ -2,16 +2,16 @@
 
 defined('TYPO3') || die();
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use CReifenscheid\CtypeManager\Controller\ConfigurationController;
 use CReifenscheid\CtypeManager\Controller\CleanupController;
+use CReifenscheid\CtypeManager\Controller\ConfigurationController;
 use CReifenscheid\CtypeManager\Controller\OverviewController;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 $extKey = 'ctype_manager';
 $moduleIdentifier = GeneralUtility::underscoredToUpperCamelCase($extKey);
 
 return [
-    'web_'. $moduleIdentifier => [
+    'web_' . $moduleIdentifier => [
         'parent' => 'web',
         'position' => ['after' => '*'],
         'access' => 'admin',
@@ -19,11 +19,11 @@ return [
         'labels' => 'LLL:EXT:' . $extKey . '/Resources/Private/Language/locallang_mod.xlf',
         'extensionName' => $extKey,
         'workspaces' => 'live',
-        'path' => '/module/web/' . $moduleIdentifier, 
+        'path' => '/module/web/' . $moduleIdentifier,
         'controllerActions' => [
             ConfigurationController::class => 'index,submit',
             CleanupController::class => 'index,approval,cleanup',
-            OverviewController::class => 'index'
+            OverviewController::class => 'index',
         ],
     ],
 ];

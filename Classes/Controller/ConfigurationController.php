@@ -2,17 +2,18 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
+use function array_key_exists;
+use function count;
+
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use Doctrine\DBAL\DBALException;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-
-use function array_key_exists;
-use function count;
 
 /***************************************************************
  *
@@ -41,8 +42,6 @@ use function count;
 
 /**
  * Class ConfigurationController
- *
- * @package \CReifenscheid\CtypeManager\Controller
  */
 class ConfigurationController extends BaseController
 {
@@ -56,13 +55,13 @@ class ConfigurationController extends BaseController
      */
     private array $listTypeConfiguration = [];
 
-    public function indexAction() : ResponseInterface
+    public function indexAction(): ResponseInterface
     {
         if ($this->pageUid && $this->pageUid > 0) {
             // store all variables for the view
             $assignments = [
                 'page' => GeneralUtility::getPage($this->pageUid),
-                'sourceController' => $this->sourceController
+                'sourceController' => $this->sourceController,
             ];
 
             // resolve page tsconfig for the current page
@@ -74,7 +73,6 @@ class ConfigurationController extends BaseController
             $ctypeStates = [];
             $groupStates = [];
             foreach (CTypeUtility::getItems() as $ctype) {
-
                 $label = $ctype[0] ?? null;
                 $identifier = $ctype[1] ?? null;
                 $group = $ctype[3] ?? null;
@@ -96,7 +94,7 @@ class ConfigurationController extends BaseController
                         $ctypes[$group]['label'] = GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
                     } else {
                         $configuredGroups = CTypeUtility::getGroups();
-                        $ctypes[$group]['label'] = array_key_exists($group, $configuredGroups) ? GeneralUtility::locate($configuredGroups[$group]) : ucfirst((string) $group);
+                        $ctypes[$group]['label'] = array_key_exists($group, $configuredGroups) ? GeneralUtility::locate($configuredGroups[$group]) : ucfirst((string)$group);
                     }
                 }
 
@@ -105,7 +103,7 @@ class ConfigurationController extends BaseController
                     $ctypeState = GeneralUtility::getActivationState($this->ctypeConfiguration, $identifier);
                     $ctypes[$group]['ctypes'][$identifier] = [
                         'label' => GeneralUtility::locate($label),
-                        'active' => $ctypeState
+                        'active' => $ctypeState,
                     ];
 
                     // store ctype state to determine group state
@@ -132,7 +130,7 @@ class ConfigurationController extends BaseController
                     $listTypeState = GeneralUtility::getActivationState($this->listTypeConfiguration, $identifier);
                     $listTypes[$identifier] = [
                         'label' => GeneralUtility::locate($label),
-                        'active' => $listTypeState
+                        'active' => $listTypeState,
                     ];
                 }
             }
@@ -153,7 +151,7 @@ class ConfigurationController extends BaseController
      * @throws StopActionException
      * @throws DBALException
      */
-    public function submitAction() : void
+    public function submitAction(): void
     {
         // get request arguments
         $arguments = $this->request->getArguments();
@@ -240,7 +238,7 @@ class ConfigurationController extends BaseController
     /**
      * Resolves pageTSConfig to get kept and removed ctypes and list_types
      */
-    private function resolvePageTSConfig(int $currentPageId) : void
+    private function resolvePageTSConfig(int $currentPageId): void
     {
         // CTYPE
         // get content element configuration for the current page
@@ -274,7 +272,7 @@ class ConfigurationController extends BaseController
     /**
      * Function to determine the state of a group
      */
-    private function getMainState(array $states) : bool
+    private function getMainState(array $states): bool
     {
         // remove duplicate states
         $states = array_unique($states);

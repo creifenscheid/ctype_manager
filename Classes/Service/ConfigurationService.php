@@ -2,6 +2,7 @@
 
 namespace CReifenscheid\CtypeManager\Service;
 
+use Doctrine\DBAL\Driver\Exception;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -34,8 +35,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class ConfigurationService
- *
- * @package \CReifenscheid\CtypeManager\Service
  */
 class ConfigurationService implements SingletonInterface
 {
@@ -55,17 +54,17 @@ class ConfigurationService implements SingletonInterface
         $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
     }
 
-    public function writeConfiguration(int $pageUid, array $ctypeConfig) : void
+    public function writeConfiguration(int $pageUid, array $ctypeConfig): void
     {
         $this->handleConfiguration($pageUid, $ctypeConfig);
     }
 
-    public function removeConfiguration(int $pageUid) : void
+    public function removeConfiguration(int $pageUid): void
     {
         $this->handleConfiguration($pageUid);
     }
 
-    protected function handleConfiguration(int $pageUid, array $ctypeConfig = []) : void
+    protected function handleConfiguration(int $pageUid, array $ctypeConfig = []): void
     {
         /**
          * PREPARE TSCONFIG
@@ -93,11 +92,11 @@ class ConfigurationService implements SingletonInterface
 
         // add page to data handler data
         $this->dataHandlerData['pages'][$pageUid] = [
-            'TSconfig' => empty($pageTSConfig) ? '' : implode(PHP_EOL, $pageTSConfig)
+            'TSconfig' => empty($pageTSConfig) ? '' : implode(PHP_EOL, $pageTSConfig),
         ];
     }
 
-    public function persist() : void
+    public function persist(): void
     {
         if (!empty($this->dataHandlerData)) {
             $this->dataHandler->start($this->dataHandlerData, []);
@@ -107,9 +106,9 @@ class ConfigurationService implements SingletonInterface
 
     /**
      * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws Exception
      */
-    public function getConfiguredPages() : array
+    public function getConfiguredPages(): array
     {
         $tableToQuery = 'pages';
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableToQuery);
@@ -126,7 +125,7 @@ class ConfigurationService implements SingletonInterface
     /**
      * Function to compare set configuration vs. configuration sent via form
      */
-    public function hasChanged(array $availableItems, array $configuration, array $enabledInForm) : bool
+    public function hasChanged(array $availableItems, array $configuration, array $enabledInForm): bool
     {
         // store already enabled
         $alreadyEnabled = [];

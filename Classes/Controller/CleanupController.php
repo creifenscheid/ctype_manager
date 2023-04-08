@@ -3,10 +3,12 @@
 namespace CReifenscheid\CtypeManager\Controller;
 
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -37,8 +39,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Class CleanupController
- *
- * @package \CReifenscheid\CtypeManager\Controller
  */
 class CleanupController extends BaseController
 {
@@ -51,7 +51,7 @@ class CleanupController extends BaseController
 
     private ?PageRepository $pageRepository = null;
 
-    public function indexAction() : ResponseInterface
+    public function indexAction(): ResponseInterface
     {
         $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
         $this->moduleTemplate->setContent($this->view->render());
@@ -64,7 +64,7 @@ class CleanupController extends BaseController
      *
      * @throws StopActionException
      */
-    public function approvalAction() : ResponseInterface
+    public function approvalAction(): ResponseInterface
     {
         if ($this->checkRequestArguments()) {
             // get request arguments
@@ -73,7 +73,7 @@ class CleanupController extends BaseController
             $this->view->assignMultiple([
                 'cleanupMode' => $arguments['cleanupMode'],
                 'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid),
-                'sourceController' => $this->sourceController
+                'sourceController' => $this->sourceController,
             ]);
         }
 
@@ -86,11 +86,11 @@ class CleanupController extends BaseController
      * Cleanup action to remove all ctype_manager tsconfig
      *
      * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws Exception
+     * @throws NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
-    public function cleanupAction() : void
+    public function cleanupAction(): void
     {
         if (!$this->checkRequestArguments()) {
             return;
@@ -146,7 +146,7 @@ class CleanupController extends BaseController
      *
      * @throws DBALException
      */
-    private function cleanupPageRecursively(int $pageUid) : void
+    private function cleanupPageRecursively(int $pageUid): void
     {
         // init page repository
         if ($this->pageRepository === null) {
@@ -166,7 +166,7 @@ class CleanupController extends BaseController
     /**
      * Function to add a flash message based on the given message prefix
      */
-    private function createFlashMessage(string $messagePrefix, int $type) : void
+    private function createFlashMessage(string $messagePrefix, int $type): void
     {
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate(self::L10N . 'message.header.' . $type), $type);
     }
@@ -176,7 +176,7 @@ class CleanupController extends BaseController
      *
      * @throws StopActionException
      */
-    private function checkRequestArguments() : bool
+    private function checkRequestArguments(): bool
     {
         if (!$this->request->hasArgument('cleanupMode')) {
             $messagePrefix = self::L10N . 'cleanup.message.error.cleanupMode';

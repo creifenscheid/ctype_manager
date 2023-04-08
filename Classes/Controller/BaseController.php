@@ -8,6 +8,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
@@ -37,8 +38,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Class BaseController
- *
- * @package \CReifenscheid\CtypeManager\Controller
  */
 class BaseController extends ActionController
 {
@@ -76,9 +75,9 @@ class BaseController extends ActionController
     }
 
     /**
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws NoSuchArgumentException
      */
-    protected function initializeAction() : void
+    protected function initializeAction(): void
     {
         parent::initializeAction();
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
@@ -98,7 +97,7 @@ class BaseController extends ActionController
         $this->sourceController = $this->request->hasArgument('sourceController') && !empty($this->request->getArgument('sourceController')) ? $this->request->getArgument('sourceController') : str_replace('Controller', '', $this->shortName);
     }
 
-    protected function buildMenu(string $currentController) : void
+    protected function buildMenu(string $currentController): void
     {
         $this->uriBuilder->setRequest($this->request);
 
@@ -110,7 +109,7 @@ class BaseController extends ActionController
 
             $menu->addMenuItem(
                 $menu->makeMenuItem()
-                    ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.' . strtolower((string) $alias)))
+                    ->setTitle(LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.' . strtolower((string)$alias)))
                     ->setHref($this->uriBuilder->uriFor('index', null, $alias))
                     ->setActive($currentController === $alias . 'Controller')
             );

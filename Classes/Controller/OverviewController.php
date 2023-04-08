@@ -36,8 +36,6 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class OverviewController
- *
- * @package \CReifenscheid\CtypeManager\Controller
  */
 class OverviewController extends BaseController
 {
@@ -47,7 +45,7 @@ class OverviewController extends BaseController
      * @throws DBALException
      * @throws Exception
      */
-    public function indexAction() : ResponseInterface
+    public function indexAction(): ResponseInterface
     {
         $pages = $this->configurationService->getConfiguredPages();
 

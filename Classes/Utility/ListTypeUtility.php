@@ -2,9 +2,9 @@
 
 namespace CReifenscheid\CtypeManager\Utility;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-
 use function array_key_exists;
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /***************************************************************
  *
@@ -33,17 +33,15 @@ use function array_key_exists;
 
 /**
  * Class ListTypeUtility
- *
- * @package \CReifenscheid\CtypeManager\Utility
  */
 class ListTypeUtility
 {
-    public static function getItems() : array
+    public static function getItems(): array
     {
         return $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'];
     }
 
-    public static function getWizardItems(int $pageId) : ?array
+    public static function getWizardItems(int $pageId): ?array
     {
         $pageTSconfig = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId));
 
@@ -74,14 +72,14 @@ class ListTypeUtility
         return null;
     }
 
-    private static function resolveListTypeConfiguration(string $identifier, array $configuration) : ?array
+    private static function resolveListTypeConfiguration(string $identifier, array $configuration): ?array
     {
         $configuredListType = GeneralUtility::getArrayKeyValue($configuration, 'tt_content_defValues.list_type');
         if (!empty($configuredListType)) {
             // build list type information
             $listType = [
                 'identifier' => $identifier,
-                'list_type' => $configuredListType
+                'list_type' => $configuredListType,
             ];
 
             if (array_key_exists('title', $configuration) && !empty($configuration['title'])) {

@@ -29,17 +29,15 @@ namespace CReifenscheid\CtypeManager\Utility;
 
 /**
  * Class CTypeUtility
- *
- * @package \CReifenscheid\CtypeManager\Utility
  */
 class CTypeUtility
 {
-    public static function getItems() : array
+    public static function getItems(): array
     {
         return $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];
     }
 
-    public static function getGroups() : array
+    public static function getGroups(): array
     {
         return $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'];
     }

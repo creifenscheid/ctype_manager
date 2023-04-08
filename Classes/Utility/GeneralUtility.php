@@ -2,12 +2,13 @@
 
 namespace CReifenscheid\CtypeManager\Utility;
 
+use function array_key_exists;
+
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-use function array_key_exists;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
  *
@@ -36,26 +37,24 @@ use function array_key_exists;
 
 /**
  * Class GeneralUtility
- *
- * @package \CReifenscheid\CtypeManager\Utility
  */
 class GeneralUtility
 {
-    public static function getRootline(int $uid) : array
+    public static function getRootline(int $uid): array
     {
         $rootlineUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(RootlineUtility::class, $uid);
 
         return $rootlineUtility->get();
     }
 
-    public static function getPage(int $pageUid) : array
+    public static function getPage(int $pageUid): array
     {
         $pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRepository::class);
 
         return $pageRepository->getPage($pageUid);
     }
 
-    public static function getRootPageId(int $pageUid) : int
+    public static function getRootPageId(int $pageUid): int
     {
         $rootline = self::getRootline($pageUid);
         $rootpage = end($rootline);
@@ -63,7 +62,7 @@ class GeneralUtility
         return $rootpage['uid'];
     }
 
-    public static function locate(string $stringToLocate) : string
+    public static function locate(string $stringToLocate): string
     {
         return str_starts_with($stringToLocate, 'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
     }
@@ -74,7 +73,7 @@ class GeneralUtility
      * @param string $keyChain - dot separated list of keys to check, last is checked for value, e.g. tt_content.columns.sys_language_uid.label
      * @return array|mixed|null
      */
-    public static function getArrayKeyValue(array $array, string $keyChain) : mixed
+    public static function getArrayKeyValue(array $array, string $keyChain): mixed
     {
         $keys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $keyChain);
 
@@ -99,7 +98,7 @@ class GeneralUtility
     /**
      * Resolves pageTSConfig to get kept and removed items of the given field
      */
-    public static function resolvePageTSConfig(int $pageId, string $field) : array
+    public static function resolvePageTSConfig(int $pageId, string $field): array
     {
         $result = [];
 
@@ -125,7 +124,7 @@ class GeneralUtility
     /**
      * Function to get the current activation state of the given identifier
      */
-    public static function getActivationState(array $configuration, string $identifier) : bool
+    public static function getActivationState(array $configuration, string $identifier): bool
     {
         // define default state
         $return = true;
@@ -143,17 +142,17 @@ class GeneralUtility
         return $return;
     }
 
-    public static function getKeptItems(array $configuration) : ?array
+    public static function getKeptItems(array $configuration): ?array
     {
         return self::getItems($configuration, 'keep');
     }
 
-    public static function getRemovedItems(array $configuration) : ?array
+    public static function getRemovedItems(array $configuration): ?array
     {
         return self::getItems($configuration, 'remove');
     }
 
-    private static function getItems(array $configuration, string $key) : ?array
+    private static function getItems(array $configuration, string $key): ?array
     {
         $result = self::getArrayKeyValue($configuration, $key);
         if (!empty($result)) {
@@ -166,7 +165,7 @@ class GeneralUtility
     /**
      * Returns the located label of the requested identifier
      */
-    public static function getLabel(array $items, string $requestedIdentifier) : ?string
+    public static function getLabel(array $items, string $requestedIdentifier): ?string
     {
         foreach ($items as $item) {
             [$label, $identifier] = $item;
