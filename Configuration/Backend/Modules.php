@@ -1,33 +1,29 @@
+<?php
+
+defined('TYPO3') || die();
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use CReifenscheid\CtypeManager\Controller\ConfigurationController;
+use CReifenscheid\CtypeManager\Controller\CleanupController;
+use CReifenscheid\CtypeManager\Controller\OverviewController;
+
+$extKey = 'ctype_manager';
+$moduleIdentifier = GeneralUtility::underscoredToUpperCamelCase($extKey);
+
 return [
-    'web_module' => [
+    'web_'. $moduleIdentifier => [
         'parent' => 'web',
-        'position' => ['before' => '*'],
+        'position' => ['after' => '*'],
         'access' => 'admin',
+        'iconIdentifier' => 'ctype-manager-extension',
+        'labels' => 'LLL:EXT:' . $extKey . '/Resources/Private/Language/locallang_mod.xlf',
+        'extensionName' => $extKey,
         'workspaces' => 'live',
-        'path' => '/module/web/example',
-        'iconIdentifier' => 'module-example',
-        'navigationComponent' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
-        'labels' => 'LLL:EXT:example/Resources/Private/Language/locallang_mod.xlf',
-        'routes' => [
-            '_default' => [
-                'target' => MyExampleModuleController::class . '::handleRequest',
-            ],
-        ],
-    ],
-    'web_ExtkeyExample' => [
-        'parent' => 'web',
-        'position' => ['after' => 'web_info'],
-        'access' => 'admin',
-        'workspaces' => 'live',
-        'iconIdentifier' => 'module-example',
-        'path' => '/module/web/ExtkeyExample',
-        'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf',
-        'extensionName' => 'Extkey',
+        'path' => '/module/web/' . $moduleIdentifier, 
         'controllerActions' => [
-            MyExtbaseExampleModuleController::class => [
-                'list',
-                'detail'
-            ],
+            ConfigurationController::class => 'index,submit',
+            CleanupController::class => 'index,approval,cleanup',
+            OverviewController::class => 'index'
         ],
     ],
 ];
