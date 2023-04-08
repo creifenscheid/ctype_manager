@@ -4,8 +4,11 @@ defined('TYPO3') || die();
 
 (static function ($extKey) {
 
-    // todo add version condition
-    if ('typo3-version' >= 11 && 'typo3-version < 12) {
+    $currentTypo3Version = \TYPO3\CMS\Core\Utility\VersionNumberUtility::getCurrentTypo3Version();
+    
+    var_dump($currentTypo3Version);die();
+
+    if ($currentTypo3Version === 'x') {
         // BACKEND MODULE
         ExtensionUtility::registerModule(
                 ucfirst(GeneralUtility::underscoredToLowerCamelCase($extKey)),
