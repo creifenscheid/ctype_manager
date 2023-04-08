@@ -30,12 +30,12 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'This TYPO3 extension implements a backend module through which available content and plugin types can be configured on page level.',
     'category' => 'be',
     'author' => 'Christian Reifenscheid',
-    'version' => '11.6.0',
+    'version' => '12.0.0',
     'state' => 'stable',
     'constraints' => [
         'depends' => [
-            'php' => '8.0-8.1.99',
-            'typo3' => '11.5.0-11.5.99'
+            'php' => '8.1-8.1.99',
+            'typo3' => '12.3.0-12.9.99'
         ]
     ],
     'autoload' => [

@@ -1,3 +1,6 @@
+v12.0.0 +
+  * [TASK]      - add TYPO3 12 compatibility
+
 v11.6.0 +
   * [FEATURE]   - php 8.1 compatibility
   * [BUGFIX]    - fixes undefined array keys in ConfigurationController
