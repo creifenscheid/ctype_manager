@@ -104,6 +104,8 @@ class BaseController extends ActionController
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('CtypeManagerModuleMenu');
 
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->request->getAttribute('module'), __CLASS__ . '::' . __FUNCTION__ . ':' . __LINE__);die();
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$this->request->getControllerExtensionName()]['modules'][$this->request->getPluginName()]['controllers'] as $configuredController) {
             $alias = $configuredController['alias'];
 
