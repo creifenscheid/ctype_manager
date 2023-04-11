@@ -63,7 +63,20 @@ define([
     }
 
     CtypeManager.init = function() {
-        console.log('Hi Mom!')
+
+        const switchButtonClass = '.js-btn-switch'
+        document.querySelectorAll(switchButtonClass).forEach.call(document.querySelectorAll(switchButtonClass), function (switchButton, index, arr) {
+            switchButton.addEventListener('click', function() {
+                CtypeManager.switch(this)
+            })
+        })
+
+        const checkboxClass = '.js-all'
+        document.querySelectorAll(checkboxClass).forEach.call(document.querySelectorAll(checkboxClass), function (checkbox, index, arr) {
+            checkbox.addEventListener('click', function() {
+                CtypeManager.update(this)
+            })
+        })
     };
 
     CtypeManager.init()

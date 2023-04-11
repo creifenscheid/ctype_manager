@@ -22,9 +22,9 @@
 
         background: none;
         border: none;
-        box-shadow: none;
+        box-shadow: none !important;
         margin: 0;
-        padding: 0;
+        padding: 0 !important;
         border-radius: 0;
 
         color: $color-dark;
