@@ -5,9 +5,9 @@ namespace CReifenscheid\CtypeManager\Service;
 use Doctrine\DBAL\Driver\Exception;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Information\Typo3Version;
 
 /***************************************************************
  *
@@ -135,7 +135,6 @@ class ConfigurationService implements SingletonInterface
         $alreadyEnabled = [];
 
         foreach ($availableItems as $item) {
-
             $identifier = $this->typo3Version->getMajorVersion() < 12 ? $item[1] : $item['value'];
 
             // exclude divider and empty items
