@@ -21,10 +21,10 @@
             <div class="form-check form-switch d-flex flex-row justify-content-start align-items-start flex-wrap{f:if(condition:ctypeConfiguration.active, then: ' enabled-ctype')}">
                 <f:if condition="{ctypeConfiguration.active}">
                     <f:then>
-                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-all js-group-{group}" value="{identifier}" additionalAttributes="{checked:'checked', onclick:'TYPO3.CtypeManager.update(this)'}" />
+                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-all js-group-{group}" value="{identifier}" additionalAttributes="{checked:'checked'}" />
                     </f:then>
                     <f:else>
-                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-all js-group-{group}" value="{identifier}" additionalAttributes="{onclick:'TYPO3.CtypeManager.update(this)'}" />
+                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-all js-group-{group}" value="{identifier}" />
                     </f:else>
                 </f:if>
 

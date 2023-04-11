@@ -62,6 +62,12 @@ define([
         }
     }
 
+    CtypeManager.init = function() {
+        console.log('Hi Mom!')
+    };
+
+    CtypeManager.init()
+
     // expose to global
     TYPO3.CtypeManager = CtypeManager;
 
