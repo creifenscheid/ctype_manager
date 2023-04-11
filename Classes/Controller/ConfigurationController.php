@@ -163,7 +163,7 @@ class ConfigurationController extends BaseController
      * @throws StopActionException
      * @throws DBALException
      */
-    public function submitAction(): void
+    public function submitAction(): ResponseInterface
     {
         // get request arguments
         $arguments = $this->request->getArguments();
@@ -244,7 +244,7 @@ class ConfigurationController extends BaseController
         $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . AbstractMessage::OK));
 
         // redirect to index
-        $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
+        return $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
     }
 
     /**

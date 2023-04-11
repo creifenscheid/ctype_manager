@@ -7,6 +7,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Information\Typo3Version;
 
 /***************************************************************
  *
@@ -45,6 +46,8 @@ class ConfigurationService implements SingletonInterface
      */
     public const CONFIG_ID = 'ctype-manager';
 
+    private ?Typo3Version $typo3Version = null;
+
     private DataHandler $dataHandler;
 
     private array $dataHandlerData = [];
@@ -52,6 +55,7 @@ class ConfigurationService implements SingletonInterface
     public function __construct()
     {
         $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $this->typo3Version = new Typo3Version();
     }
 
     public function writeConfiguration(int $pageUid, array $ctypeConfig): void
@@ -131,7 +135,12 @@ class ConfigurationService implements SingletonInterface
         $alreadyEnabled = [];
 
         foreach ($availableItems as $item) {
-            $identifier = $item[1];
+
+            if ($this->typo3Version->getMajorVersion() < 12) {
+                $identifier = $item[1];
+            } else {
+                $identifier = $item['value'];
+            }
 
             // exclude divider and empty items
             if ((!empty($identifier) && $identifier !== '--div--') && \CReifenscheid\CtypeManager\Utility\GeneralUtility::getActivationState($configuration, $identifier)) {

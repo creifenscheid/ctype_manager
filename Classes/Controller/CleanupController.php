@@ -90,10 +90,10 @@ class CleanupController extends BaseController
      * @throws NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
-    public function cleanupAction(): void
+    public function cleanupAction(): ResponseInterface
     {
         if (!$this->checkRequestArguments()) {
-            return;
+            return $this->redirect('index', 'Cleanup');
         }
 
         $cleanupMode = $this->request->getArgument('cleanupMode');
@@ -138,7 +138,7 @@ class CleanupController extends BaseController
         $this->createFlashMessage($messagePrefix, AbstractMessage::OK);
 
         // redirect to index
-        $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
+        return $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
     }
 
     /**
@@ -182,8 +182,7 @@ class CleanupController extends BaseController
             $messagePrefix = self::L10N . 'cleanup.message.error.cleanupMode';
             $this->createFlashMessage($messagePrefix, AbstractMessage::ERROR);
 
-            // redirect to index
-            $this->redirect('index', 'Cleanup');
+            return false;
         }
 
         return true;

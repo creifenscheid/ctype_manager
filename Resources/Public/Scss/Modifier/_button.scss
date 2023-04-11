@@ -1,16 +1,16 @@
 .btn {
     &--danger {
-        background-color: $color-danger;
-        color: $color-light;
+        background-color: $color-danger !important;
+        color: $color-light !important;
 
         .icon {
             margin-right: 10px;
         }
 
         &:hover, &:focus {
-            background-color: $color-light;
-            border-color: $color-danger;
-            color: $color-danger;
+            background-color: $color-light !important;
+            border-color: $color-danger !important;
+            color: $color-danger !important;
         }
     }
 

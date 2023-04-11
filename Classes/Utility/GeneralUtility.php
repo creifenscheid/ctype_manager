@@ -7,7 +7,7 @@ use function array_key_exists;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
@@ -167,8 +167,17 @@ class GeneralUtility
      */
     public static function getLabel(array $items, string $requestedIdentifier): ?string
     {
+        $typo3Version = new Typo3Version();
+
         foreach ($items as $item) {
-            [$label, $identifier] = $item;
+
+            if ($typo3Version->getMajorVersion() < 12) {        
+                [$label, $identifier] = $item;
+            } else {
+                $label = $item['label'];
+                $identifier = $item['value'];
+            }
+
 
             if ($identifier === $requestedIdentifier) {
                 return self::locate($label);
