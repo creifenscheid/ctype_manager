@@ -96,13 +96,13 @@ class ConfigurationService implements SingletonInterface
 
         // add page to data handler data
         $this->dataHandlerData['pages'][$pageUid] = [
-            'TSconfig' => empty($pageTSConfig) ? '' : implode(PHP_EOL, $pageTSConfig),
+            'TSconfig' => $pageTSConfig === [] ? '' : implode(PHP_EOL, $pageTSConfig),
         ];
     }
 
     public function persist(): void
     {
-        if (!empty($this->dataHandlerData)) {
+        if ($this->dataHandlerData !== []) {
             $this->dataHandler->start($this->dataHandlerData, []);
             $this->dataHandler->process_datamap();
         }
@@ -136,11 +136,7 @@ class ConfigurationService implements SingletonInterface
 
         foreach ($availableItems as $item) {
 
-            if ($this->typo3Version->getMajorVersion() < 12) {
-                $identifier = $item[1];
-            } else {
-                $identifier = $item['value'];
-            }
+            $identifier = $this->typo3Version->getMajorVersion() < 12 ? $item[1] : $item['value'];
 
             // exclude divider and empty items
             if ((!empty($identifier) && $identifier !== '--div--') && \CReifenscheid\CtypeManager\Utility\GeneralUtility::getActivationState($configuration, $identifier)) {
@@ -155,6 +151,6 @@ class ConfigurationService implements SingletonInterface
             $result = array_diff($enabledInForm, $alreadyEnabled);
         }
 
-        return !empty($result);
+        return $result !== [];
     }
 }

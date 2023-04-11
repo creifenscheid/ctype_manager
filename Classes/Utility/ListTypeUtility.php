@@ -64,7 +64,7 @@ class ListTypeUtility
                 }
             }
 
-            if (!empty($listTypes)) {
+            if ($listTypes !== []) {
                 return $listTypes;
             }
         }

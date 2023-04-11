@@ -77,12 +77,12 @@ class GeneralUtility
     {
         $keys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $keyChain);
 
-        if (!empty($keys) && array_key_exists($keys[0], $array)) {
+        if ($keys !== [] && array_key_exists($keys[0], $array)) {
             $keyValue = $array[$keys[0]];
 
             if (is_array($keyValue)) {
                 array_shift($keys);
-                if (empty($keys)) {
+                if ($keys === []) {
                     return $keyValue;
                 }
 
@@ -133,6 +133,7 @@ class GeneralUtility
         if (array_key_exists('remove', $configuration) && in_array($identifier, $configuration['remove'], true)) {
             $return = false;
         }
+
         // if the current identifier is not listed in keepItems - it's not active
         if (array_key_exists('keep', $configuration) && !in_array($identifier, $configuration['keep'], true)) {
             $return = false;

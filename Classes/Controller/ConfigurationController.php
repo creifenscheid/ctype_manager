@@ -147,7 +147,7 @@ class ConfigurationController extends BaseController
                 }
             }
 
-            if (!empty($listTypes)) {
+            if ($listTypes !== []) {
                 $assignments['listTypes'] = $listTypes;
             }
 

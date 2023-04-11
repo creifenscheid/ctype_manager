@@ -52,7 +52,7 @@ class OverviewController extends BaseController
         foreach ($pages as $key => $page) {
             // CTypes
             $cTypeConfiguration = GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'CType');
-            if (!empty($cTypeConfiguration)) {
+            if ($cTypeConfiguration !== []) {
                 $allowedCTypes = GeneralUtility::getKeptItems($cTypeConfiguration);
                 foreach ($allowedCTypes as $allowedCType) {
                     if ($allowedCType === 'none') {
@@ -66,7 +66,7 @@ class OverviewController extends BaseController
 
             // List types
             $listTypeConfiguration = GeneralUtility::resolvePageTSConfig((int)$page['uid'], 'list_type');
-            if (!empty($listTypeConfiguration)) {
+            if ($listTypeConfiguration !== []) {
                 $allowedListTypes = GeneralUtility::getKeptItems($listTypeConfiguration);
 
                 foreach ($allowedListTypes as $allowedListType) {
@@ -85,7 +85,7 @@ class OverviewController extends BaseController
             $pages[$key] = $page;
         }
 
-        if (!empty($pages)) {
+        if ($pages !== []) {
             $this->view->assign('pages', $pages);
         }
 
