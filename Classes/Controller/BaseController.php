@@ -6,6 +6,7 @@ use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use ReflectionClass;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
@@ -61,6 +62,8 @@ class BaseController extends ActionController
 
     protected ConfigurationService $configurationService;
 
+    protected ?Typo3Version $typo3Version = null;
+
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,
         PageRenderer $pageRenderer,
@@ -72,6 +75,8 @@ class BaseController extends ActionController
 
         $reflect = new ReflectionClass($this);
         $this->shortName = $reflect->getShortName();
+
+        $this->typo3Version = new Typo3Version();
     }
 
     /**
@@ -104,7 +109,7 @@ class BaseController extends ActionController
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('CtypeManagerModuleMenu');
 
-        if (str_starts_with(\TYPO3\CMS\Core\Utility\VersionNumberUtility::getCurrentTypo3Version(), '11.5.')) {
+        if ($this->typo3Version->getMajorVersion() < 12) {
             $moduleControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$this->request->getControllerExtensionName()]['modules'][$this->request->getPluginName()]['controllers'];
         } else {
             $moduleControllerActions = $this->request->getAttribute('module')->getControllerActions();

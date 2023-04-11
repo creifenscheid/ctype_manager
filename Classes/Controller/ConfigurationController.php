@@ -74,8 +74,7 @@ class ConfigurationController extends BaseController
             $groupStates = [];
 
             foreach (CTypeUtility::getItems() as $ctype) {
-
-                if (str_starts_with(\TYPO3\CMS\Core\Utility\VersionNumberUtility::getCurrentTypo3Version(), '11.5')) {
+                if ($this->typo3Version->getMajorVersion() < 12) {
                     $label = $ctype[0] ?? null;
                     $identifier = $ctype[1] ?? null;
                     $group = $ctype[3] ?? null;
@@ -132,8 +131,7 @@ class ConfigurationController extends BaseController
             // LIST TYPES
             $listTypes = [];
             foreach (ListTypeUtility::getItems() as $listType) {
-
-                if (str_starts_with(\TYPO3\CMS\Core\Utility\VersionNumberUtility::getCurrentTypo3Version(), '11.5')) {
+                if ($this->typo3Version->getMajorVersion() < 12) {
                     [$label, $identifier] = $listType;
                 } else {
                     $label = $ctype['label'] ?? null;

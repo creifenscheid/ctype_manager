@@ -3,6 +3,7 @@
 use CReifenscheid\CtypeManager\Controller\CleanupController;
 use CReifenscheid\CtypeManager\Controller\ConfigurationController;
 use CReifenscheid\CtypeManager\Controller\OverviewController;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
@@ -10,7 +11,8 @@ defined('TYPO3') || die();
 
 (static function ($extKey) {
     // BACKEND MODULE
-    if (str_starts_with(\TYPO3\CMS\Core\Utility\VersionNumberUtility::getCurrentTypo3Version(), '11.5.')) {
+    $typo3Version = new Typo3Version();
+    if ($typo3Version->getMajorVersion() < 12) {
         ExtensionUtility::registerModule(
             ucfirst(GeneralUtility::underscoredToLowerCamelCase($extKey)),
             'web',
