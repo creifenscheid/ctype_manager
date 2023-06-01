@@ -6,7 +6,7 @@
 	"homepage" : "https://github.com/creifenscheid/ctype_manager",
 	"require" : {
 		"php": "^8.0||^8.1",
-		"typo3/cms-core" : "^11.5||^12"
+		"typo3/cms-core" : "^11.5||^12.4"
 	},
 	"require-dev": {
 		"roave/security-advisories": "dev-latest"
