@@ -134,8 +134,8 @@ class ConfigurationController extends BaseController
                 if ($this->typo3Version->getMajorVersion() < 12) {
                     [$label, $identifier] = $listType;
                 } else {
-                    $label = $ctype['label'] ?? null;
-                    $identifier = $ctype['value'] ?? null;
+                    $label = $listType['label'] ?? null;
+                    $identifier = $listType['value'] ?? null;
                 }
 
                 if (!empty($identifier)) {
@@ -150,7 +150,7 @@ class ConfigurationController extends BaseController
             if ($listTypes !== []) {
                 $assignments['listTypes'] = $listTypes;
             }
-
+            
             $this->view->assignMultiple($assignments);
         }
 
