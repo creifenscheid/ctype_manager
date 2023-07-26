@@ -92,6 +92,8 @@ class CleanupController extends BaseController
      */
     public function cleanupAction(): ResponseInterface
     {
+        $rootline = [];
+
         if (!$this->checkRequestArguments()) {
             return $this->redirect('index', 'Cleanup');
         }
