@@ -53,7 +53,10 @@ class CleanupController extends BaseController
 
     public function indexAction(): ResponseInterface
     {
-        $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
+        if ($this->pageUid && $this->pageUid > 0) {
+            $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
+        }
+
         $this->moduleTemplate->setContent($this->view->render());
 
         return $this->htmlResponse($this->moduleTemplate->renderContent());
@@ -92,6 +95,8 @@ class CleanupController extends BaseController
      */
     public function cleanupAction(): ResponseInterface
     {
+        $rootline = [];
+
         if (!$this->checkRequestArguments()) {
             return $this->redirect('index', 'Cleanup');
         }
