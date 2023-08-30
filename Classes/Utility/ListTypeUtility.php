@@ -75,14 +75,14 @@ class ListTypeUtility
     private static function resolveListTypeConfiguration(string $identifier, array $configuration): ?array
     {
         $configuredListType = GeneralUtility::getArrayKeyValue($configuration, 'tt_content_defValues.list_type');
-        if (!empty($configuredListType)) {
+        if (!\empty($configuredListType)) {
             // build list type information
             $listType = [
                 'identifier' => $identifier,
                 'list_type' => $configuredListType,
             ];
 
-            if (array_key_exists('title', $configuration) && !empty($configuration['title'])) {
+            if (\array_key_exists('title', $configuration) && !\empty($configuration['title'])) {
                 $listType['label'] = GeneralUtility::locate($configuration['title']);
             }
 

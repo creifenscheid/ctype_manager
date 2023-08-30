@@ -121,7 +121,7 @@ class CleanupController extends BaseController
                 break;
 
             case 'rootpage':
-                $rootPage = end($rootline);
+                $rootPage = \end($rootline);
                 $this->cleanupPageRecursively($rootPage['uid']);
 
                 break;

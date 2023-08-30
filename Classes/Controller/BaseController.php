@@ -95,12 +95,12 @@ class BaseController extends ActionController
         // definition of currently chosen page uid
         if ($this->request->hasArgument('pageUid')) {
             $this->pageUid = (int)$this->request->getArgument('pageUid');
-        } elseif (array_key_exists('id', $this->request->getQueryParams())) {
+        } elseif (\array_key_exists('id', $this->request->getQueryParams())) {
             $this->pageUid = $this->request->getQueryParams()['id'];
         }
 
         // source controller definition
-        $this->sourceController = $this->request->hasArgument('sourceController') && !empty($this->request->getArgument('sourceController')) ? $this->request->getArgument('sourceController') : str_replace('Controller', '', $this->shortName);
+        $this->sourceController = $this->request->hasArgument('sourceController') && !\empty($this->request->getArgument('sourceController')) ? $this->request->getArgument('sourceController') : \str_replace('Controller', '', $this->shortName);
     }
 
     protected function buildMenu(string $currentController): void

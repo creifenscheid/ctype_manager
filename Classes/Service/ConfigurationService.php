@@ -92,11 +92,11 @@ class ConfigurationService implements SingletonInterface
         }
 
         // merge existing tsconfig with ctype configuration
-        $pageTSConfig = array_merge($tsConfig, $ctypeConfig);
+        $pageTSConfig = \array_merge($tsConfig, $ctypeConfig);
 
         // add page to data handler data
         $this->dataHandlerData['pages'][$pageUid] = [
-            'TSconfig' => $pageTSConfig === [] ? '' : implode(PHP_EOL, $pageTSConfig),
+            'TSconfig' => $pageTSConfig === [] ? '' : \implode(PHP_EOL, $pageTSConfig),
         ];
     }
 
@@ -138,16 +138,16 @@ class ConfigurationService implements SingletonInterface
             $identifier = $this->typo3Version->getMajorVersion() < 12 ? $item[1] : $item['value'];
 
             // exclude divider and empty items
-            if ((!empty($identifier) && $identifier !== '--div--') && \CReifenscheid\CtypeManager\Utility\GeneralUtility::getActivationState($configuration, $identifier)) {
+            if ((!\empty($identifier) && $identifier !== '--div--') && \CReifenscheid\CtypeManager\Utility\GeneralUtility::getActivationState($configuration, $identifier)) {
                 $alreadyEnabled[] = $identifier;
             }
         }
 
         // compare the arrays - note: the larger one has to be the first to get a correct result
-        if (count($alreadyEnabled) > count($enabledInForm)) {
-            $result = array_diff($alreadyEnabled, $enabledInForm);
+        if (\count($alreadyEnabled) > \count($enabledInForm)) {
+            $result = \array_diff($alreadyEnabled, $enabledInForm);
         } else {
-            $result = array_diff($enabledInForm, $alreadyEnabled);
+            $result = \array_diff($enabledInForm, $alreadyEnabled);
         }
 
         return $result !== [];

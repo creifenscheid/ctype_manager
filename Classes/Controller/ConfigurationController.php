@@ -90,18 +90,18 @@ class ConfigurationController extends BaseController
                 }
 
                 // init group storage
-                if (!array_key_exists($group, $ctypes)) {
+                if (!\array_key_exists($group, $ctypes)) {
                     $ctypes[$group] = [];
                 }
 
                 // set group label
-                if (!array_key_exists('label', $ctypes[$group])) {
+                if (!\array_key_exists('label', $ctypes[$group])) {
                     // get the group label from TCA group
                     if ($group === 'unassigned') {
                         $ctypes[$group]['label'] = GeneralUtility::locate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:group.unassigned');
                     } else {
                         $configuredGroups = CTypeUtility::getGroups();
-                        $ctypes[$group]['label'] = array_key_exists($group, $configuredGroups) ? GeneralUtility::locate($configuredGroups[$group]) : ucfirst((string)$group);
+                        $ctypes[$group]['label'] = \array_key_exists($group, $configuredGroups) ? GeneralUtility::locate($configuredGroups[$group]) : \ucfirst((string)$group);
                     }
                 }
 
@@ -192,7 +192,7 @@ class ConfigurationController extends BaseController
 
             // build keep ctype configuration
             $ctypeConfiguration = 'TCEFORM.tt_content.CType.keepItems';
-            $tsConfig[] = empty($enabledCtypes) ? $ctypeConfiguration . ' = none' : $ctypeConfiguration . ' = ' . implode(',', $enabledCtypes);
+            $tsConfig[] = empty($enabledCtypes) ? $ctypeConfiguration . ' = none' : $ctypeConfiguration . ' = ' . \implode(',', $enabledCtypes);
             // <<<< END CTYPE
 
             // >>>> START LIST TYPE
@@ -201,7 +201,7 @@ class ConfigurationController extends BaseController
 
             // build keep list_type configuration
             $listTypeConfiguration = 'TCEFORM.tt_content.list_type.keepItems';
-            $tsConfig[] = empty($enabledListTypes) ? $listTypeConfiguration . ' = none' : $listTypeConfiguration . ' = ' . implode(',', $enabledListTypes);
+            $tsConfig[] = empty($enabledListTypes) ? $listTypeConfiguration . ' = none' : $listTypeConfiguration . ' = ' . \implode(',', $enabledListTypes);
 
             // get all available wizard items of current root
             $wizardConfiguration = ListTypeUtility::getWizardItems(GeneralUtility::getRootPageId($this->pageUid));
@@ -215,7 +215,7 @@ class ConfigurationController extends BaseController
                     ['identifier' => $identifier, 'list_type' => $listType, 'group' => $group, 'label' => $label] = $wizardElement;
 
                     // check if wizard item has a group and is not listed in enabled list types
-                    if (!empty($group) && !in_array($listType, $enabledListTypes, true)) {
+                    if (!empty($group) && !\in_array($listType, $enabledListTypes, true)) {
                         // clear wizard item configuration
                         $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.elements.' . $identifier . ' >';
 
@@ -227,7 +227,7 @@ class ConfigurationController extends BaseController
 
             // adjust "show" configuration for each group, if needed
             foreach ($listTypeRemovals as $group => $listTypesToRemove) {
-                $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . implode(',', $listTypesToRemove) . ')';
+                $tsConfig[] = 'mod.wizards.newContentElement.wizardItems.' . $group . '.show := removeFromList(' . \implode(',', $listTypesToRemove) . ')';
             }
 
             // <<<< END LIST TYPE
@@ -287,9 +287,9 @@ class ConfigurationController extends BaseController
     private function getMainState(array $states): bool
     {
         // remove duplicate states
-        $states = array_unique($states);
+        $states = \array_unique($states);
 
         // if there are more than 1 state left (true and false) the state is false, otherwise the state of the group equals the leftover state (true or false)
-        return count($states) > 1 ? false : end($states);
+        return \count($states) > 1 ? false : \end($states);
     }
 }

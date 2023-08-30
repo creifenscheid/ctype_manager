@@ -57,14 +57,14 @@ class GeneralUtility
     public static function getRootPageId(int $pageUid): int
     {
         $rootline = self::getRootline($pageUid);
-        $rootpage = end($rootline);
+        $rootpage = \end($rootline);
 
         return $rootpage['uid'];
     }
 
     public static function locate(string $stringToLocate): string
     {
-        return str_starts_with($stringToLocate, 'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
+        return \str_starts_with($stringToLocate, 'LLL:') ? LocalizationUtility::translate($stringToLocate) : $stringToLocate;
     }
 
     /**
@@ -77,16 +77,16 @@ class GeneralUtility
     {
         $keys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $keyChain);
 
-        if ($keys !== [] && array_key_exists($keys[0], $array)) {
+        if ($keys !== [] && \array_key_exists($keys[0], $array)) {
             $keyValue = $array[$keys[0]];
 
             if (is_array($keyValue)) {
-                array_shift($keys);
+                \array_shift($keys);
                 if ($keys === []) {
                     return $keyValue;
                 }
 
-                return self::getArrayKeyValue($keyValue, implode('.', $keys));
+                return self::getArrayKeyValue($keyValue, \implode('.', $keys));
             }
 
             return $keyValue;
@@ -106,14 +106,14 @@ class GeneralUtility
 
         // check for TCEFORM -> tt_content -> $field
         $configuration = self::getArrayKeyValue($pageTSconfig, 'TCEFORM.tt_content.' . $field);
-        if (!empty($configuration)) {
+        if (!\empty($configuration)) {
             // check for items to keep
-            if (array_key_exists('keepItems', $configuration) && !empty($configuration['keepItems'])) {
+            if (array_key_exists('keepItems', $configuration) && !\empty($configuration['keepItems'])) {
                 $result['keep'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $configuration['keepItems']);
             }
 
             // check for items to remove
-            if (array_key_exists('removeItems', $configuration) && !empty($configuration['removeItems'])) {
+            if (\array_key_exists('removeItems', $configuration) && !\empty($configuration['removeItems'])) {
                 $result['remove'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $configuration['removeItems']);
             }
         }
@@ -130,12 +130,12 @@ class GeneralUtility
         $return = true;
 
         // if the current identifier is listed in removeItems - it's not active
-        if (array_key_exists('remove', $configuration) && in_array($identifier, $configuration['remove'], true)) {
+        if (\array_key_exists('remove', $configuration) && \in_array($identifier, $configuration['remove'], true)) {
             $return = false;
         }
 
         // if the current identifier is not listed in keepItems - it's not active
-        if (array_key_exists('keep', $configuration) && !in_array($identifier, $configuration['keep'], true)) {
+        if (\array_key_exists('keep', $configuration) && !\in_array($identifier, $configuration['keep'], true)) {
             $return = false;
         }
 
