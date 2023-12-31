@@ -4,171 +4,171 @@
     <header/>
     <body>
       <!-- GENERAL-->
-      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
         <source>CType Manager</source>
-        <target state="needs-translation">CType Manager</target>
+        <target state="final">CType håndtering</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
         <source>CType Manager</source>
-        <target state="needs-translation">CType Manager</target>
+        <target state="final">CType håndtering</target>
       </trans-unit>
-      <trans-unit id="section.header" resname="section.header">
+      <trans-unit id="section.header" resname="section.header" approved="yes">
         <source>%s | CType Manager</source>
-        <target state="needs-translation">%s | CType Manager</target>
+        <target state="final">%s | CType håndtering</target>
       </trans-unit>
-      <trans-unit id="message.header.2" resname="message.header.2">
+      <trans-unit id="message.header.2" resname="message.header.2" approved="yes">
         <source>Oops</source>
-        <target state="needs-translation">Oops</target>
+        <target state="final">Ups</target>
       </trans-unit>
-      <trans-unit id="message.header.0" resname="message.header.0">
+      <trans-unit id="message.header.0" resname="message.header.0" approved="yes">
         <source>OK</source>
-        <target state="needs-translation">OK</target>
+        <target state="final">Ok</target>
       </trans-unit>
       <!-- FALLBACK -->
-      <trans-unit id="group.unassigned" resname="group.unassigned">
+      <trans-unit id="group.unassigned" resname="group.unassigned" approved="yes">
         <source>Unassigned</source>
-        <target state="needs-translation">Unassigned</target>
+        <target state="final">Ikke tildelt</target>
       </trans-unit>
       <!-- SECTIONS -->
-      <trans-unit id="section.index" resname="section.index">
+      <trans-unit id="section.index" resname="section.index" approved="yes">
         <source>Page "%s"</source>
-        <target state="needs-translation">Page "%s"</target>
+        <target state="final">Side "%s"</target>
       </trans-unit>
-      <trans-unit id="section.configuration" resname="section.configuration">
+      <trans-unit id="section.configuration" resname="section.configuration" approved="yes">
         <source>Configuration</source>
-        <target state="needs-translation">Configuration</target>
+        <target state="final">Konfiguration</target>
       </trans-unit>
-      <trans-unit id="section.cleanup" resname="section.cleanup">
+      <trans-unit id="section.cleanup" resname="section.cleanup" approved="yes">
         <source>Cleanup</source>
-        <target state="needs-translation">Cleanup</target>
+        <target state="final">Oprydning</target>
       </trans-unit>
-      <trans-unit id="section.overview" resname="section.cleanup">
+      <trans-unit id="section.overview" resname="section.cleanup" approved="yes">
         <source>Overview</source>
-        <target state="needs-translation">Overview</target>
+        <target state="final">Oversigt</target>
       </trans-unit>
       <!-- CONFIGURATION -->
-      <trans-unit id="configuration.bodytext" resname="configuration.bodytext">
+      <trans-unit id="configuration.bodytext" resname="configuration.bodytext" approved="yes">
         <source>Choose all content types, which shall be available on this page and it's children.</source>
-        <target state="needs-translation">Choose all content types, which shall be available on this page and it's children.</target>
+        <target state="final">Vælg alle indholdstyper, som skal være tilgængelige på denne side og undersider.</target>
       </trans-unit>
-      <trans-unit id="configuration.nopage" resname="configuration.nopage">
+      <trans-unit id="configuration.nopage" resname="configuration.nopage" approved="yes">
         <source>Please select a page from the page tree.</source>
-        <target state="needs-translation">Please select a page from the page tree.</target>
+        <target state="final">Vælg venligst en side fra sidetræet.</target>
       </trans-unit>
-      <trans-unit id="configuration.button.submit" resname="configuration.button.submit">
+      <trans-unit id="configuration.button.submit" resname="configuration.button.submit" approved="yes">
         <source>Save</source>
-        <target state="needs-translation">Save</target>
+        <target state="final">Gem</target>
       </trans-unit>
-      <trans-unit id="configuration.message.bodytext" resname="configuration.message.bodytext">
+      <trans-unit id="configuration.message.bodytext" resname="configuration.message.bodytext" approved="yes">
         <source>CType Manager configuration has been saved.</source>
-        <target state="needs-translation">CType Manager configuration has been saved.</target>
+        <target state="final">Konfiguration af CType håndtering er blevet gemt.</target>
       </trans-unit>
-      <trans-unit id="configuration.switch.label" resname="configuration.switch.label">
+      <trans-unit id="configuration.switch.label" resname="configuration.switch.label" approved="yes">
         <source>Enable all</source>
-        <target state="needs-translation">Enable all</target>
+        <target state="final">Aktivér alt</target>
       </trans-unit>
-      <trans-unit id="configuration.switch.all" resname="configuration.switch.all">
+      <trans-unit id="configuration.switch.all" resname="configuration.switch.all" approved="yes">
         <source>Enable all content element types</source>
-        <target state="needs-translation">Enable all content element types</target>
+        <target state="final">Aktivér alle indholdselementtyper</target>
       </trans-unit>
-      <trans-unit id="configuration.switch.group" resname="configuration.toggle.group">
+      <trans-unit id="configuration.switch.group" resname="configuration.toggle.group" approved="yes">
         <source>Enable all content element types in group "%s"</source>
-        <target state="needs-translation">Enable all content element types in group "%s"</target>
+        <target state="final">Aktivér alle indholdselementtyper i gruppen "%s"</target>
       </trans-unit>
-      <trans-unit id="configuration.listTypes.headline" resname="configuration.listTypes.headline">
+      <trans-unit id="configuration.listTypes.headline" resname="configuration.listTypes.headline" approved="yes">
         <source>Available plugins</source>
-        <target state="needs-translation">Available plugins</target>
+        <target state="final">Tilgængelige plugins</target>
       </trans-unit>
       <!-- CLEANUP -->
-      <trans-unit id="cleanup.bodytext" resname="cleanup.bodytext">
+      <trans-unit id="cleanup.bodytext" resname="cleanup.bodytext" approved="yes">
         <source>Remove the configurations made by the CType Manager.</source>
-        <target state="needs-translation">Remove the configurations made by the CType Manager.</target>
+        <target state="final">Fjern de konfigurationer, der er lavet af CType håndtering.</target>
       </trans-unit>
-      <trans-unit id="cleanup.mode.label" resname="cleanup.mode.label">
+      <trans-unit id="cleanup.mode.label" resname="cleanup.mode.label" approved="yes">
         <source>Cleanup mode</source>
-        <target state="needs-translation">Cleanup mode</target>
+        <target state="final">Oprydningstilstand</target>
       </trans-unit>
-      <trans-unit id="cleanup.mode.page" resname="cleanup.mode.page">
+      <trans-unit id="cleanup.mode.page" resname="cleanup.mode.page" approved="yes">
         <source>Current page: %s [%s]</source>
-        <target state="needs-translation">Current page: %s [%s]</target>
+        <target state="final">Nuværende side: %s [%s]</target>
       </trans-unit>
-      <trans-unit id="cleanup.mode.rootline" resname="cleanup.mode.rootline">
+      <trans-unit id="cleanup.mode.rootline" resname="cleanup.mode.rootline" approved="yes">
         <source>Rootline</source>
-        <target state="needs-translation">Rootline</target>
+        <target state="final">Rootline</target>
       </trans-unit>
-      <trans-unit id="cleanup.mode.rootpage" resname="cleanup.mode.rootpage">
+      <trans-unit id="cleanup.mode.rootpage" resname="cleanup.mode.rootpage" approved="yes">
         <source>Rootpage</source>
-        <target state="needs-translation">Rootpage</target>
+        <target state="final">Rootside</target>
       </trans-unit>
-      <trans-unit id="cleanup.mode.all" resname="cleanup.mode.all">
+      <trans-unit id="cleanup.mode.all" resname="cleanup.mode.all" approved="yes">
         <source>All (this affects ALL pages and might take some time!)</source>
-        <target state="needs-translation">All (this affects ALL pages and might take some time!)</target>
+        <target state="final">Alt (dette påvirker ALLE sider og kan tage lidt tid!)</target>
       </trans-unit>
-      <trans-unit id="cleanup.submit" resname="cleanup.approval.submit">
+      <trans-unit id="cleanup.submit" resname="cleanup.approval.submit" approved="yes">
         <source>Clean up</source>
-        <target state="needs-translation">Clean up</target>
+        <target state="final">Ryd op</target>
       </trans-unit>
-      <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext">
+      <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext" approved="yes">
         <source>A page uid is missing. Please select a page in the page tree and try again.</source>
-        <target state="needs-translation">A page uid is missing. Please select a page in the page tree and try again.</target>
+        <target state="final">En side uid mangler. Vælg en side i sidetræet og prøv igen.</target>
       </trans-unit>
-      <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext">
+      <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext" approved="yes">
         <source>A cleanup mode is missing. Please select a mode to clean up.</source>
-        <target state="needs-translation">A cleanup mode is missing. Please select a mode to clean up.</target>
+        <target state="final">En oprydningstilstand mangler. Vælg venligst en tilstand for at rydde op.</target>
       </trans-unit>
       <!-- APPROVAL -->
-      <trans-unit id="cleanup.approval.headline" resname="cleanup.approval.headline">
+      <trans-unit id="cleanup.approval.headline" resname="cleanup.approval.headline" approved="yes">
         <source>Are you sure?</source>
-        <target state="needs-translation">Are you sure?</target>
+        <target state="final">Er du sikker?</target>
       </trans-unit>
-      <trans-unit id="cleanup.approval.bodytext" resname="cleanup.approval.bodytext">
+      <trans-unit id="cleanup.approval.bodytext" resname="cleanup.approval.bodytext" approved="yes">
         <source>You are going to remove the configurations made by the CType Manager.</source>
-        <target state="needs-translation">You are going to remove the configurations made by the CType Manager.</target>
+        <target state="final">Du er ved at fjerne de konfigurationer som er foretaget af CType håndtering.</target>
       </trans-unit>
-      <trans-unit id="cleanup.approval.submit" resname="cleanup.approval.submit">
+      <trans-unit id="cleanup.approval.submit" resname="cleanup.approval.submit" approved="yes">
         <source>Yes, clean up.</source>
-        <target state="needs-translation">Yes, clean up.</target>
+        <target state="final">Ja, ryd op.</target>
       </trans-unit>
-      <trans-unit id="cleanup.approval.abort" resname="cleanup.approval.abort">
+      <trans-unit id="cleanup.approval.abort" resname="cleanup.approval.abort" approved="yes">
         <source>No, abort!</source>
-        <target state="needs-translation">No, abort!</target>
+        <target state="final">Nej, afbryd!</target>
       </trans-unit>
-      <trans-unit id="cleanup.message.bodytext" resname="cleanup.message.bodytext">
+      <trans-unit id="cleanup.message.bodytext" resname="cleanup.message.bodytext" approved="yes">
         <source>CType Manager configuration has been removed.</source>
-        <target state="needs-translation">CType Manager configuration has been removed.</target>
+        <target state="final">Konfiguration af CType håndtering er fjernet.</target>
       </trans-unit>
       <!-- OVERVIEW -->
-      <trans-unit id="overview.bodytext" resname="overview.bodytext">
+      <trans-unit id="overview.bodytext" resname="overview.bodytext" approved="yes">
         <source>The following pages have been configured with the CType Manager.</source>
-        <target state="needs-translation">The following pages have been configured with the CType Manager.</target>
+        <target state="final">Følgende sider er konfigureret med CType håmdtering.</target>
       </trans-unit>
-      <trans-unit id="overview.bodytext.noPages" resname="overview.bodytext.noPages">
+      <trans-unit id="overview.bodytext.noPages" resname="overview.bodytext.noPages" approved="yes">
         <source>There are currently no pages configured with the CType Manager.</source>
-        <target state="needs-translation">There are currently no pages configured with the CType Manager.</target>
+        <target state="final">Der er i øjeblikket ingen sider konfigureret med CType håndtering.</target>
       </trans-unit>
-      <trans-unit id="overview.table.head.page" resname="overview.table.head.page">
+      <trans-unit id="overview.table.head.page" resname="overview.table.head.page" approved="yes">
         <source>Page</source>
-        <target state="needs-translation">Page</target>
+        <target state="final">Side</target>
       </trans-unit>
-      <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
+      <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes" approved="yes">
         <source>Allowed CTypes</source>
-        <target state="needs-translation">Allowed CTypes</target>
+        <target state="final">Tilladte CTyper</target>
       </trans-unit>
-      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
+      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes" approved="yes">
         <source>Allowed plugins</source>
-        <target state="needs-translation">Allowed plugins</target>
+        <target state="final">Tilladte plugins</target>
       </trans-unit>
-      <trans-unit id="overview.none" resname="overview.none">
+      <trans-unit id="overview.none" resname="overview.none" approved="yes">
         <source>None</source>
-        <target state="needs-translation">None</target>
+        <target state="final">Ingen</target>
       </trans-unit>
-      <trans-unit id="overview.toolbar.edit.label" resname="overview.toolbar.edit.label">
+      <trans-unit id="overview.toolbar.edit.label" resname="overview.toolbar.edit.label" approved="yes">
         <source>Edit CType configuration of page "%s".</source>
-        <target state="needs-translation">Edit CType configuration of page "%s".</target>
+        <target state="final">Redigér CType konfiguration af side "%s".</target>
       </trans-unit>
-      <trans-unit id="overview.toolbar.delete.label" resname="overview.toolbar.delete.label">
+      <trans-unit id="overview.toolbar.delete.label" resname="overview.toolbar.delete.label" approved="yes">
         <source>Delete CType configuration of page "%s".</source>
-        <target state="needs-translation">Delete CType configuration of page "%s".</target>
+        <target state="final">Slet CType konfiguration af side "%s".</target>
       </trans-unit>
     </body>
   </file>
