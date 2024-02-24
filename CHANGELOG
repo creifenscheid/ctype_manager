@@ -1,8 +1,6 @@
-v12.0.2 +
+v12.0.1 +
   * [BUG]      - adds condition to check of page in cleanUpController
   * [BUG]      - fixes missing label in module menu
-
-v12.0.1 +
   * [TASK]      - code improvements
 
 v12.0.0 +
