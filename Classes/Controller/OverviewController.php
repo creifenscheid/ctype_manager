@@ -34,9 +34,6 @@ use Psr\Http\Message\ResponseInterface;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * Class OverviewController
- */
 class OverviewController extends BaseController
 {
     /**

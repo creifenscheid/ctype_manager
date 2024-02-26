@@ -38,9 +38,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * Class BaseController
- */
 class BaseController extends ActionController
 {
     /**

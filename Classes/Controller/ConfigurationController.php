@@ -2,18 +2,21 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
-use function array_key_exists;
-use function count;
-
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use Doctrine\DBAL\DBALException;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
+use function array_key_exists;
+use function array_unique;
+use function count;
+use function end;
+use function implode;
+use function in_array;
 
 /***************************************************************
  *
@@ -39,10 +42,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-/**
- * Class ConfigurationController
- */
 class ConfigurationController extends BaseController
 {
     /**
@@ -150,7 +149,7 @@ class ConfigurationController extends BaseController
             if ($listTypes !== []) {
                 $assignments['listTypes'] = $listTypes;
             }
-            
+
             $this->view->assignMultiple($assignments);
         }
 

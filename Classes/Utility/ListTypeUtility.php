@@ -30,10 +30,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-/**
- * Class ListTypeUtility
- */
 class ListTypeUtility
 {
     public static function getItems(): array

@@ -2,13 +2,19 @@
 
 namespace CReifenscheid\CtypeManager\Utility;
 
-use function array_key_exists;
-
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
+use function array_key_exists;
+use function array_shift;
+use function end;
+use function implode;
+use function in_array;
+use function is_array;
+use function str_starts_with;
 
 /***************************************************************
  *
@@ -34,10 +40,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-/**
- * Class GeneralUtility
- */
 class GeneralUtility
 {
     public static function getRootline(int $uid): array
@@ -71,6 +73,7 @@ class GeneralUtility
      * Returns the value of a key within an array
      *
      * @param string $keyChain - dot separated list of keys to check, last is checked for value, e.g. tt_content.columns.sys_language_uid.label
+     *
      * @return array|mixed|null
      */
     public static function getArrayKeyValue(array $array, string $keyChain): mixed

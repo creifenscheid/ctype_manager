@@ -9,6 +9,11 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use function array_diff;
+use function array_merge;
+use function count;
+use function implode;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -33,10 +38,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-/**
- * Class ConfigurationService
- */
 class ConfigurationService implements SingletonInterface
 {
     /**
@@ -44,11 +45,11 @@ class ConfigurationService implements SingletonInterface
      *
      * @var string
      */
-    public const CONFIG_ID = 'ctype-manager';
+    final public const CONFIG_ID = 'ctype-manager';
 
     private ?Typo3Version $typo3Version = null;
 
-    private DataHandler $dataHandler;
+    private readonly DataHandler $dataHandler;
 
     private array $dataHandlerData = [];
 
@@ -111,6 +112,7 @@ class ConfigurationService implements SingletonInterface
     /**
      * @throws \Doctrine\DBAL\DBALException
      * @throws Exception
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getConfiguredPages(): array
     {
@@ -136,11 +138,17 @@ class ConfigurationService implements SingletonInterface
 
         foreach ($availableItems as $item) {
             $identifier = $this->typo3Version->getMajorVersion() < 12 ? $item[1] : $item['value'];
-
             // exclude divider and empty items
-            if ((!empty($identifier) && $identifier !== '--div--') && \CReifenscheid\CtypeManager\Utility\GeneralUtility::getActivationState($configuration, $identifier)) {
-                $alreadyEnabled[] = $identifier;
+            if (empty($identifier)) {
+                continue;
             }
+            if ($identifier === '--div--') {
+                continue;
+            }
+            if (!\CReifenscheid\CtypeManager\Utility\GeneralUtility::getActivationState($configuration, $identifier)) {
+                continue;
+            }
+            $alreadyEnabled[] = $identifier;
         }
 
         // compare the arrays - note: the larger one has to be the first to get a correct result

@@ -27,9 +27,6 @@ namespace CReifenscheid\CtypeManager\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * Class CTypeUtility
- */
 class CTypeUtility
 {
     public static function getItems(): array

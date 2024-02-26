@@ -37,9 +37,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * Class CleanupController
- */
 class CleanupController extends BaseController
 {
     /**
@@ -154,7 +151,7 @@ class CleanupController extends BaseController
     private function cleanupPageRecursively(int $pageUid): void
     {
         // init page repository
-        if ($this->pageRepository === null) {
+        if (!$this->pageRepository instanceof \TYPO3\CMS\Core\Domain\Repository\PageRepository) {
             $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         }
 
