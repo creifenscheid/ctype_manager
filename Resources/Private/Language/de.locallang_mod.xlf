@@ -150,13 +150,13 @@
         <source>Page</source>
         <target state="final">Seite</target>
       </trans-unit>
-      <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
+      <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes" approved="yes">
         <source>Allowed CTypes</source>
-        <target state="needs-translation">Allowed CTypes</target>
+        <target state="final">Erlaubte Inhaltstypen</target>
       </trans-unit>
-      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
+      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes" approved="yes">
         <source>Allowed plugins</source>
-        <target state="needs-translation">Allowed plugins</target>
+        <target state="final">Erlaubte Plugins</target>
       </trans-unit>
       <trans-unit id="overview.none" resname="overview.none" approved="yes">
         <source>None</source>
