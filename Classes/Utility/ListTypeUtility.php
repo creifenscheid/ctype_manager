@@ -34,7 +34,9 @@ class ListTypeUtility
 {
     public static function getItems(): array
     {
-        return $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'];
+        $listTypeConfig = $GLOBALS['TCA']['tt_content']['columns']['list_type']['config'];
+
+        return \array_key_exists('items', $listTypeConfig) ? $listTypeConfig['items'] : [];
     }
 
     public static function getWizardItems(int $pageId): ?array
