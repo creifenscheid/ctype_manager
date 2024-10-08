@@ -137,7 +137,7 @@ class ConfigurationService implements SingletonInterface
         $alreadyEnabled = [];
 
         foreach ($availableItems as $item) {
-            $identifier = $this->typo3Version->getMajorVersion() < 12 ? $item[1] : $item['value'];
+            $identifier = $item['value'];
             // exclude divider and empty items
             if (empty($identifier)) {
                 continue;

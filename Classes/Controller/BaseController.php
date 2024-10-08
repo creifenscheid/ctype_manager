@@ -108,11 +108,7 @@ class BaseController extends ActionController
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier($this->request->getControllerExtensionName() . 'ModuleMenu');
 
-        if ($this->typo3Version->getMajorVersion() < 12) {
-            $moduleControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$this->request->getControllerExtensionName()]['modules'][$this->request->getPluginName()]['controllers'];
-        } else {
-            $moduleControllerActions = $this->request->getAttribute('module')->getControllerActions();
-        }
+        $moduleControllerActions = $this->request->getAttribute('module')->getControllerActions();
 
         foreach ($moduleControllerActions as $configuredController) {
             $alias = $configuredController['alias'];

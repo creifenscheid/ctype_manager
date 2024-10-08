@@ -73,15 +73,9 @@ class ConfigurationController extends BaseController
             $groupStates = [];
 
             foreach (CTypeUtility::getItems() as $ctype) {
-                if ($this->typo3Version->getMajorVersion() < 12) {
-                    $label = $ctype[0] ?? null;
-                    $identifier = $ctype[1] ?? null;
-                    $group = $ctype[3] ?? null;
-                } else {
-                    $label = $ctype['label'] ?? null;
-                    $identifier = $ctype['value'] ?? null;
-                    $group = $ctype['group'] ?? null;
-                }
+                $label = $ctype['label'] ?? null;
+                $identifier = $ctype['value'] ?? null;
+                $group = $ctype['group'] ?? null;
 
                 // check group existence
                 if (empty($group)) {
@@ -130,12 +124,8 @@ class ConfigurationController extends BaseController
             // LIST TYPES
             $listTypes = [];
             foreach (ListTypeUtility::getItems() as $listType) {
-                if ($this->typo3Version->getMajorVersion() < 12) {
-                    [$label, $identifier] = $listType;
-                } else {
-                    $label = $listType['label'] ?? null;
-                    $identifier = $listType['value'] ?? null;
-                }
+                $label = $listType['label'] ?? null;
+                $identifier = $listType['value'] ?? null;
 
                 if (!empty($identifier)) {
                     $listTypeState = GeneralUtility::getActivationState($this->listTypeConfiguration, $identifier);

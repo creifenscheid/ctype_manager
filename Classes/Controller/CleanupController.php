@@ -137,7 +137,7 @@ class CleanupController extends BaseController
         $this->configurationService->persist();
 
         $messagePrefix = self::L10N . 'cleanup.message';
-        $this->createFlashMessage($messagePrefix, AbstractMessage::OK);
+        $this->createFlashMessage($messagePrefix, \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
 
         // redirect to index
         return $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
@@ -182,7 +182,7 @@ class CleanupController extends BaseController
     {
         if (!$this->request->hasArgument('cleanupMode')) {
             $messagePrefix = self::L10N . 'cleanup.message.error.cleanupMode';
-            $this->createFlashMessage($messagePrefix, AbstractMessage::ERROR);
+            $this->createFlashMessage($messagePrefix, \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
 
             return false;
         }
