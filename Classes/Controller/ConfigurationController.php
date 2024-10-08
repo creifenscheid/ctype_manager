@@ -5,10 +5,7 @@ namespace CReifenscheid\CtypeManager\Controller;
 use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
-use Doctrine\DBAL\DBALException;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 use function array_key_exists;
@@ -140,18 +137,26 @@ class ConfigurationController extends BaseController
                 $assignments['listTypes'] = $listTypes;
             }
 
-            $this->view->assignMultiple($assignments);
+            if ($this->typo3Version->getMajorVersion() < 13) {
+                $this->view->assignMultiple($assignments);
+            } else {
+                $this->moduleTemplate->assignMultiple($assignments);
+            }
         }
 
-        $this->moduleTemplate->setContent($this->view->render());
+        if ($this->typo3Version->getMajorVersion() < 13) {
 
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+            $this->moduleTemplate->setContent($this->view->render());
+
+            return $this->htmlResponse($this->moduleTemplate->renderContent());
+
+        } else {
+            return $this->moduleTemplate->renderResponse('Configuration/Index');
+        }
+
+
     }
 
-    /**
-     * @throws StopActionException
-     * @throws DBALException
-     */
     public function submitAction(): ResponseInterface
     {
         // get request arguments
