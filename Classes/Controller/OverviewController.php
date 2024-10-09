@@ -8,6 +8,7 @@ use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
 
 /***************************************************************
  *
@@ -34,6 +35,7 @@ use Psr\Http\Message\ResponseInterface;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+#[AsController]
 class OverviewController extends BaseController
 {
     /**

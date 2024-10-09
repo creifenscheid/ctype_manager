@@ -7,6 +7,7 @@ use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Backend\Attribute\AsController;
 
 use function array_key_exists;
 use function array_unique;
@@ -39,6 +40,8 @@ use function in_array;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+#[AsController]
 class ConfigurationController extends BaseController
 {
     /**

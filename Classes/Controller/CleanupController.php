@@ -5,6 +5,7 @@ namespace CReifenscheid\CtypeManager\Controller;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+#[AsController]
 class CleanupController extends BaseController
 {
     /**
