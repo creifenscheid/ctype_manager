@@ -6,6 +6,8 @@ use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Backend\Attribute\AsController;
 
@@ -53,6 +55,18 @@ class ConfigurationController extends BaseController
      * Array of list_types configured in pageTSConfig
      */
     private array $listTypeConfiguration = [];
+
+    protected function setDocHeader(): void
+    {
+        // add save button in configuration controller
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $exportButton = $buttonBar->makeLinkButton()
+            ->setTitle('test')
+            ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
+            ->setShowLabelText(true)
+            ->setHref('#');
+        $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
+    }
 
     public function indexAction(): ResponseInterface
     {

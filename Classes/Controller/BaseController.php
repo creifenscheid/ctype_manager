@@ -3,9 +3,14 @@
 namespace CReifenscheid\CtypeManager\Controller;
 
 use CReifenscheid\CtypeManager\Service\ConfigurationService;
+use Psr\Http\Message\ServerRequestInterface;
 use ReflectionClass;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -65,7 +70,8 @@ class BaseController extends ActionController
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,
         PageRenderer $pageRenderer,
-        ConfigurationService $configurationService
+        protected readonly IconFactory $iconFactory,
+        ConfigurationService $configurationService,
     ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
@@ -90,6 +96,10 @@ class BaseController extends ActionController
         // generate the dropdown menu
         $this->buildMenu($this->shortName);
 
+        if (\method_exists($this, 'setDocHeader')) {
+            $this->setDocHeader();
+        }
+
         // definition of currently chosen page uid
         if ($this->request->hasArgument('pageUid')) {
             $this->pageUid = (int)$this->request->getArgument('pageUid');
@@ -103,6 +113,9 @@ class BaseController extends ActionController
 
     protected function buildMenu(string $currentController): void
     {
+
+
+
         $this->uriBuilder->setRequest($this->request);
 
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
