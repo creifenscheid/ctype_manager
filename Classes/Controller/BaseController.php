@@ -113,9 +113,6 @@ class BaseController extends ActionController
 
     protected function buildMenu(string $currentController): void
     {
-
-
-
         $this->uriBuilder->setRequest($this->request);
 
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();

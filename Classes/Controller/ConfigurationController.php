@@ -6,10 +6,9 @@ use CReifenscheid\CtypeManager\Utility\CTypeUtility;
 use CReifenscheid\CtypeManager\Utility\GeneralUtility;
 use CReifenscheid\CtypeManager\Utility\ListTypeUtility;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Core\Imaging\IconSize;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 use function array_key_exists;
 use function array_unique;
@@ -42,7 +41,6 @@ use function in_array;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 #[AsController]
 class ConfigurationController extends BaseController
 {
@@ -55,18 +53,6 @@ class ConfigurationController extends BaseController
      * Array of list_types configured in pageTSConfig
      */
     private array $listTypeConfiguration = [];
-
-    protected function setDocHeader(): void
-    {
-        // add save button in configuration controller
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $exportButton = $buttonBar->makeLinkButton()
-            ->setTitle('test')
-            ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
-            ->setShowLabelText(true)
-            ->setHref('#');
-        $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
-    }
 
     public function indexAction(): ResponseInterface
     {
@@ -162,16 +148,12 @@ class ConfigurationController extends BaseController
         }
 
         if ($this->typo3Version->getMajorVersion() < 13) {
-
             $this->moduleTemplate->setContent($this->view->render());
 
             return $this->htmlResponse($this->moduleTemplate->renderContent());
-
-        } else {
-            return $this->moduleTemplate->renderResponse('Configuration/Index');
         }
 
-
+        return $this->moduleTemplate->renderResponse('Configuration/Index');
     }
 
     public function submitAction(): ResponseInterface
@@ -252,7 +234,7 @@ class ConfigurationController extends BaseController
         }
 
         $messagePrefix = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.message';
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK));
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate('LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:message.header.' . ContextualFeedbackSeverity::OK->value));
 
         // redirect to index
         return $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
