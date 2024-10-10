@@ -104,7 +104,14 @@ class BaseController extends ActionController
         if ($this->request->hasArgument('pageUid')) {
             $this->pageUid = (int)$this->request->getArgument('pageUid');
         } elseif (array_key_exists('id', $this->request->getQueryParams())) {
-            $this->pageUid = $this->request->getQueryParams()['id'];
+
+            $id = $this->request->getQueryParams()['id'];
+            if (\str_contains($id, '_')) {
+                $_id = GeneralUtility::trimExplode('_', $id);
+                $id = end($_id);
+            }
+
+            $this->pageUid = (int)$id;
         }
 
         // source controller definition
