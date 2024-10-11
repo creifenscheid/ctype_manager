@@ -1,1 +1,1 @@
-<button type="button" role="switch" class="btn btn--switch js-btn-switch{f:if(condition:state, then: ' on')} my-2" aria-pressed="{f:if(condition:state, then: 'true', else: 'false')}" data-target="{target}" {f:if(condition:ariaLabel, then:' aria-label="{ariaLabel}"')}><span class="visual"></span><span class="px-3">{label}</span></button>
+<input id="ctype-manager-toggle-{prefix}" type="checkbox" class="my-2 js-toggle" {f:if(condition:state, then: ' checked')} data-target="{target}"><label for="ctype-manager-toggle-{prefix}" class="px-3">{label}</label>
