@@ -17,6 +17,9 @@
   border: 1px solid #bbb;
   border-radius: 0.125rem; }
 
+.form-check-label {
+  width: 90%; }
+
 .btn--danger {
   background-color: #B30C1C !important;
   color: white !important; }
