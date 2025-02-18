@@ -75,20 +75,8 @@ class OverviewController extends BaseController
             $pages[$key] = $page;
         }
 
-        if ($this->typo3Version->getMajorVersion() < 13) {
-            if ($pages !== []) {
-                $this->view->assign('pages', $pages);
-            }
-        } else {
-            if ($pages !== []) {
-                $this->moduleTemplate->assign('pages', $pages);
-            }
-        }
-
-        if ($this->typo3Version->getMajorVersion() < 13) {
-            $this->moduleTemplate->setContent($this->view->render());
-
-            return $this->htmlResponse($this->moduleTemplate->renderContent());
+        if ($pages !== []) {
+            $this->moduleTemplate->assign('pages', $pages);
         }
 
         return $this->moduleTemplate->renderResponse('Overview/Index');

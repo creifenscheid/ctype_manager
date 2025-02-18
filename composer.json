@@ -5,8 +5,7 @@
 	"license" : "GPL-2.0-or-later",
 	"homepage" : "https://github.com/creifenscheid/ctype_manager",
 	"require" : {
-		"php": "^8.2||^8.3",
-		"typo3/cms-core" : ">=12.4.9 < 13 ||^13.3"
+		"typo3/cms-core" : ">=13.4.0"
 	},
 	"require-dev": {
 		"roave/security-advisories": "dev-latest"

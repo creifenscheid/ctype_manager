@@ -46,17 +46,7 @@ class CleanupController extends BaseController
     public function indexAction(): ResponseInterface
     {
         if ($this->pageUid && $this->pageUid > 0) {
-            if ($this->typo3Version->getMajorVersion() < 13) {
-                $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
-            } else {
-                $this->moduleTemplate->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
-            }
-        }
-
-        if ($this->typo3Version->getMajorVersion() < 13) {
-            $this->moduleTemplate->setContent($this->view->render());
-
-            return $this->htmlResponse($this->moduleTemplate->renderContent());
+            $this->moduleTemplate->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
         }
 
         return $this->moduleTemplate->renderResponse('Cleanup/Index');
@@ -68,25 +58,11 @@ class CleanupController extends BaseController
             // get request arguments
             $arguments = $this->request->getArguments();
 
-            if ($this->typo3Version->getMajorVersion() < 13) {
-                $this->view->assignMultiple([
-                    'cleanupMode' => $arguments['cleanupMode'],
-                    'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid),
-                    'sourceController' => $this->sourceController,
-                ]);
-            } else {
-                $this->moduleTemplate->assignMultiple([
-                    'cleanupMode' => $arguments['cleanupMode'],
-                    'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid),
-                    'sourceController' => $this->sourceController,
-                ]);
-            }
-        }
-
-        if ($this->typo3Version->getMajorVersion() < 13) {
-            $this->moduleTemplate->setContent($this->view->render());
-
-            return $this->htmlResponse($this->moduleTemplate->renderContent());
+            $this->moduleTemplate->assignMultiple([
+                'cleanupMode' => $arguments['cleanupMode'],
+                'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid),
+                'sourceController' => $this->sourceController,
+            ]);
         }
 
         return $this->moduleTemplate->renderResponse('Cleanup/Approval');

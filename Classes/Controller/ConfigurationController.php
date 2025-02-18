@@ -140,17 +140,7 @@ class ConfigurationController extends BaseController
                 $assignments['listTypes'] = $listTypes;
             }
 
-            if ($this->typo3Version->getMajorVersion() < 13) {
-                $this->view->assignMultiple($assignments);
-            } else {
-                $this->moduleTemplate->assignMultiple($assignments);
-            }
-        }
-
-        if ($this->typo3Version->getMajorVersion() < 13) {
-            $this->moduleTemplate->setContent($this->view->render());
-
-            return $this->htmlResponse($this->moduleTemplate->renderContent());
+            $this->moduleTemplate->assignMultiple($assignments);
         }
 
         return $this->moduleTemplate->renderResponse('Configuration/Index');
