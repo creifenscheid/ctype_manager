@@ -4,6 +4,9 @@
 <f:layout name="Module"/>
 
 <f:section name="Content">
+
+    <f:flashMessages />
+
     <div class="ctype_manager-be-module">
         <div class="container">
             <div class="row">
@@ -32,7 +35,7 @@
 
                             <f:variable name="toggleAriaLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.switch.all" /></f:variable>
                             <f:variable name="toggleLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.switch.label" /></f:variable>
-                            <f:render partial="Switch" arguments="{prefix:'all',state:groupsState,label:toggleLabel,ariaLabel:toggleAriaLabel,target:'js-all'}"/>
+                            <f:render partial="Toggle" arguments="{prefix:'all',state:groupsState,label:toggleLabel,ariaLabel:toggleAriaLabel,target:'all'}"/>
                             <div class="card-container">
                                 <f:for each="{ctypes}" key="group" as="groupConfiguration" iteration="iterator">
                                     <f:render partial="Group" arguments="{_all}"/>

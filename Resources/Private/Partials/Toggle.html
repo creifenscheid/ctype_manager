@@ -1,0 +1,7 @@
+<span class="form-check">
+    <input id="ctype-manager-toggle-{prefix}" type="checkbox" class="form-check-input" {f:if(condition:state, then: ' checked')} {f:if(condition:'{prefix} == "all"', then:'data-toggle-all', else: 'data-toggle')} data-target="{target}">
+    <label class="form-check-label" for="ctype-manager-toggle-{prefix}">
+        <span class="form-check-label-text"><strong>{label}</strong></span>
+    </label>
+    <hr />
+</span>

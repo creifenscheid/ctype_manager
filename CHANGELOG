@@ -1,6 +1,7 @@
 v13.0.0 +
   * [TASK] - Adds TYPO3 13 compatibility
   * [TASK] - Drop TYPO3 12 compatibility
+  * [TASK] - Rebuild javascript with vanilla js
 
 v12.0.1 +
   * [BUG]      - adds condition to check of page in cleanUpController

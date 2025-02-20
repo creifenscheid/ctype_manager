@@ -15,16 +15,16 @@
     <div class="card-body">
         <f:variable name="toggleAriaLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.switch.group" arguments="{0:groupLabel}"/></f:variable>
         <f:variable name="toggleLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.switch.label" /></f:variable>
-        <f:render partial="Switch" arguments="{prefix:'{group}-all',state:groupConfiguration.state,label:toggleLabel,ariaLabel:toggleAriaLabel,target:'js-group-{group}'}"/>
+        <f:render partial="Toggle" arguments="{prefix:'{group}-all',state:groupConfiguration.state,label:toggleLabel,ariaLabel:toggleAriaLabel,target:'{group}'}"/>
         <f:for each="{groupConfiguration.ctypes}" key="identifier" as="ctypeConfiguration">
 
             <div class="form-check form-check-type-toggle d-flex flex-row justify-content-start align-items-start flex-wrap{f:if(condition:ctypeConfiguration.active, then: ' enabled-ctype')}">
                 <f:if condition="{ctypeConfiguration.active}">
                     <f:then>
-                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-all js-group-{group}" value="{identifier}" additionalAttributes="{checked:'checked'}" />
+                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input" data-group="{group}" value="{identifier}" additionalAttributes="{checked:'checked'}" />
                     </f:then>
                     <f:else>
-                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input js-all js-group-{group}" value="{identifier}" />
+                        <f:form.checkbox id="ctype-manager-{identifier}" name="ctypes[]" class="form-check-input" data-group="{group}" value="{identifier}" />
                     </f:else>
                 </f:if>
 
