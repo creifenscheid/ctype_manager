@@ -86,8 +86,7 @@ class BaseController extends ActionController
     {
         parent::initializeAction();
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-
-        $this->pageRenderer->loadJavaScriptModule('@creifenscheid/ctype-manager/CtypeManager.js');
+        $this->pageRenderer->loadJavaScriptModule('@creifenscheid/ctype-manager/ctype-manager.js');
 
         // generate the dropdown menu
         $this->buildMenu($this->shortName);
