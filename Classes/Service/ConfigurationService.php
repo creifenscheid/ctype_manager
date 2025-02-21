@@ -2,14 +2,13 @@
 
 namespace CReifenscheid\CtypeManager\Service;
 
-use Doctrine\DBAL\Driver\Exception;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use function array_diff;
+use function array_key_exists;
 use function array_merge;
 use function count;
 use function implode;
@@ -47,8 +46,6 @@ class ConfigurationService implements SingletonInterface
      */
     final public const CONFIG_ID = 'ctype-manager';
 
-    private ?Typo3Version $typo3Version = null;
-
     private readonly DataHandler $dataHandler;
 
     private array $dataHandlerData = [];
@@ -56,7 +53,6 @@ class ConfigurationService implements SingletonInterface
     public function __construct()
     {
         $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $this->typo3Version = new Typo3Version();
     }
 
     public function writeConfiguration(int $pageUid, array $ctypeConfig): void
@@ -75,7 +71,7 @@ class ConfigurationService implements SingletonInterface
          * PREPARE TSCONFIG
          */
         $page = \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($pageUid);
-        $tsConfig = GeneralUtility::trimExplode(PHP_EOL, $page['TSconfig']);
+        $tsConfig = array_key_exists('TSConfig', $page) ? GeneralUtility::trimExplode(PHP_EOL, $page['TSconfig']) : [];
 
         // remove existing ctype_manager configuration
         $deleteLine = false;
@@ -109,11 +105,6 @@ class ConfigurationService implements SingletonInterface
         }
     }
 
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws Exception
-     * @throws \Doctrine\DBAL\Exception
-     */
     public function getConfiguredPages(): array
     {
         $tableToQuery = 'pages';
@@ -137,7 +128,7 @@ class ConfigurationService implements SingletonInterface
         $alreadyEnabled = [];
 
         foreach ($availableItems as $item) {
-            $identifier = $this->typo3Version->getMajorVersion() < 12 ? $item[1] : $item['value'];
+            $identifier = $item['value'];
             // exclude divider and empty items
             if (empty($identifier)) {
                 continue;

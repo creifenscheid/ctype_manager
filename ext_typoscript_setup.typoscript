@@ -3,10 +3,6 @@ module.tx_ctypemanager {
         templateRootPaths {
             10 = EXT:ctype_manager/Resources/Private/Templates/
         }
-        
-        layoutRootPaths {
-           10 = EXT:ctype_manager/Resources/Private/Layouts/
-        }
 
         partialRootPaths {
            10 = EXT:ctype_manager/Resources/Private/Partials/

@@ -14,13 +14,4 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
         ->autoconfigure();
 
     $services->load('CReifenscheid\\CtypeManager\\', __DIR__ . '/../Classes/');
-
-    $services->set(CleanupController::class)
-        ->tag('backend.controller');
-
-    $services->set(ConfigurationController::class)
-        ->tag('backend.controller');
-
-    $services->set(OverviewController::class)
-        ->tag('backend.controller');
 };

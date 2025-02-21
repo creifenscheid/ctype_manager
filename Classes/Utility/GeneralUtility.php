@@ -174,12 +174,8 @@ class GeneralUtility
         $typo3Version = new Typo3Version();
 
         foreach ($items as $item) {
-            if ($typo3Version->getMajorVersion() < 12) {
-                [$label, $identifier] = $item;
-            } else {
-                $label = $item['label'];
-                $identifier = $item['value'];
-            }
+            $label = $item['label'];
+            $identifier = $item['value'];
 
             if ($identifier === $requestedIdentifier) {
                 return self::locate($label);

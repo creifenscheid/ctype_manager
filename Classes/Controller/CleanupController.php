@@ -2,14 +2,11 @@
 
 namespace CReifenscheid\CtypeManager\Controller;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
@@ -36,12 +33,10 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+#[AsController]
 class CleanupController extends BaseController
 {
     /**
-     * L10n base
-     *
      * @var string
      */
     private const L10N = 'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:';
@@ -51,45 +46,28 @@ class CleanupController extends BaseController
     public function indexAction(): ResponseInterface
     {
         if ($this->pageUid && $this->pageUid > 0) {
-            $this->view->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
+            $this->moduleTemplate->assign('page', \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid));
         }
 
-        $this->moduleTemplate->setContent($this->view->render());
-
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('Cleanup/Index');
     }
 
-    /**
-     * Double opt-in for cleanup
-     *
-     * @throws StopActionException
-     */
     public function approvalAction(): ResponseInterface
     {
         if ($this->checkRequestArguments()) {
             // get request arguments
             $arguments = $this->request->getArguments();
 
-            $this->view->assignMultiple([
+            $this->moduleTemplate->assignMultiple([
                 'cleanupMode' => $arguments['cleanupMode'],
                 'page' => \CReifenscheid\CtypeManager\Utility\GeneralUtility::getPage($this->pageUid),
                 'sourceController' => $this->sourceController,
             ]);
         }
 
-        $this->moduleTemplate->setContent($this->view->render());
-
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('Cleanup/Approval');
     }
 
-    /**
-     * Cleanup action to remove all ctype_manager tsconfig
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws Exception
-     * @throws NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     */
     public function cleanupAction(): ResponseInterface
     {
         $rootline = [];
@@ -137,21 +115,16 @@ class CleanupController extends BaseController
         $this->configurationService->persist();
 
         $messagePrefix = self::L10N . 'cleanup.message';
-        $this->createFlashMessage($messagePrefix, AbstractMessage::OK);
+        $this->createFlashMessage($messagePrefix, ContextualFeedbackSeverity::OK);
 
         // redirect to index
         return $this->redirect('index', $this->sourceController, 'CtypeManager', ['pageUid' => $this->pageUid]);
     }
 
-    /**
-     * Function to clean up a page and its children
-     *
-     * @throws DBALException
-     */
     private function cleanupPageRecursively(int $pageUid): void
     {
         // init page repository
-        if (!$this->pageRepository instanceof \TYPO3\CMS\Core\Domain\Repository\PageRepository) {
+        if (!$this->pageRepository instanceof PageRepository) {
             $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         }
 
@@ -165,24 +138,16 @@ class CleanupController extends BaseController
         }
     }
 
-    /**
-     * Function to add a flash message based on the given message prefix
-     */
-    private function createFlashMessage(string $messagePrefix, int $type): void
+    private function createFlashMessage(string $messagePrefix, ContextualFeedbackSeverity $type): void
     {
-        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate(self::L10N . 'message.header.' . $type), $type);
+        $this->addFlashMessage(LocalizationUtility::translate($messagePrefix . '.bodytext'), LocalizationUtility::translate(self::L10N . 'message.header.' . $type->value), $type);
     }
 
-    /**
-     * Function to check the request for the needed arguments
-     *
-     * @throws StopActionException
-     */
     private function checkRequestArguments(): bool
     {
         if (!$this->request->hasArgument('cleanupMode')) {
             $messagePrefix = self::L10N . 'cleanup.message.error.cleanupMode';
-            $this->createFlashMessage($messagePrefix, AbstractMessage::ERROR);
+            $this->createFlashMessage($messagePrefix, ContextualFeedbackSeverity::ERROR);
 
             return false;
         }

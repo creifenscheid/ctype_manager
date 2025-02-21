@@ -1,13 +1,16 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true">
 
-<f:layout name="Default"/>
+<f:layout name="Module"/>
 
 <f:section name="Content">
+
+    <f:flashMessages />
+
     <div class="ctype_manager-be-module">
         <div class="container">
             <div class="row">
-                
+
                 <f:if condition="{page.title}">
                     <f:then>
                         <f:variable name="header" value="{f:translate(key:'LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:section.index',arguments:{0:page.title})}" />
@@ -29,17 +32,17 @@
                             <f:if condition="{sourceController}">
                                 <f:form.hidden name="sourceController" value="{sourceController}"/>
                             </f:if>
-                            
+
                             <f:variable name="toggleAriaLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.switch.all" /></f:variable>
                             <f:variable name="toggleLabel"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.switch.label" /></f:variable>
-                            <f:render partial="Switch" arguments="{state:groupsState,label:toggleLabel,ariaLabel:toggleAriaLabel,target:'js-all'}"/>
+                            <f:render partial="Toggle" arguments="{prefix:'all',state:groupsState,label:toggleLabel,ariaLabel:toggleAriaLabel,target:'all'}"/>
                             <div class="card-container">
                                 <f:for each="{ctypes}" key="group" as="groupConfiguration" iteration="iterator">
                                     <f:render partial="Group" arguments="{_all}"/>
                                 </f:for>
                             </div>
                         </f:form>
-        
+
                         <div>
                             <f:form.button form="ctype-form" class="btn btn-primary"><f:translate key="LLL:EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf:configuration.button.submit"/></f:form.button>
                         </div>

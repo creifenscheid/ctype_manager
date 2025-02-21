@@ -6,6 +6,7 @@ use CReifenscheid\CtypeManager\Service\ConfigurationService;
 use ReflectionClass;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -65,7 +66,8 @@ class BaseController extends ActionController
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,
         PageRenderer $pageRenderer,
-        ConfigurationService $configurationService
+        protected readonly IconFactory $iconFactory,
+        ConfigurationService $configurationService,
     ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
@@ -84,16 +86,27 @@ class BaseController extends ActionController
     {
         parent::initializeAction();
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/CtypeManager/CtypeManager');
+        $this->pageRenderer->loadJavaScriptModule('@creifenscheid/ctype-manager/ctype-manager.js');
 
         // generate the dropdown menu
         $this->buildMenu($this->shortName);
+
+        if (\method_exists($this, 'setDocHeader')) {
+            $this->setDocHeader();
+        }
 
         // definition of currently chosen page uid
         if ($this->request->hasArgument('pageUid')) {
             $this->pageUid = (int)$this->request->getArgument('pageUid');
         } elseif (array_key_exists('id', $this->request->getQueryParams())) {
-            $this->pageUid = $this->request->getQueryParams()['id'];
+
+            $id = $this->request->getQueryParams()['id'];
+            if (\str_contains($id, '_')) {
+                $_id = GeneralUtility::trimExplode('_', $id);
+                $id = end($_id);
+            }
+
+            $this->pageUid = (int)$id;
         }
 
         // source controller definition
@@ -107,11 +120,7 @@ class BaseController extends ActionController
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier($this->request->getControllerExtensionName() . 'ModuleMenu');
 
-        if ($this->typo3Version->getMajorVersion() < 12) {
-            $moduleControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$this->request->getControllerExtensionName()]['modules'][$this->request->getPluginName()]['controllers'];
-        } else {
-            $moduleControllerActions = $this->request->getAttribute('module')->getControllerActions();
-        }
+        $moduleControllerActions = $this->request->getAttribute('module')->getControllerActions();
 
         foreach ($moduleControllerActions as $configuredController) {
             $alias = $configuredController['alias'];
