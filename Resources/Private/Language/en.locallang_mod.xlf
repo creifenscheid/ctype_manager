@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" version="1.0">
+  <file source-language="en" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="theme" target-language="en">
+    <header/>
+    <body>
+      <!-- INDEX -->
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>CType Manager</source>
+        <target state="final">CType Manager</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>CType Manager</source>
+        <target state="final">CType Manager</target>
+      </trans-unit>
+      <trans-unit id="index.header" resname="index.header" approved="yes">
+        <source>Page "%s" | CType Manager</source>
+        <target state="final">Page "%s" | CType Manager</target>
+      </trans-unit>
+      <trans-unit id="index.bodytext" resname="index.bodytext" approved="yes">
+        <source>Choose all content types, which shall be available on this page and it's children.</source>
+        <target state="final">Choose all content types, which shall be available on this page and it's children.</target>
+      </trans-unit>
+      <trans-unit id="index.nopage" resname="index.nopage" approved="yes">
+        <source>Please select a page from the page tree.</source>
+        <target state="final">Please select a page from the page tree.</target>
+      </trans-unit>
+      <trans-unit id="index.button.submit" resname="index.button.submit" approved="yes">
+        <source>Save</source>
+        <target state="final">Save</target>
+      </trans-unit>
+      <trans-unit id="index.message.header" resname="index.message.header" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="index.message.bodytext" resname="index.message.bodytext" approved="yes">
+        <source>CType manager configuration has been saved.</source>
+        <target state="final">CType manager configuration has been saved.</target>
+      </trans-unit>
+      <trans-unit id="index.switch.label" resname="index.switch.label" approved="yes">
+        <source>Enable all</source>
+        <target state="final">Enable all</target>
+      </trans-unit>
+      <trans-unit id="index.switch.all" resname="index.switch.all" approved="yes">
+        <source>Enable all content element types</source>
+        <target state="final">Enable all content element types</target>
+      </trans-unit>
+      <trans-unit id="index.switch.group" resname="index.toggle.group" approved="yes">
+        <source>Enable all content element types in group "%s"</source>
+        <target state="final">Enable all content element types in group "%s"</target>
+      </trans-unit>
+      <!-- CLEANUP -->
+      <trans-unit id="cleanup.navigation" resname="cleanup.navigation">
+        <source>Cleanup</source>
+        <target state="translated">Cleanup</target>
+      </trans-unit>
+      <trans-unit id="cleanup.header" resname="cleanup.headline">
+        <source>Cleanup</source>
+        <target state="translated">Cleanup</target>
+      </trans-unit>
+      <trans-unit id="cleanup.bodytext" resname="cleanup.bodytext" approved="yes">
+        <source>Remove the configurations made by the CType Manager.</source>
+        <target state="final">Remove the configurations made by the CType Manager.</target>
+      </trans-unit>
+      <trans-unit id="cleanup.mode.label" resname="cleanup.mode.label">
+        <source>Cleanup mode</source>
+        <target state="translated">Cleanup mode</target>
+      </trans-unit>
+      <trans-unit id="cleanup.mode.page" resname="cleanup.mode.page">
+        <source>Current page: %s [%s]</source>
+        <target state="translated">Current page: %s [%s]</target>
+      </trans-unit>
+      <trans-unit id="cleanup.mode.rootline" resname="cleanup.mode.rootline">
+        <source>Root line</source>
+        <target state="translated">Root line</target>
+      </trans-unit>
+      <trans-unit id="cleanup.mode.rootpage" resname="cleanup.mode.rootpage">
+        <source>Root page</source>
+        <target state="translated">Root page</target>
+      </trans-unit>
+      <trans-unit id="cleanup.mode.all" resname="cleanup.mode.all">
+        <source>All (this affects ALL pages and might take some time!)</source>
+        <target state="translated">All (this affects ALL pages and might take some time!)</target>
+      </trans-unit>
+      <trans-unit id="cleanup.submit" resname="cleanup.approval.submit">
+        <source>Clean up</source>
+        <target state="translated">Clean up</target>
+      </trans-unit>
+      <trans-unit id="cleanup.message.error.pageuid.header" resname="cleanup.message.error.pageuid.header">
+        <source>Oops</source>
+        <target state="translated">Oops</target>
+      </trans-unit>
+      <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext">
+        <source>A page uid was missing, please select a page in the page tree and try again.</source>
+        <target state="translated">A page uid was missing, please select a page in the page tree and try again.</target>
+      </trans-unit>
+      <trans-unit id="cleanup.message.error.cleanupMode.header" resname="cleanup.message.error.cleanupMode.header">
+        <source>Oops</source>
+        <target state="translated">Oops</target>
+      </trans-unit>
+      <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext">
+        <source>A cleanup mode was missing, please select a mode to clean up.</source>
+        <target state="translated">A cleanup mode was missing, please select a mode to clean up.</target>
+      </trans-unit>
+      <!-- APPROVAL -->
+      <trans-unit id="cleanup.approval.headline" resname="cleanup.approval.headline" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Are you sure?</target>
+      </trans-unit>
+      <trans-unit id="cleanup.approval.bodytext" resname="cleanup.approval.bodytext" approved="yes">
+        <source>You are going to remove the configurations made by the CType Manager.</source>
+        <target state="final">You are going to remove the configurations made by the CType Manager.</target>
+      </trans-unit>
+      <trans-unit id="cleanup.approval.submit" resname="cleanup.approval.submit" approved="yes">
+        <source>Yes, clean up.</source>
+        <target state="final">Yes, clean up.</target>
+      </trans-unit>
+      <trans-unit id="cleanup.approval.abort" resname="cleanup.approval.abort" approved="yes">
+        <source>No, abort!</source>
+        <target state="final">No, abort!</target>
+      </trans-unit>
+      <trans-unit id="cleanup.message.header" resname="cleanup.message.header" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="cleanup.message.bodytext" resname="cleanup.message.bodytext" approved="yes">
+        <source>CType manager configuration has been removed.</source>
+        <target state="final">CType manager configuration has been removed.</target>
+      </trans-unit>
+      <!-- OVERVIEW -->
+      <trans-unit id="overview.navigation" resname="overview.navigation">
+        <source>Overview</source>
+        <target state="translated">Overview</target>
+      </trans-unit>
+      <trans-unit id="overview.headline" resname="overview.headline">
+        <source>Overview | CType manager</source>
+        <target state="translated">Overview | CType manager</target>
+      </trans-unit>
+      <trans-unit id="overview.bodytext" resname="overview.bodytext">
+        <source>The following pages have been configured with the CType manager.</source>
+        <target state="translated">The following pages have been configured with the CType manager.</target>
+      </trans-unit>
+      <trans-unit id="overview.bodytext.noPages" resname="overview.bodytext.noPages">
+        <source>There are currently no pages configured with the ctype manager.</source>
+        <target state="translated">There are currently no pages configured with the ctype manager.</target>
+      </trans-unit>
+      <trans-unit id="overview.table.head.page" resname="overview.table.head.page">
+        <source>Page</source>
+        <target state="translated">Page</target>
+      </trans-unit>
+      <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
+        <source>Allowed CTypes</source>
+        <target state="translated">Allowed CTypes</target>
+      </trans-unit>
+      <trans-unit id="overview.toolbar.edit.label" resname="overview.toolbar.edit.label">
+        <source>Edit CType configuration of page "%s".</source>
+        <target state="translated">Edit CType configuration of page "%s".</target>
+      </trans-unit>
+      <trans-unit id="overview.toolbar.delete.label" resname="overview.toolbar.delete.label">
+        <source>Delete CType configuration of page "%s".</source>
+        <target state="translated">Delete CType configuration of page "%s".</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

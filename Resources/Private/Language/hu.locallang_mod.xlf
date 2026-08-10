@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" version="1.0">
+  <file source-language="en" datatype="plaintext" original="EXT:ctype_manager/Resources/Private/Language/locallang_mod.xlf" date="2022-02-27T23:55:00Z" product-name="ctype-manager" target-language="hu">
+    <header/>
+    <body>
+      <!-- GENERAL-->
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>CType Manager</source>
+        <target state="translated">CType Manager</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>CType Manager</source>
+        <target state="translated">CType Manager</target>
+      </trans-unit>
+      <trans-unit id="section.header" resname="section.header">
+        <source>%s | CType Manager</source>
+        <target state="translated">%s | CType Manager</target>
+      </trans-unit>
+      <trans-unit id="message.header.2" resname="message.header.2">
+        <source>Oops</source>
+        <target state="translated">Hoppá</target>
+      </trans-unit>
+      <trans-unit id="message.header.0" resname="message.header.0">
+        <source>OK</source>
+        <target state="translated">OK</target>
+      </trans-unit>
+      <!-- FALLBACK -->
+      <trans-unit id="group.unassigned" resname="group.unassigned">
+        <source>Unassigned</source>
+        <target state="translated">Nincs hozzárendelve</target>
+      </trans-unit>
+      <!-- SECTIONS -->
+      <trans-unit id="section.index" resname="section.index">
+        <source>Page "%s"</source>
+        <target state="translated">"%s" oldal</target>
+      </trans-unit>
+      <trans-unit id="section.configuration" resname="section.configuration">
+        <source>Configuration</source>
+        <target state="translated">Konfiguráció</target>
+      </trans-unit>
+      <trans-unit id="section.cleanup" resname="section.cleanup">
+        <source>Cleanup</source>
+        <target state="translated">Takarítás</target>
+      </trans-unit>
+      <trans-unit id="section.overview" resname="section.cleanup">
+        <source>Overview</source>
+        <target state="translated">Áttekintés</target>
+      </trans-unit>
+      <!-- CONFIGURATION -->
+      <trans-unit id="configuration.bodytext" resname="configuration.bodytext">
+        <source>Choose all content types, which shall be available on this page and it's children.</source>
+        <target state="translated">Válassza ki az összes tartalomtípust, amely elérhető lesz ezen az oldalon és annak gyermekoldalain.</target>
+      </trans-unit>
+      <trans-unit id="configuration.nopage" resname="configuration.nopage">
+        <source>Please select a page from the page tree.</source>
+        <target state="translated">Kérjük, válasszon ki egy oldalt az oldalfából.</target>
+      </trans-unit>
+      <trans-unit id="configuration.button.submit" resname="configuration.button.submit">
+        <source>Save</source>
+        <target state="translated">Mentés</target>
+      </trans-unit>
+      <trans-unit id="configuration.message.bodytext" resname="configuration.message.bodytext">
+        <source>CType Manager configuration has been saved.</source>
+        <target state="translated">A CType Manager konfiguráció mentésre került.</target>
+      </trans-unit>
+      <trans-unit id="configuration.switch.label" resname="configuration.switch.label">
+        <source>Enable all</source>
+        <target state="translated">Összes engedélyezése</target>
+      </trans-unit>
+      <trans-unit id="configuration.switch.all" resname="configuration.switch.all">
+        <source>Enable all content element types</source>
+        <target state="translated">Összes tartalomelem-típus engedélyezése</target>
+      </trans-unit>
+      <trans-unit id="configuration.switch.group" resname="configuration.toggle.group">
+        <source>Enable all content element types in group "%s"</source>
+        <target state="translated">Összes tartalomelem-típus engedélyezése a(z) "%s" csoportban</target>
+      </trans-unit>
+      <trans-unit id="configuration.listTypes.headline" resname="configuration.listTypes.headline">
+        <source>Available plugins</source>
+        <target state="translated">Elérhető bővítmények</target>
+      </trans-unit>
+      <!-- CLEANUP -->
+      <trans-unit id="cleanup.bodytext" resname="cleanup.bodytext">
+        <source>Remove the configurations made by the CType Manager.</source>
+        <target state="translated">A CType Manager által létrehozott konfigurációk eltávolítása.</target>
+      </trans-unit>
+      <trans-unit id="cleanup.mode.label" resname="cleanup.mode.label">
+        <source>Cleanup mode</source>
+        <target state="translated">Takarítási mód</target>
+      </trans-unit>
+      <trans-unit id="cleanup.mode.page" resname="cleanup.mode.page">
+        <source>Current page: %s [%s]</source>
+        <target state="translated">Aktuális oldal: %s [%s]</target>
+      </trans-unit>
+      <trans-unit id="cleanup.mode.rootline" resname="cleanup.mode.rootline">
+        <source>Rootline</source>
+        <target state="translated">Rootline</target>
+      </trans-unit>
+      <trans-unit id="cleanup.mode.rootpage" resname="cleanup.mode.rootpage">
+        <source>Rootpage</source>
+        <target state="translated">Gyökéroldal</target>
+      </trans-unit>
+      <trans-unit id="cleanup.mode.all" resname="cleanup.mode.all">
+        <source>All (this affects ALL pages and might take some time!)</source>
+        <target state="translated">Összes (ez MINDEN oldalra hatással van, és eltarthat egy darabig!)</target>
+      </trans-unit>
+      <trans-unit id="cleanup.submit" resname="cleanup.approval.submit">
+        <source>Clean up</source>
+        <target state="translated">Takarítás</target>
+      </trans-unit>
+      <trans-unit id="cleanup.message.error.pageuid.bodytext" resname="cleanup.message.error.pageuid.bodytext">
+        <source>A page uid is missing. Please select a page in the page tree and try again.</source>
+        <target state="translated">Hiányzik az oldal uid-ja. Kérjük, válasszon ki egy oldalt az oldalfában, és próbálja újra.</target>
+      </trans-unit>
+      <trans-unit id="cleanup.message.error.cleanupMode.bodytext" resname="cleanup.message.error.cleanupMode.bodytext">
+        <source>A cleanup mode is missing. Please select a mode to clean up.</source>
+        <target state="translated">Hiányzik a takarítási mód. Kérjük, válasszon ki egy módot a takarításhoz.</target>
+      </trans-unit>
+      <!-- APPROVAL -->
+      <trans-unit id="cleanup.approval.headline" resname="cleanup.approval.headline">
+        <source>Are you sure?</source>
+        <target state="translated">Biztos benne?</target>
+      </trans-unit>
+      <trans-unit id="cleanup.approval.bodytext" resname="cleanup.approval.bodytext">
+        <source>You are going to remove the configurations made by the CType Manager.</source>
+        <target state="translated">El fogja távolítani a CType Manager által létrehozott konfigurációkat.</target>
+      </trans-unit>
+      <trans-unit id="cleanup.approval.submit" resname="cleanup.approval.submit">
+        <source>Yes, clean up.</source>
+        <target state="translated">Igen, takarítás.</target>
+      </trans-unit>
+      <trans-unit id="cleanup.approval.abort" resname="cleanup.approval.abort">
+        <source>No, abort!</source>
+        <target state="translated">Nem, megszakítás!</target>
+      </trans-unit>
+      <trans-unit id="cleanup.message.bodytext" resname="cleanup.message.bodytext">
+        <source>CType Manager configuration has been removed.</source>
+        <target state="translated">A CType Manager konfiguráció eltávolításra került.</target>
+      </trans-unit>
+      <!-- OVERVIEW -->
+      <trans-unit id="overview.bodytext" resname="overview.bodytext">
+        <source>The following pages have been configured with the CType Manager.</source>
+        <target state="translated">A következő oldalak vannak a CType Managerrel konfigurálva.</target>
+      </trans-unit>
+      <trans-unit id="overview.bodytext.noPages" resname="overview.bodytext.noPages">
+        <source>There are currently no pages configured with the CType Manager.</source>
+        <target state="translated">Jelenleg nincs a CType Managerrel konfigurált oldal.</target>
+      </trans-unit>
+      <trans-unit id="overview.table.head.page" resname="overview.table.head.page">
+        <source>Page</source>
+        <target state="translated">Oldal</target>
+      </trans-unit>
+      <trans-unit id="overview.table.head.ctypes" resname="overview.table.head.ctypes">
+        <source>Allowed CTypes</source>
+        <target state="translated">Engedélyezett CType-ek</target>
+      </trans-unit>
+      <trans-unit id="overview.table.head.listTypes" resname="overview.table.head.listTypes">
+        <source>Allowed plugins</source>
+        <target state="translated">Engedélyezett bővítmények</target>
+      </trans-unit>
+      <trans-unit id="overview.none" resname="overview.none">
+        <source>None</source>
+        <target state="translated">Egyik sem</target>
+      </trans-unit>
+      <trans-unit id="overview.toolbar.edit.label" resname="overview.toolbar.edit.label">
+        <source>Edit CType configuration of page "%s".</source>
+        <target state="translated">A(z) "%s" oldal CType konfigurációjának szerkesztése.</target>
+      </trans-unit>
+      <trans-unit id="overview.toolbar.delete.label" resname="overview.toolbar.delete.label">
+        <source>Delete CType configuration of page "%s".</source>
+        <target state="translated">A(z) "%s" oldal CType konfigurációjának törlése.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
